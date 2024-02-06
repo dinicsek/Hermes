@@ -15,6 +15,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
 
 class CommonPanelProvider extends PanelProvider
 {
@@ -28,6 +29,9 @@ class CommonPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->discoverPages(in: app_path('Filament/Common/Pages'), for: 'App\\Filament\\Common\\Pages')
+            ->plugins([
+                BreezyCore::make()->myProfile()->enableTwoFactorAuthentication()
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
