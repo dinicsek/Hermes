@@ -21,6 +21,10 @@ class Team extends Model
         'emails' => 'array',
     ];
 
+    protected $with = [
+        'tournament'
+    ];
+
     public function tournament()
     {
         return $this->belongsTo(Tournament::class);
