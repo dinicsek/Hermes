@@ -19,6 +19,7 @@ class Tournament extends Model
         'ended',
         'max_team_size',
         'end_when_matches_concluded',
+        'user_id'
     ];
 
     protected $casts = [
@@ -35,5 +36,10 @@ class Tournament extends Model
     public function teams()
     {
         return $this->hasMany(Team::class);
+    }
+
+    public function matches()
+    {
+        return $this->hasMany(TournamentMatch::class);
     }
 }

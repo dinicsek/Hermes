@@ -14,6 +14,7 @@ class Team extends Model
         'name',
         'members',
         'emails',
+        'tournament_id',
     ];
 
     protected $casts = [
@@ -28,5 +29,20 @@ class Team extends Model
     public function tournament()
     {
         return $this->belongsTo(Tournament::class);
+    }
+
+    public function homeMatches()
+    {
+        return $this->hasMany(TournamentMatch::class, 'home_team_id');
+    }
+
+    public function awayMatches()
+    {
+        return $this->hasMany(TournamentMatch::class, 'away_team_id');
+    }
+
+    public function matches()
+    {
+        return $this->hasMany(TournamentMatch::class, 'home_team_id')->orWhere('away_team_id', $this->id);
     }
 }
