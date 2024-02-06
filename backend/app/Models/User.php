@@ -11,10 +11,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use LaraZeus\Boredom\Concerns\HasBoringAvatar;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable, HasBoringAvatar;
 
     /**
      * The attributes that are mass assignable.
@@ -51,10 +52,10 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return match ($this->role) {
-            UserRole::Admin => $panel->getId() === 'admin',
-            UserRole::Manager => $panel->getId() === 'manager',
-            default => false,
+        return match ($panel->getId()) {
+            'manager' => $this->role === UserRole::MANAGER,
+            'admin' => $this->role === UserRole::ADMIN,
+            default => true,
         };
     }
 }

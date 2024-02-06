@@ -2,8 +2,8 @@
 
 namespace App\Models\Enums;
 
-enum UserRole : string
+enum UserRole: string
 {
-    case Manager = 'manager';
-    case Admin = 'admin';
+    case MANAGER = 'manager';
+    case ADMIN = 'admin';
 }

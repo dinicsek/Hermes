@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Pulse\Facades\Pulse;
+use LaraZeus\Boredom\BoringAvatar;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Pulse::user(fn($user) => [
+            'name' => $user->name,
+            'extra' => $user->email,
+            'avatar' => app()->make(BoringAvatar::class)->get(name: $user->avatar_name),
+        ]);
     }
 }

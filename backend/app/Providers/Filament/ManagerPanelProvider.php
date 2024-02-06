@@ -18,6 +18,9 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use LaraZeus\Boredom\BoringAvatarPlugin;
+use LaraZeus\Boredom\BoringAvatarsProvider;
+use LaraZeus\Boredom\Enums\Variants;
 
 class ManagerPanelProvider extends PanelProvider
 {
@@ -29,6 +32,9 @@ class ManagerPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->defaultAvatarProvider(
+                BoringAvatarsProvider::class
+            )
             ->discoverResources(in: app_path('Filament/Manager/Resources'), for: 'App\\Filament\\Manager\\Resources')
             ->discoverPages(in: app_path('Filament/Manager/Pages'), for: 'App\\Filament\\Manager\\Pages')
             ->pages([
@@ -40,7 +46,12 @@ class ManagerPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->plugins([
-                BreezyCore::make()->myProfile()->enableTwoFactorAuthentication()
+                BreezyCore::make()->myProfile()->enableTwoFactorAuthentication(),
+                BoringAvatarPlugin::make()
+                    ->variant(Variants::BEAM)
+                    ->size(60)
+                    ->square()
+                    ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238'])
             ])
             ->viteTheme('resources/css/filament/manager/theme.css')
             ->middleware([

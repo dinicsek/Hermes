@@ -24,8 +24,8 @@ class RedirectToOwnPanel extends Page
         $user = auth()->user();
 
         $url = match ($user->role) {
-            UserRole::Admin => '/admin',
-            UserRole::Manager => '/manager',
+            UserRole::ADMIN => '/admin',
+            UserRole::MANAGER => '/manager',
         };
 
         return redirect($url);
