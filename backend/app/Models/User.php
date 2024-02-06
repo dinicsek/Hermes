@@ -58,4 +58,14 @@ class User extends Authenticatable implements FilamentUser
             default => true,
         };
     }
+
+    public function tournaments()
+    {
+        return $this->hasMany(Tournament::class);
+    }
+
+    public function teams()
+    {
+        return $this->hasManyThrough(Team::class, Tournament::class);
+    }
 }

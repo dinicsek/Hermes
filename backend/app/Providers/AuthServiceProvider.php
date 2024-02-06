@@ -4,7 +4,11 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Enums\UserRole;
+use App\Models\Team;
+use App\Models\Tournament;
 use App\Models\User;
+use App\Policies\TeamPolicy;
+use App\Policies\TournamentPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,6 +21,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         //
+        Team::class => TeamPolicy::class,
+        Tournament::class => TournamentPolicy::class,
     ];
 
     /**
@@ -31,6 +37,12 @@ class AuthServiceProvider extends ServiceProvider
         // Only applies to non local env unlike pulse
         Gate::define('viewHorizon', function (User $user) {
             return $user->role === UserRole::ADMIN;
+        });
+
+        Gate::before(function (User $user, string $ability) {
+            if ($user->role === UserRole::ADMIN) {
+                return true;
+            }
         });
     }
 }
