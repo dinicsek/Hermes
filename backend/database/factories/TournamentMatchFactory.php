@@ -19,6 +19,9 @@ class TournamentMatchFactory extends Factory
             'is_final' => false,
             'winner' => null,
             'sort' => null,
+            'stakeless' => false,
+            'group' => null,
+            'is_advancing' => null,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
