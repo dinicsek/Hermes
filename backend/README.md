@@ -3,7 +3,7 @@ Ez a program logikája, illetve itt található az admin felület kódja is.
 
 ## Telepítés
 A legegyszerűbb Dockerben elindítani a konténereket, így most ezt részletezzük.
-Előfeltétel, hogy a Docker (és a docker-compose) és a Node (meg az npm) telepítve legyen a számítógépen.
+Előfeltétel, hogy a Docker (és a docker-compose) és a Node (meg az npm) telepítve legyen a számítógépen. (Ha Windowson próbálkozunk, akkor tegyük fel a Windows Subsystem for Linuxot (WSL) és a lentebb írtakat ott futtassuk. Erről egy jó leírást [itt](https://laravel.com/docs/10.x/installation#sail-on-windows) találunk.)
 
 Lépések:
 1. Klónozzuk a projektet (ha még nem tettük volna meg) és lépjünk be (ebbe) a *backend* mappába!
@@ -21,3 +21,4 @@ Lépések:
 
    Előbbi email címe *admin@test.test*, míg utóbbié *manager@test.test*. Mindkettőhöz a *password* jelszó tartozik.
 10. Jó fejlesztést!
+11. (Leállítani az elindult konténereket, ha nem háttérben indítottuk el, akkor a Ctrl+C (Macen is Ctrl, nem Command!) billentyűkombinációval tudjuk, ha a háttérben indítottuk akkor `./vendor/bin/sail stop`.)
