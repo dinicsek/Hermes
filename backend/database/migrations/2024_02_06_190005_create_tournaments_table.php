@@ -13,6 +13,8 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description');
 
+            $table->string('code')->unique();
+
             $table->dateTime('registration_starts_at');
             $table->dateTime('registration_ends_at');
 

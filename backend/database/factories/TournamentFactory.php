@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class TournamentFactory extends Factory
 {
@@ -18,8 +19,9 @@ class TournamentFactory extends Factory
         $startsAt = $this->faker->dateTimeBetween($registrationEndsAt, '+2 weeks');
 
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->words(3, true),
             'description' => $this->faker->text(),
+            'code' => Str::random(6),
             'registration_starts_at' => $registrationStartsAt,
             'registration_ends_at' => $registrationEndsAt,
             'starts_at' => $startsAt,

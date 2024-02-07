@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Admin\Resources\UserResource\Pages;
+namespace App\Filament\Manager\Resources\TournamentResource\Pages;
 
-use App\Filament\Admin\Resources\UserResource;
+use App\Filament\Manager\Resources\TournamentResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewUser extends ViewRecord
+class ViewTournament extends ViewRecord
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = TournamentResource::class;
 
     protected static ?string $navigationLabel = "Megtekintés";
 
