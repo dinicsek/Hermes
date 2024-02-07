@@ -4,6 +4,7 @@ namespace App\Filament\Manager\Resources\TournamentResource\Pages;
 
 use App\Filament\Manager\Resources\TournamentResource;
 use App\Models\Data\RoundConfiguration;
+use App\Models\Enums\EventStatus;
 use App\Models\Enums\RoundMode;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
@@ -60,6 +61,11 @@ class EditRoundSettings extends Page
                 Repeater::make('rounds')->schema([
                     Select::make('mode')
                         ->label('Mód')
+                        ->hintIcon('heroicon-o-information-circle')
+                        ->hintIconTooltip(fn(Get $get) => match ($get('mode')) {
+                            RoundMode::GROUP => 'Csoportos mód esetén a csapatokat csoportokba osztjuk, majd a csoportokból megadott számú csapat jut tobább.',
+                            RoundMode::ELIMINATION => 'Kieséses mód esetén a csapatok egymás ellen játszanak, a vesztes csapatok kiesnek.',
+                        })
                         ->options(RoundMode::class)
                         ->default(RoundMode::GROUP)
                         ->required()
@@ -91,9 +97,11 @@ class EditRoundSettings extends Page
                 ])->label('Fordulók')->addActionLabel('Forduló hozzáadása'),
                 Placeholder::make('disclaimer')
                     ->label('Megjegyzés')
+                    ->hidden(fn(EditRoundSettings $livewire) => $livewire->record->status !== EventStatus::UPCOMING)
                     ->content('Minden kieséses forduló csak egyetlen továbbjutó (győztes) csapatot eredményez, így csak az utolsó forsuló lehet kieséses.')
             ])
-            ->statePath('data');
+            ->statePath('data')
+            ->disabled(fn(EditRoundSettings $livewire) => $livewire->record->status !== EventStatus::UPCOMING);
     }
 
     public function save()
@@ -131,7 +139,7 @@ class EditRoundSettings extends Page
 
     public function getSaveFormAction()
     {
-        return Action::make('Mentés')->action('save');
+        return Action::make('Mentés')->action('save')->disabled(fn(EditRoundSettings $livewire) => $livewire->record->status !== EventStatus::UPCOMING);
     }
 
     protected function authorizeAccess(): void

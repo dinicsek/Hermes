@@ -70,7 +70,7 @@ class AdminPanelProvider extends PanelProvider
                     ->variant(Variants::BEAM)
                     ->size(60)
                     ->square()
-                    ->colors(['0A0310', '49007E', 'FF005B', 'FF7D10', 'FFB238'])
+                    ->colors(['F6EDDC', 'E3E5D7', 'BDD6D2', 'A5C8CA', '586875'])
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->middleware([
