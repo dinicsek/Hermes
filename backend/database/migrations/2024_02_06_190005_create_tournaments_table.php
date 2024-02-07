@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->dateTime('registration_ends_at');
 
             $table->dateTime('starts_at');
-            $table->boolean('ended');
+            $table->dateTime('ended_at')->nullable();
 
             $table->integer('max_team_size');
 

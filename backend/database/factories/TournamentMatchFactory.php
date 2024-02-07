@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Enums\TournamentMatchStatus;
 use App\Models\TournamentMatch;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -13,15 +12,16 @@ class TournamentMatchFactory extends Factory
 
     public function definition(): array
     {
+        $didStart = random_int(0, 1);
+
         return [
-            'status' => $this->faker->randomElement(array_map(fn($case) => $case->value, TournamentMatchStatus::cases())),
             'round' => $this->faker->numberBetween(1, 8),
+            'started_at' => $didStart ? $this->faker->dateTimeBetween('-2 week', '-1 week') : null,
+            'ended_at' => $didStart && random_int(0, 1) ? $this->faker->dateTimeBetween('-1 week') : null,
             'is_final' => false,
             'winner' => null,
             'sort' => null,
             'stakeless' => false,
-            'group' => null,
-            'is_advancing' => null,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
@@ -32,6 +32,15 @@ class TournamentMatchFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'is_final' => true,
+            ];
+        });
+    }
+
+    public function stakeless(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'stakeless' => true,
             ];
         });
     }

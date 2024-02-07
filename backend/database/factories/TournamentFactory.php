@@ -23,7 +23,7 @@ class TournamentFactory extends Factory
             'registration_starts_at' => $registrationStartsAt,
             'registration_ends_at' => $registrationEndsAt,
             'starts_at' => $startsAt,
-            'ended' => Carbon::make($startsAt)->isBefore(now()) && $this->faker->boolean(),
+            'ended_at' => Carbon::make($startsAt)->isBefore(now()) ? now() : null,
             'max_team_size' => $this->faker->numberBetween(3, 15),
             'end_when_matches_concluded' => $this->faker->boolean(),
             'created_at' => Carbon::now(),

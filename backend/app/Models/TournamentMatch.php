@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Enums\TournamentMatchStatus;
 use App\Models\Enums\TournamentMatchWinner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,14 +18,14 @@ class TournamentMatch extends Model
         'away_team_id',
         'home_team_score',
         'away_team_score',
-        'status',
+        'started_at',
+        'ended_at',
         'round',
         'is_final',
         'winner',
         'sort',
         'stakeless',
-        'group',
-        'is_advancing',
+        'group_id',
         'tournament_id',
     ];
 
@@ -35,7 +34,8 @@ class TournamentMatch extends Model
     ];
 
     protected $casts = [
-        'status' => TournamentMatchStatus::class,
+        'started_at' => 'datetime',
+        'ended_at' => 'datetime',
         'winner' => TournamentMatchWinner::class,
     ];
 
@@ -54,4 +54,8 @@ class TournamentMatch extends Model
         return $this->belongsTo(Tournament::class);
     }
 
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Group;
 use App\Models\Team;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,7 +18,8 @@ return new class extends Migration {
             $table->integer('home_team_score')->nullable();
             $table->integer('away_team_score')->nullable();
 
-            $table->enum('status', ['upcoming', 'ongoing', 'concluded'])->default('upcoming');
+            $table->dateTime('started_at')->nullable();
+            $table->dateTime('ended_at')->nullable();
 
             $table->integer('round')->default(1);
             $table->boolean('is_final')->default(false);
@@ -28,8 +30,7 @@ return new class extends Migration {
 
             $table->boolean('stakeless')->default(false);
 
-            $table->integer('group')->nullable();
-            $table->boolean('is_advancing')->nullable();
+            $table->foreignIdFor(Group::class)->nullable()->constrained()->nullOnDelete();
 
             $table->foreignId('tournament_id')->constrained()->cascadeOnDelete();
 

@@ -34,12 +34,12 @@ class DatabaseSeeder extends Seeder
 
         $startedTournament = Tournament::factory(3)->started()->create([
             'user_id' => $manager->id,
-            'ended' => false,
+            'ended_at' => null,
         ]);
 
         $endedTournament = Tournament::factory(2)->started()->create([
             'user_id' => $manager->id,
-            'ended' => true,
+            'ended_at' => now()
         ]);
 
         $seedWithMatches = $this->command->confirm('Do you want to seed the tournaments with matches? (This willpotentially result in tens of thousands of matches)', false);
@@ -99,7 +99,8 @@ class DatabaseSeeder extends Seeder
                         return TournamentMatch::factory()->make([
                             'home_team_id' => $teams[0],
                             'away_team_id' => $teams[1],
-                            'status' => 'concluded',
+                            'started_at' => now()->subDays(random_int(4, 7)),
+                            'ended_at' => now()->subDays(random_int(0, 4)),
                         ]);
                     })->toArray()
                 );

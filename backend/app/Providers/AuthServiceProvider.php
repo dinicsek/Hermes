@@ -4,10 +4,12 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Enums\UserRole;
+use App\Models\Group;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
 use App\Models\User;
+use App\Policies\GroupPolicy;
 use App\Policies\TeamPolicy;
 use App\Policies\TournamentMatchPolicy;
 use App\Policies\TournamentPolicy;
@@ -26,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         Team::class => TeamPolicy::class,
         Tournament::class => TournamentPolicy::class,
         TournamentMatch::class => TournamentMatchPolicy::class,
+        Group::class => GroupPolicy::class,
     ];
 
     /**
