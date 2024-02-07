@@ -8,7 +8,6 @@ use App\Models\Enums\EventStatus;
 use App\Models\Enums\RoundMode;
 use Closure;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -116,7 +115,7 @@ class EditRoundSettings extends Page
                                 }
 
                                 if (!$eliminationRounds->isEmpty()) {
-                                    $fail('Csak az utolsó forduló lehet kieséses.');
+                                    $fail('Minden kieséses forduló csak egyetlen továbbjutó (győztes) csapatot eredményez, így csak az utolsó forsuló lehet kieséses.');
                                 }
                             };
                         }
@@ -124,10 +123,6 @@ class EditRoundSettings extends Page
                     ->validationMessages([
                         'min' => 'Legalább egy fordulót meg kell adni.',
                     ]),
-                Placeholder::make('disclaimer')
-                    ->label('Megjegyzés')
-                    ->hidden(fn(EditRoundSettings $livewire) => $livewire->record->status !== EventStatus::UPCOMING)
-                    ->content('Minden kieséses forduló csak egyetlen továbbjutó (győztes) csapatot eredményez, így csak az utolsó forsuló lehet kieséses.')
             ])
             ->statePath('data')
             ->disabled(fn(EditRoundSettings $livewire) => $livewire->record->status !== EventStatus::UPCOMING);

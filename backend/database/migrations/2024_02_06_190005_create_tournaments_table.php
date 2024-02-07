@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->dateTime('ended_at')->nullable();
 
             $table->integer('max_team_size');
-            $table->json('round_settings')->default('[]');
+            $table->json('round_settings');
 
             $table->boolean('end_when_matches_concluded');
 
