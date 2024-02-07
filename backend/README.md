@@ -1,66 +1,28 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Backend
+Ez a program logikája, illetve itt található az admin felület kódja is.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Telepítés
+A legegyszerűbb Dockerben elindítani a konténereket, így most ezt részletezzük.
+Előfeltétel, hogy a Docker (és a docker-compose) és a Node (meg az npm) telepítve legyen a számítógépen.
 
-## About Laravel
+Lépések:
+1. Klónozzuk a projektet (ha még nem tettük volna meg) és lépjünk be (ebbe) a *backend* mappába!
+2. Töltsük le a függőségeket egy Docker konténer elindításával: `docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php83-composer:latest \
+    composer install --ignore-platform-reqs`!
+3. Készítsünk egy másolatot az *.env.example* fájlról és nevezzük el *.env*-ként! Módosítsuk igényeink szerint a paramétereket.
+4. Ezután mehet a `./vendor/bin/sail up`. (Ha a háttérben akarjuk futtani, akkor adjuk hozzá a `-d` opciót.) Ez elindítja a Docker-compose-ban leírt konténereket.
+5. Alakítsuk ki az adatbázis struktúráját! Ehhez futtassuk (ha nem a háttérben indítottuk el az előző parancsot, akkor most nyissunk egy új terminál ablakot/lapot) a `./vendor/bin/sail artisan migrate` parancsot.
+6. Töltsük is fel adatokkal a táblákat a `./vendor/bin/sail artisan db:seed` parancs kiadásával!
+7. Ezután a szerverünk fut is. Ahhoz, hogy elérjük az admin felületet, futtassuk az `npm install` parancsot, mely telepíti a szükséges függőségeket!
+8. Majd ha még nincs telepítve a pnpm, akkor `npx pnpm dev`, ha igen, akkor `pnpm dev` és el is indult a VITE.
+9. Az admin felületet a *localhost/common* URL-t megnyitva érhetjük el.
+   Alapból két felhasználó van:
+   - admin,
+   - menedzser.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   Előbbi email címe *admin@test.test*, míg utóbbié *manager@test.test*. Mindkettőhöz a *password* jelszó tartozik.
+10. Jó fejlesztést!
