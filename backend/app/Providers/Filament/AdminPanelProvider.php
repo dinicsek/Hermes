@@ -49,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->navigationGroups([
-                NavigationGroup::make('Felhasználók'),
+                NavigationGroup::make('Általános'),
                 NavigationGroup::make('Rendszer'),
             ])
             ->navigationItems([
@@ -57,7 +57,12 @@ class AdminPanelProvider extends PanelProvider
                     ->group('Rendszer')
                     ->icon('heroicon-o-server')
                     ->badge('Külső')
-                    ->url(url(config('horizon.path')), shouldOpenInNewTab: true)
+                    ->url(url(config('horizon.path')), shouldOpenInNewTab: true),
+                NavigationItem::make('Pulse Vezérlőpult')
+                    ->group('Rendszer')
+                    ->icon('heroicon-o-chart-bar-square')
+                    ->badge('Külső')
+                    ->url(url(config('pulse.path')), shouldOpenInNewTab: true),
             ])
             ->plugins([
                 BreezyCore::make()->myProfile()->enableTwoFactorAuthentication(),
