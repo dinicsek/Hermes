@@ -75,6 +75,7 @@ class TournamentResource extends Resource
                     TextInput::make('max_team_size')
                         ->label('Maximális csapatméret')
                         ->numeric()
+                        ->default(6)
                         ->minValue(1)
                         ->required(),
                     Toggle::make('end_when_matches_concluded')
@@ -219,6 +220,7 @@ class TournamentResource extends Resource
             'create' => Pages\CreateTournament::route('/create'),
             'view' => Pages\ViewTournament::route('/{record}'),
             'edit' => Pages\EditTournament::route('/{record}/edit'),
+            'edit-round-settings' => Pages\EditRoundSettings::route('/{record}/edit-round-settings'),
         ];
     }
 
@@ -235,6 +237,7 @@ class TournamentResource extends Resource
         return $page->generateNavigationItems([
             Pages\ViewTournament::class,
             Pages\EditTournament::class,
+            Pages\EditRoundSettings::class,
         ]);
     }
 }

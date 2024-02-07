@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Data\RoundSetting;
+use App\Models\Data\RoundConfiguration;
 use App\Models\Traits\HasEventStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -35,7 +35,7 @@ class Tournament extends Model
         'registration_ends_at' => 'datetime',
         'starts_at' => 'datetime',
         'ended_at' => 'datetime',
-        'round_settings' => DataCollection::class . ':' . RoundSetting::class,
+        'round_settings' => DataCollection::class . ':' . RoundConfiguration::class,
     ];
 
     public function user()

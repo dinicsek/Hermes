@@ -1,0 +1,141 @@
+<?php
+
+namespace App\Filament\Manager\Resources\TournamentResource\Pages;
+
+use App\Filament\Manager\Resources\TournamentResource;
+use App\Models\Data\RoundConfiguration;
+use App\Models\Enums\RoundMode;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Notifications\Notification;
+use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
+use Filament\Pages\Concerns\InteractsWithFormActions;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use Filament\Resources\Pages\Page;
+use Illuminate\Support\Str;
+
+class EditRoundSettings extends Page
+{
+    use InteractsWithRecord;
+    use InteractsWithForms;
+    use InteractsWithFormActions;
+    use HasUnsavedDataChangesAlert;
+
+    protected static string $resource = TournamentResource::class;
+
+    protected static string $view = 'filament.manager.resources.tournament-resource.pages.edit-round-settings';
+
+    protected static ?string $navigationLabel = 'Fordulók beállításai';
+    protected static ?string $navigationIcon = 'custom-brackets';
+
+    protected static ?string $title = 'Fordulók beállításai';
+
+    public ?array $data;
+
+    public function mount(int|string $record): void
+    {
+        $this->record = $this->resolveRecord($record);
+        $this->form->fill([
+            'rounds' => $this->record->round_settings->toCollection()->mapWithKeys(function ($item) {
+                return [Str::uuid()->toString() => [
+                    'mode' => $item->mode,
+                    'groupCount' => $item->groupCount ?? 2,
+                    'advancingCount' => $item->advancingCount ?? 2,
+                    'eliminationLevels' => $item->eliminationLevels ?? 1,
+                ]];
+            }),
+        ]);
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Repeater::make('rounds')->schema([
+                    Select::make('mode')
+                        ->label('Mód')
+                        ->options(RoundMode::class)
+                        ->default(RoundMode::GROUP)
+                        ->required()
+                        ->native(false)
+                        ->selectablePlaceholder(false)
+                        ->live(),
+                    TextInput::make('groupCount')
+                        ->label('Csoportok száma')
+                        ->numeric()
+                        ->default(2)
+                        ->minValue(1)
+                        ->visible(fn(Get $get) => $get('mode') === RoundMode::GROUP)
+                        ->required(fn(Get $get) => $get('mode') === RoundMode::GROUP),
+                    TextInput::make('advancingCount')
+                        ->label('Továbbjutók száma')
+                        ->numeric()
+                        ->default(2)
+                        ->minValue(1)
+                        ->visible(fn(Get $get) => $get('mode') === RoundMode::GROUP)
+                        ->required(fn(Get $get) => $get('mode') === RoundMode::GROUP),
+                    TextInput::make('eliminationLevels')
+                        ->label('Kiesési szintek')
+                        ->helperText('Ennyiszer kell egy csapatnak veszítenie ahhoz, hogy kiessen')
+                        ->numeric()
+                        ->default(1)
+                        ->minValue(1)
+                        ->visible(fn(Get $get) => $get('mode') === RoundMode::ELIMINATION)
+                        ->required(fn(Get $get) => $get('mode') === RoundMode::ELIMINATION)
+                ])->label('Fordulók')->addActionLabel('Forduló hozzáadása'),
+                Placeholder::make('disclaimer')
+                    ->label('Megjegyzés')
+                    ->content('Minden kieséses forduló csak egyetlen továbbjutó (győztes) csapatot eredményez, így csak az utolsó forsuló lehet kieséses.')
+            ])
+            ->statePath('data');
+    }
+
+    public function save()
+    {
+        $data = $this->data['rounds'];
+        $processedData = [];
+
+        $index = 1;
+        foreach ($data as $round) {
+            $processedData[] = new RoundConfiguration(
+                round: $index,
+                mode: $round['mode'],
+                groupCount: $round['mode'] === RoundMode::GROUP ? $round['groupCount'] : null,
+                advancingCount: $round['mode'] === RoundMode::GROUP ? $round['advancingCount'] : null,
+                eliminationLevels: $round['mode'] === RoundMode::ELIMINATION ? $round['eliminationLevels'] : null,
+            );
+            $index++;
+        }
+
+        $this->rememberData();
+
+        $this->record->update([
+            'round_settings' => RoundConfiguration::collection($processedData),
+        ]);
+
+        Notification::make()->success()->title('Sikeresen mentve!')->send();
+    }
+
+    public function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction(),
+        ];
+    }
+
+    public function getSaveFormAction()
+    {
+        return Action::make('Mentés')->action('save');
+    }
+
+    protected function authorizeAccess(): void
+    {
+        abort_unless(static::getResource()::canEdit($this->getRecord()), 403);
+    }
+}
