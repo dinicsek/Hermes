@@ -11,7 +11,7 @@ return new class extends Migration {
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('is_generated');
+            $table->boolean('is_generated')->default(true);
             $table->integer('round')->default(1);
 
             $table->foreignIdFor(Tournament::class)->constrained()->cascadeOnDelete();

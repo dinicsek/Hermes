@@ -26,6 +26,8 @@ class TournamentMatch extends Model
         'sort',
         'stakeless',
         'group_id',
+        'elimination_round',
+        'elimination_level',
         'tournament_id',
     ];
 

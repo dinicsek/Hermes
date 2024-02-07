@@ -32,6 +32,9 @@ return new class extends Migration {
 
             $table->foreignIdFor(Group::class)->nullable()->constrained()->nullOnDelete();
 
+            $table->integer('elimination_round')->nullable();
+            $table->integer('elimination_level')->nullable();
+
             $table->foreignId('tournament_id')->constrained()->cascadeOnDelete();
 
             $table->softDeletes();

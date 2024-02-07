@@ -22,6 +22,8 @@ class TournamentMatchFactory extends Factory
             'winner' => null,
             'sort' => null,
             'stakeless' => false,
+            'elimination_round' => null,
+            'elimination_level' => null,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
