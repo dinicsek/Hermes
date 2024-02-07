@@ -6,6 +6,7 @@ use App\Filament\Manager\Resources\TournamentResource;
 use App\Models\Data\RoundConfiguration;
 use App\Models\Enums\EventStatus;
 use App\Models\Enums\RoundMode;
+use Closure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
@@ -94,7 +95,35 @@ class EditRoundSettings extends Page
                         ->minValue(1)
                         ->visible(fn(Get $get) => $get('mode') === RoundMode::ELIMINATION)
                         ->required(fn(Get $get) => $get('mode') === RoundMode::ELIMINATION)
-                ])->label('Fordulók')->addActionLabel('Forduló hozzáadása'),
+                ])
+                    ->label('Fordulók')
+                    ->addActionLabel('Forduló hozzáadása')
+                    ->collapsible()
+                    ->reorderableWithButtons()
+                    ->minItems(1)
+                    ->rules([
+                        function () {
+                            return function (string $attribute, $value, Closure $fail) {
+                                if (count($value) < 1) {
+                                    return;
+                                }
+
+                                $rounds = collect($value);
+                                $eliminationRounds = $rounds->filter(fn($round) => $round['mode'] === RoundMode::ELIMINATION);
+
+                                if ($rounds->last()['mode'] === RoundMode::ELIMINATION) {
+                                    $eliminationRounds->pop();
+                                }
+
+                                if (!$eliminationRounds->isEmpty()) {
+                                    $fail('Csak az utolsó forduló lehet kieséses.');
+                                }
+                            };
+                        }
+                    ])
+                    ->validationMessages([
+                        'min' => 'Legalább egy fordulót meg kell adni.',
+                    ]),
                 Placeholder::make('disclaimer')
                     ->label('Megjegyzés')
                     ->hidden(fn(EditRoundSettings $livewire) => $livewire->record->status !== EventStatus::UPCOMING)
@@ -106,6 +135,8 @@ class EditRoundSettings extends Page
 
     public function save()
     {
+        $this->form->validate();
+
         $data = $this->data['rounds'];
         $processedData = [];
 
@@ -139,7 +170,10 @@ class EditRoundSettings extends Page
 
     public function getSaveFormAction()
     {
-        return Action::make('Mentés')->action('save')->disabled(fn(EditRoundSettings $livewire) => $livewire->record->status !== EventStatus::UPCOMING);
+        return Action::make('Mentés')
+            ->action('save')
+            ->keyBindings(['mod+s'])
+            ->hidden(fn(EditRoundSettings $livewire) => $livewire->record->status !== EventStatus::UPCOMING);
     }
 
     protected function authorizeAccess(): void

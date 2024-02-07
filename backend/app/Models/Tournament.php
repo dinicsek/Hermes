@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Data\RoundConfiguration;
+use App\Models\Enums\RoundMode;
 use App\Models\Traits\HasEventStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -37,6 +38,21 @@ class Tournament extends Model
         'ended_at' => 'datetime',
         'round_settings' => DataCollection::class . ':' . RoundConfiguration::class,
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (Tournament $model) {
+            $model->round_settings = RoundConfiguration::collection([new RoundConfiguration(
+                round: 1,
+                mode: RoundMode::ELIMINATION,
+                groupCount: null,
+                advancingCount: null,
+                eliminationLevels: 1
+            )]);
+        });
+    }
 
     public function user()
     {
