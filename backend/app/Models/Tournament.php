@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Parallax\FilamentComments\Models\Traits\HasFilamentComments;
 use Spatie\LaravelData\DataCollection;
 
 class Tournament extends Model
 {
-    use SoftDeletes, HasFactory, HasEventStatus;
+    use SoftDeletes, HasFactory, HasEventStatus, HasFilamentComments;
 
     protected $fillable = [
         'name',

@@ -5,6 +5,7 @@ namespace App\Filament\Manager\Resources\TournamentResource\Pages;
 use App\Filament\Manager\Resources\TournamentResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Parallax\FilamentComments\Actions\CommentsAction;
 
 class EditTournament extends EditRecord
 {
@@ -18,6 +19,7 @@ class EditTournament extends EditRecord
             Actions\DeleteAction::make(),
             Actions\ForceDeleteAction::make(),
             Actions\RestoreAction::make(),
+            CommentsAction::make(),
         ];
     }
 }

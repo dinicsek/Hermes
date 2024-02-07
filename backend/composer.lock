@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c9b7cd2cf901a3b47cbc589ff2c67af",
+    "content-hash": "f7af2f656d95a5c501cf9ec8dd82eada",
     "packages": [
         {
             "name": "amphp/amp",
@@ -5625,6 +5625,63 @@
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
             "time": "2022-06-14T06:56:20+00:00"
+        },
+        {
+            "name": "parallax/filament-comments",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/parallax/filament-comments.git",
+                "reference": "5983410b8980cbaad644732ca02f96abfcbac0a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/parallax/filament-comments/zipball/5983410b8980cbaad644732ca02f96abfcbac0a0",
+                "reference": "5983410b8980cbaad644732ca02f96abfcbac0a0",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Parallax\\FilamentComments\\FilamentCommentsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Parallax\\FilamentComments\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Parallax",
+                    "email": "luke@parall.ax",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Add comments to your Filament Resources.",
+            "homepage": "https://github.com/parallax/filament-comments",
+            "keywords": [
+                "filament-comments",
+                "laravel",
+                "parallax"
+            ],
+            "support": {
+                "issues": "https://github.com/parallax/filament-comments/issues",
+                "source": "https://github.com/parallax/filament-comments"
+            },
+            "time": "2024-01-31T14:47:24+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
