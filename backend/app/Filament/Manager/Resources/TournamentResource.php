@@ -35,6 +35,8 @@ class TournamentResource extends Resource
 
     protected static ?string $pluralLabel = 'Versenyek';
 
+    protected static ?int $navigationSort = 10;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -94,7 +96,11 @@ class TournamentResource extends Resource
                     Toggle::make('end_when_matches_concluded')
                         ->label('Lezárás meccsek befejezésekor')
                         ->inline(false),
-                ])->columns(),
+                ])->columns()->description(fn(string $operation) => match ($operation) {
+                    'create' => 'A további beállítások a létrehozás után a \'Fordulók beállításai\' menüpontban érhetők el.',
+                    'edit' => 'A további beállítások a \'Fordulók beállításai\' menüpontban érhetők el.',
+                    default => null,
+                }),
             ]);
     }
 
