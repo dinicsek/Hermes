@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pulse\Facades\Pulse;
 use LaraZeus\Boredom\BoringAvatar;
@@ -26,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
             'extra' => $user->email,
             'avatar' => app()->make(BoringAvatar::class)->get(name: $user->avatar_name),
         ]);
+
+        Model::shouldBeStrict();
     }
 }

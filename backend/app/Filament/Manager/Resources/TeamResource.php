@@ -5,7 +5,15 @@ namespace App\Filament\Manager\Resources;
 use App\Filament\Manager\Resources\TeamResource\Pages;
 use App\Filament\Manager\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
+use App\Models\Tournament;
+use Closure;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -28,7 +36,52 @@ class TeamResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->label('Csapatnév')
+                    ->maxLength(255)
+                    ->required(),
+                Select::make('tournament_id')
+                    ->label('Verseny')
+                    ->relationship('tournament', 'name')
+                    ->searchable(['name'])
+                    ->preload()
+                    ->required()
+                    ->native(false)
+                    ->selectablePlaceholder(false)
+                    ->live()
+                    ->afterStateUpdated(function (Set $set, int $state) {
+                        if ($state == null)
+                            return;
+
+                        $tournament = Tournament::find($state, ['min_team_size', 'max_team_size']);
+
+                        $set('min_members', $tournament->min_team_size); // Weird workaround, but it works (it's purposefully named min_members, not min_team_size)
+                        $set('max_members', $tournament->max_team_size);
+                    }),
+                Section::make('Csapattagok')
+                    ->schema([
+                        TagsInput::make('members')
+                            ->label('Csapattagok')
+                            ->helperText(fn(Get $get) => sprintf('Minimum %d, maximum %d csapattag adható ehhez a csapathoz.', $get('min_members'), $get('max_members')))
+                            ->placeholder('Csapattagok hozzáadása')
+                            ->required()
+                            ->rules([fn(Get $get) => function (string $attribute, $value, Closure $fail) use ($get) {
+                                if (count($value) < $get('min_members') || count($value) > $get('max_members'))
+                                    $fail('A csapatagok száma nem felel meg a verseny által meghatározott minimum és maximum értéknek.');
+
+                            }]),
+                        TagsInput::make('emails')
+                            ->label('Értesítendő e-mail címek')
+                            ->helperText(fn(Get $get) => sprintf('Maximum %d e-mail cím adható ehhez a csapathoz.', $get('max_members')))
+                            ->placeholder('E-mail címek hozzáadása')
+                            ->rules([fn(Get $get) => function (string $attribute, $value, Closure $fail) use ($get) {
+                                if (count($value) > $get('max_members'))
+                                    $fail('Az értesítendő e-mail címek száma nem felel meg a verseny által meghatározott maximum értéknek.');
+                            }])
+                            ->nestedRecursiveRules([
+                                'email'
+                            ]),
+                    ])->columns()->visible(fn(Get $get) => $get('tournament_id') !== null),
             ]);
     }
 
