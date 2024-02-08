@@ -25,6 +25,8 @@ class Tournament extends Model
         'registration_ends_at',
         'starts_at',
         'ended_at',
+        'max_teams',
+        'min_team_size',
         'max_team_size',
         'round_settings',
         'end_when_matches_concluded',

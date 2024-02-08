@@ -30,6 +30,7 @@ class TeamFactory extends Factory
             'name' => $this->faker->words(3, true),
             'members' => $members,
             'emails' => $emails,
+            'is_approved' => $this->faker->boolean(75),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

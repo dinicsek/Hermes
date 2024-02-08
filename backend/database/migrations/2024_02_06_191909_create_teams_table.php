@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->json('members');
             $table->json('emails');
 
+            $table->boolean('is_approved')->default(false);
+
             $table->foreignIdFor(Tournament::class)->constrained()->cascadeOnDelete();
 
             $table->softDeletes();

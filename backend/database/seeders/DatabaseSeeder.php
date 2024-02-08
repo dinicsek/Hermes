@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             'ended_at' => now()
         ]);
 
-        $seedWithMatches = $this->command->confirm('Do you want to seed the tournaments with matches? (This willpotentially result in tens of thousands of matches)', false);
+        $seedWithMatches = $this->command->confirm('Do you want to seed the tournaments with matches? (This will potentially result in tens of thousands of matches)');
 
         foreach ($tournaments as $tournament) {
             $seedWithTeams = random_int(0, 1);

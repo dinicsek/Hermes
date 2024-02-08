@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->dateTime('starts_at');
             $table->dateTime('ended_at')->nullable();
 
+            $table->integer('max_teams')->nullable();
+            $table->integer('min_team_size');
             $table->integer('max_team_size');
             $table->json('round_settings');
 

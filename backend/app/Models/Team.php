@@ -18,6 +18,7 @@ class Team extends Model
         'name',
         'members',
         'emails',
+        'is_approved',
         'tournament_id',
     ];
 

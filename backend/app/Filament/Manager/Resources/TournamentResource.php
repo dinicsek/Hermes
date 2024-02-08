@@ -72,12 +72,25 @@ class TournamentResource extends Resource
                         ->native(false),
                 ])->columns(),
                 \Filament\Forms\Components\Section::make('Beállítások')->schema([
+                    TextInput::make('min_team_size')
+                        ->label('Minimális csapatméret')
+                        ->suffix('fő')
+                        ->numeric()
+                        ->default(1)
+                        ->minValue(1)
+                        ->required(),
                     TextInput::make('max_team_size')
                         ->label('Maximális csapatméret')
+                        ->suffix('fő')
                         ->numeric()
                         ->default(6)
                         ->minValue(1)
                         ->required(),
+                    TextInput::make('max_teams')
+                        ->label('Csapatok maximális száma')
+                        ->placeholder('Nincs korlátozva')
+                        ->numeric()
+                        ->minValue(2),
                     Toggle::make('end_when_matches_concluded')
                         ->label('Lezárás meccsek befejezésekor')
                         ->inline(false),
@@ -114,6 +127,12 @@ class TournamentResource extends Resource
                     ->since()
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('max_teams')
+                    ->label('Csapatok maximális száma')
+                    ->placeholder('Nincs korlátozva')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Létrehozva')
                     ->dateTime()
@@ -186,8 +205,15 @@ class TournamentResource extends Resource
                             ->dateTime(),
                     ])->columns()->grow(),
                     Section::make('Beállítások')->schema([
+                        TextEntry::make('min_team_size')
+                            ->label('Minimális csapatméret')
+                            ->suffix(' fő'),
                         TextEntry::make('max_team_size')
-                            ->label('Maximális csapatméret'),
+                            ->label('Maximális csapatméret')
+                            ->suffix(' fő'),
+                        TextEntry::make('max_teams')
+                            ->label('Csapatok maximális száma')
+                            ->placeholder('Nincs korlátozva'),
                         IconEntry::make('end_when_matches_concluded')
                             ->label('Lezárás mérkőzések befejezésekor')
                             ->boolean(),
