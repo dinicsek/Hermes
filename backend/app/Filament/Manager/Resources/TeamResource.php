@@ -5,7 +5,13 @@ namespace App\Filament\Manager\Resources;
 use App\Filament\Manager\Resources\TeamResource\Pages;
 use App\Filament\Manager\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
+use Filament\Forms\Components\Split;
 use Filament\Forms\Form;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split as InfoSplit;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -91,6 +97,38 @@ class TeamResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            InfoSplit::make([
+                Grid::make(1)->schema([
+                    Section::make([
+                        TextEntry::make('name')
+                            ->label('Név'),
+                        TextEntry::make('tournament.name')
+                            ->label('Verseny neve'),
+                        TextEntry::make('members')
+                            ->label('Tagok'),
+                        TextEntry::make('is_approved')
+                            ->label('Elfogadva'),
+                    ])->columns()->grow(),
+                ])->grow(),
+                Section::make([
+                    TextEntry::make('created_at')
+                        ->label('Létrehozva')
+                        ->dateTime(),
+                    TextEntry::make('updated_at')
+                        ->label('Módosítva')
+                        ->dateTime(),
+                    TextEntry::make('deleted_at')
+                        ->label('Törölve')
+                        ->placeholder("Nincs törölve.")
+                        ->dateTime(),
+                ])->grow(false),
+            ])
+        ])->columns(false);
     }
 
     public static function getRelations(): array
