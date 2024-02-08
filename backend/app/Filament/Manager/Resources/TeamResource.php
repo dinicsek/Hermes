@@ -129,11 +129,7 @@ class TeamResource extends Resource
                         ->dateTime(),
                     TextEntry::make('updated_at')
                         ->label('Módosítva')
-                        ->dateTime(),
-                    TextEntry::make('deleted_at')
-                        ->label('Törölve')
-                        ->placeholder("Nincs törölve.")
-                        ->dateTime(),
+                        ->dateTime()
                 ])->grow(false),
             ])
         ])->columns(false);
