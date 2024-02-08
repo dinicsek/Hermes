@@ -14,6 +14,6 @@ class RegistrationResponse implements RegistrationResponseContract
 
     public function toResponse($request): \Illuminate\Foundation\Application|Redirector|RedirectResponse|Application|Response
     {
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }

@@ -30,7 +30,7 @@ class ManagerPanelProvider extends PanelProvider
             ->id('manager')
             ->path('manager')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Cyan,
             ])
             ->defaultAvatarProvider(
                 BoringAvatarsProvider::class
