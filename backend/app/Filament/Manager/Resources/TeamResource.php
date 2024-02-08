@@ -5,13 +5,13 @@ namespace App\Filament\Manager\Resources;
 use App\Filament\Manager\Resources\TeamResource\Pages;
 use App\Filament\Manager\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
-use Filament\Forms\Components\Split;
 use Filament\Forms\Form;
-use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Grid;
-use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split as InfoSplit;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -108,12 +108,20 @@ class TeamResource extends Resource
                         TextEntry::make('name')
                             ->label('Név'),
                         TextEntry::make('tournament.name')
-                            ->label('Verseny neve'),
-                        TextEntry::make('members')
-                            ->label('Tagok'),
-                        TextEntry::make('is_approved')
-                            ->label('Elfogadva'),
+                            ->label('Verseny'),
+
+                        IconEntry::make('is_approved')
+                            ->label('Elfogadva')
+                            ->boolean(),
                     ])->columns()->grow(),
+                    Section::make('Csapattagok')
+                        ->schema([
+                            TextEntry::make('members')
+                                ->label('Csapattagok'),
+                            TextEntry::make('emails')
+                                ->label('E-mail címek')
+                                ->placeholder("Nincsenek e-mail címek megadva"),
+                        ])->grow(),
                 ])->grow(),
                 Section::make([
                     TextEntry::make('created_at')
