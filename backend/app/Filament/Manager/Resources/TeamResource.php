@@ -7,16 +7,17 @@ use App\Filament\Manager\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
 use App\Models\Tournament;
 use Closure;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\Split as InfoSplit;
+use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Pages\Page;
@@ -67,7 +68,7 @@ class TeamResource extends Resource
                     ->label('Jóváhagyva')
                     ->helperText('Jóváhagyás után a megadott e-mailekre ki lesz küldve az összekapcsolási kérelem.')
                     ->default(true),
-                Section::make('Csapattagok')
+                \Filament\Forms\Components\Section::make('Csapattagok')
                     ->schema([
                         TagsInput::make('members')
                             ->label('Csapattagok')
@@ -158,7 +159,7 @@ class TeamResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            InfoSplit::make([
+            Split::make([
                 Grid::make(1)->schema([
                     Section::make([
                         TextEntry::make('name')
