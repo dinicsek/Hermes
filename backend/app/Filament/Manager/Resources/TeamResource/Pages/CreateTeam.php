@@ -2,6 +2,7 @@
 
 namespace App\Filament\Manager\Resources\TeamResource\Pages;
 
+use App\Events\TeamApprovedEvent;
 use App\Filament\Manager\Resources\TeamResource;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -15,5 +16,12 @@ class CreateTeam extends CreateRecord
         unset($data['max_members']);
 
         return $data;
+    }
+
+    protected function afterCreate(): void
+    {
+        if ($this->record->is_approved) {
+            TeamApprovedEvent::dispatch($this->record);
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Manager\Resources\TeamResource\Pages;
 
+use App\Events\TeamApprovedEvent;
 use App\Filament\Manager\Resources\TeamResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
@@ -37,5 +38,12 @@ class EditTeam extends EditRecord
         unset($data['max_members']);
 
         return $data;
+    }
+
+    protected function afterSave(): void
+    {
+        if ($this->record->wasChanged(['is_approved']) && $this->record->is_approved) {
+            TeamApprovedEvent::dispatch($this->record);
+        }
     }
 }

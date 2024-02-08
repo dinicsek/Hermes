@@ -11,6 +11,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -58,6 +59,10 @@ class TeamResource extends Resource
                         $set('min_members', $tournament->min_team_size); // Weird workaround, but it works (it's purposefully named min_members, not min_team_size)
                         $set('max_members', $tournament->max_team_size);
                     }),
+                Toggle::make('is_approved')
+                    ->label('Jóváhagyva')
+                    ->helperText('Jóváhagyás után a megadott e-mailekre ki lesz küldve az összekapcsolási kérelem.')
+                    ->default(true),
                 Section::make('Csapattagok')
                     ->schema([
                         TagsInput::make('members')
