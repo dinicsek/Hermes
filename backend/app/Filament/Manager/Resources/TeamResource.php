@@ -13,8 +13,12 @@ use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split as InfoSplit;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -149,6 +153,42 @@ class TeamResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            InfoSplit::make([
+                Grid::make(1)->schema([
+                    Section::make([
+                        TextEntry::make('name')
+                            ->label('Név'),
+                        TextEntry::make('tournament.name')
+                            ->label('Verseny'),
+
+                        IconEntry::make('is_approved')
+                            ->label('Elfogadva')
+                            ->boolean(),
+                    ])->columns()->grow(),
+                    Section::make('Csapattagok')
+                        ->schema([
+                            TextEntry::make('members')
+                                ->label('Csapattagok'),
+                            TextEntry::make('emails')
+                                ->label('E-mail címek')
+                                ->placeholder("Nincsenek e-mail címek megadva"),
+                        ])->grow(),
+                ])->grow(),
+                Section::make([
+                    TextEntry::make('created_at')
+                        ->label('Létrehozva')
+                        ->dateTime(),
+                    TextEntry::make('updated_at')
+                        ->label('Módosítva')
+                        ->dateTime()
+                ])->grow(false),
+            ])
+        ])->columns(false);
     }
 
     public static function getRelations(): array
