@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TeamApprovedEvent;
 use App\Models\Tournament;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,10 @@ class TeamController extends Controller
             'emails' => $request->input('email') ?? [],
             'is_approved' => $tournament->approve_by_default,
         ]);
+
+        if ($team->is_approved) {
+            TeamApprovedEvent::dispatch($team);
+        }
 
         return response()->json([
             'data' => [
