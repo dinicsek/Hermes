@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -52,6 +53,9 @@ class ManagerPanelProvider extends PanelProvider
                     ->size(60)
                     ->square()
                     ->colors(['F6EDDC', 'E3E5D7', 'BDD6D2', 'A5C8CA', '586875'])
+            ])
+            ->navigationGroups([
+                NavigationGroup::make('Általános'),
             ])
             ->viteTheme('resources/css/filament/manager/theme.css')
             ->middleware([

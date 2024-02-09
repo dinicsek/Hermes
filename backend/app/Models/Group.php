@@ -15,6 +15,7 @@ class Group extends Model
         'name',
         'is_generated',
         'round',
+        'tournament_id'
     ];
 
     protected $with = [

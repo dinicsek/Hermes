@@ -47,6 +47,14 @@ class DatabaseSeeder extends Seeder
             'tournament_id' => $tournaments->random()->id,
         ]);
 
+        Group::factory(10)->create([
+            'tournament_id' => $startedTournament->random()->id,
+        ]);
+
+        Group::factory(10)->create([
+            'tournament_id' => $endedTournament->random()->id,
+        ]);
+
         $seedWithMatches = $this->command->confirm('Do you want to seed the tournaments with matches? (This will potentially result in tens of thousands of matches)');
 
         foreach ($tournaments as $tournament) {

@@ -35,6 +35,7 @@ class TournamentResource extends Resource
 
     protected static ?string $pluralLabel = 'Versenyek';
 
+    protected static ?string $navigationGroup = 'Általános';
     protected static ?int $navigationSort = 10;
 
     public static function form(Form $form): Form

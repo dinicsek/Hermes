@@ -13,7 +13,7 @@ class GroupFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->words(3, true),
             'is_generated' => $this->faker->boolean(),
             'round' => $this->faker->numberBetween(1, 8),
             'created_at' => Carbon::now(),

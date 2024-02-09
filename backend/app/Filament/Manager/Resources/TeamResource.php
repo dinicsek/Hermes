@@ -36,6 +36,7 @@ class TeamResource extends Resource
     protected static ?string $modelLabel = 'Csapat';
     protected static ?string $pluralLabel = 'Csapatok';
 
+    protected static ?string $navigationGroup = 'Általános';
     protected static ?int $navigationSort = 20;
 
     public static function form(Form $form): Form
@@ -48,7 +49,7 @@ class TeamResource extends Resource
                     ->required(),
                 Select::make('tournament_id')
                     ->label('Verseny')
-                    ->relationship('tournament', 'name')
+                    ->relationship('tournament', 'name', modifyQueryUsing: fn($query) => $query->where('user_id', auth()->id()))
                     ->searchable(['name'])
                     ->preload()
                     ->required()
