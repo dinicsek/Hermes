@@ -59,15 +59,22 @@ class TeamResource extends Resource
                         if ($state == null)
                             return;
 
-                        $tournament = Tournament::find($state, ['min_team_size', 'max_team_size']);
+                        $tournament = Tournament::find($state, ['id', 'min_team_size', 'max_team_size', 'max_approved_teams']);
+                        $approvedTeams = $tournament->teams()->whereIsApproved(true)->count();
 
-                        $set('min_members', $tournament->min_team_size); // Weird workaround, but it works (it's purposefully named min_members, not min_team_size)
+                        $set('min_members', $tournament->min_team_size); // Weird workaround, but it works
                         $set('max_members', $tournament->max_team_size);
+                        $set('max_approved_teams', $tournament->max_approved_teams);
+                        $set('approved_teams', $approvedTeams);
+
+                        if ($tournament->max_approved_teams !== null && $tournament->max_approved_teams <= $approvedTeams)
+                            $set('is_approved', false);
                     }),
                 Toggle::make('is_approved')
                     ->label('Jóváhagyva')
-                    ->helperText('Jóváhagyás után a megadott e-mailekre ki lesz küldve az összekapcsolási kérelem.')
-                    ->default(true),
+                    ->helperText(fn(Get $get) => $get('approved_teams') === null || ($get('max_approved_teams') === null && $get('max_approved_teams') <= $get('approved_teams')) ? 'Jóváhagyás után a megadott e-mailekre ki lesz küldve az összekapcsolási kérelem.' : 'Ez a verseny már elérte a maximális jóváhagyott csapatszámot (' . $get('max_approved_teams') . ' csapat).')
+                    ->default(true)
+                    ->disabled(fn(Get $get) => $get('max_teams') !== null && $get('max_approved_teams') <= $get('approved_teams')),
                 \Filament\Forms\Components\Section::make('Csapattagok')
                     ->schema([
                         TagsInput::make('members')

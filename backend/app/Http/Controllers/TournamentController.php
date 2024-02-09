@@ -18,10 +18,10 @@ class TournamentController extends Controller
                 'starts_at' => $tournament->starts_at,
                 'ended_at' => $tournament->ended_at,
                 'status' => $tournament->status,
-                'max_teams' => $tournament->max_teams,
+                'max_approved_teams' => $tournament->max_approved_teams,
                 'min_team_size' => $tournament->min_team_size,
                 'max_team_size' => $tournament->max_team_size,
-                'can_create_team' => $tournament->max_teams === null || $tournament->max_teams > $tournament->teams()->count(),
+                'is_full' => $tournament->max_approved_teams !== null && $tournament->max_approved_teams <= $tournament->teams()->whereIsApproved(true)->count(),
             ]
         ]);
     }

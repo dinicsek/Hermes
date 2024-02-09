@@ -14,6 +14,8 @@ class CreateTeam extends CreateRecord
     {
         unset($data['min_members']);
         unset($data['max_members']);
+        unset($data['max_approved_teams']);
+        unset($data['approved_teams']);
 
         return $data;
     }

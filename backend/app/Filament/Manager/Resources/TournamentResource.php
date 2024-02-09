@@ -88,11 +88,14 @@ class TournamentResource extends Resource
                         ->default(6)
                         ->minValue(1)
                         ->required(),
-                    TextInput::make('max_teams')
-                        ->label('Csapatok maximális száma')
+                    TextInput::make('max_approved_teams')
+                        ->label('Jóváhagyott csapatok maximális száma')
                         ->placeholder('Nincs korlátozva')
                         ->numeric()
                         ->minValue(2),
+                    Toggle::make('approve_by_default')
+                        ->label('Csapatok jóváhagyása automatikusan')
+                        ->inline(false),
                     Toggle::make('end_when_matches_concluded')
                         ->label('Lezárás meccsek befejezésekor')
                         ->inline(false),
@@ -133,12 +136,17 @@ class TournamentResource extends Resource
                     ->since()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('max_teams')
-                    ->label('Csapatok maximális száma')
+                Tables\Columns\TextColumn::make('max_approved_teams')
+                    ->label('Jóváhagyott csapatok maximális száma')
                     ->placeholder('Nincs korlátozva')
                     ->sortable()
                     ->searchable()
                     ->toggleable(),
+                Tables\Columns\IconColumn::make('approve_by_default')
+                    ->label('Csapatok jóváhagyása automatikusan')
+                    ->boolean()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Létrehozva')
                     ->dateTime()
@@ -217,9 +225,12 @@ class TournamentResource extends Resource
                         TextEntry::make('max_team_size')
                             ->label('Maximális csapatméret')
                             ->suffix(' fő'),
-                        TextEntry::make('max_teams')
-                            ->label('Csapatok maximális száma')
+                        TextEntry::make('max_approved_teams')
+                            ->label('Jóváhagyott csapatok maximális száma')
                             ->placeholder('Nincs korlátozva'),
+                        IconEntry::make('approve_by_default')
+                            ->label('Csapatok jóváhagyása automatikusan')
+                            ->boolean(),
                         IconEntry::make('end_when_matches_concluded')
                             ->label('Lezárás mérkőzések befejezésekor')
                             ->boolean(),

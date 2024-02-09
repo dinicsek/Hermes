@@ -17,7 +17,7 @@ class TeamController extends Controller
             'email.*' => 'required|email|distinct',
         ]);
 
-        if ($tournament->max_teams !== null && $tournament->max_teams <= $tournament->teams()->count()) {
+        if ($tournament->max_approved_teams !== null && $tournament->max_approved_teams <= $tournament->teams()->whereIsApproved(true)->count()) {
             return response()->json([
                 'message' => 'Ez a verseny sajnos már megtelt.'
             ], 400);
@@ -27,7 +27,7 @@ class TeamController extends Controller
             'name' => $request->input('name'),
             'members' => $request->input('members'),
             'emails' => $request->input('email') ?? [],
-            'is_approved' => false,
+            'is_approved' => $tournament->approve_by_default,
         ]);
 
         return response()->json([
