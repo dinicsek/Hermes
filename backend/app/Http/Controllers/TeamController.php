@@ -17,6 +17,12 @@ class TeamController extends Controller
             'email.*' => 'required|email|distinct',
         ]);
 
+        if ($tournament->max_teams !== null && $tournament->max_teams <= $tournament->teams()->count()) {
+            return response()->json([
+                'message' => 'Ez a verseny sajnos már megtelt.'
+            ], 400);
+        }
+
         $team = $tournament->teams()->create([
             'name' => $request->input('name'),
             'members' => $request->input('members'),
