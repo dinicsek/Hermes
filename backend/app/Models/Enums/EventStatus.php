@@ -5,11 +5,11 @@ namespace App\Models\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum EventStatus implements HasLabel, HasColor
+enum EventStatus: string implements HasLabel, HasColor
 {
-    case UPCOMING;
-    case ONGOING;
-    case CONCLUDED;
+    case UPCOMING = 'upcoming';
+    case ONGOING = 'ongoing';
+    case CONCLUDED = 'concluded';
 
     public function getColor(): string|array|null
     {

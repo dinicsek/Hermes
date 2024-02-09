@@ -82,4 +82,9 @@ class Tournament extends Model
             get: fn(mixed $value, array $attributes) => $this->calculateEventStatus(Carbon::make($attributes['starts_at']), Carbon::make($attributes['ended_at']))
         );
     }
+
+    public function getRouteKeyName(): string
+    {
+        return 'code';
+    }
 }
