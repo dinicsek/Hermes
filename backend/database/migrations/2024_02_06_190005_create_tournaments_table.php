@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->integer('max_approved_teams')->nullable();
             $table->integer('min_team_size');
             $table->integer('max_team_size');
-            $table->json('round_settings');
+            $table->jsonb('round_settings');
 
             $table->boolean('approve_by_default');
             $table->boolean('end_when_matches_concluded');

@@ -13,8 +13,8 @@ return new class extends Migration {
 
             $table->string('name');
 
-            $table->json('members');
-            $table->json('emails');
+            $table->jsonb('members');
+            $table->jsonb('emails');
 
             $table->boolean('is_approved')->default(false);
 

@@ -49,6 +49,7 @@ class TeamResource extends Resource
                     ->required(),
                 Select::make('tournament_id')
                     ->label('Verseny')
+                    ->helperText(fn(string $operation) => $operation === 'edit' ? 'Figyelem: új verseny megadásakor az összes csatolt csoport megszűnik csatolva lenni!' : null)
                     ->relationship('tournament', 'name', modifyQueryUsing: fn($query) => $query->where('user_id', auth()->id()))
                     ->searchable(['name'])
                     ->preload()
@@ -203,7 +204,7 @@ class TeamResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\GroupsRelationManager::make()
         ];
     }
 

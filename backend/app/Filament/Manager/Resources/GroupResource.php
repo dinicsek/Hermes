@@ -35,6 +35,7 @@ class GroupResource extends Resource
                     ->required(),
                 Select::make('tournament_id')
                     ->label('Verseny')
+                    ->helperText(fn(string $operation) => $operation === 'edit' ? 'Figyelem: új verseny megadásakor az összes csatolt csapat megszűnik csatolva lenni!' : null)
                     ->relationship('tournament', 'name', modifyQueryUsing: function ($query) {
                         return $query->where('user_id', auth()->id());
                     })
@@ -106,6 +107,13 @@ class GroupResource extends Resource
         return [
             'index' => Pages\ListGroups::route('/'),
             'edit' => Pages\EditGroup::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\TeamsRelationManager::class
         ];
     }
 

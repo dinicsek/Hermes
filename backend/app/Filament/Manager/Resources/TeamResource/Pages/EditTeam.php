@@ -47,5 +47,10 @@ class EditTeam extends EditRecord
         if ($this->record->wasChanged(['is_approved']) && $this->record->is_approved) {
             TeamApprovedEvent::dispatch($this->record);
         }
+
+        if ($this->record->wasChanged(['tournament_id'])) {
+            $this->record->groups()->detach();
+            $this->dispatch('refresh_groups');
+        }
     }
 }
