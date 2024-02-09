@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Group extends Model
 {
@@ -21,9 +21,9 @@ class Group extends Model
         'tournament'
     ];
 
-    public function matches(): HasMany
+    public function teams(): BelongsToMany
     {
-        return $this->hasMany(TournamentMatch::class);
+        return $this->belongsToMany(Team::class);
     }
 
     public function tournament(): BelongsTo

@@ -58,12 +58,7 @@ class TournamentMatch extends Model
     {
         return $this->belongsTo(Tournament::class);
     }
-
-    public function group(): BelongsTo
-    {
-        return $this->belongsTo(Group::class);
-    }
-
+    
     public function status(): Attribute
     {
         return Attribute::make(

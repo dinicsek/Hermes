@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Group;
 use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
@@ -40,6 +41,10 @@ class DatabaseSeeder extends Seeder
         $endedTournament = Tournament::factory(2)->started()->create([
             'user_id' => $manager->id,
             'ended_at' => now()
+        ]);
+
+        Group::factory(10)->create([
+            'tournament_id' => $tournaments->random()->id,
         ]);
 
         $seedWithMatches = $this->command->confirm('Do you want to seed the tournaments with matches? (This will potentially result in tens of thousands of matches)');

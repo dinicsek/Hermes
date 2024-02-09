@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Group;
 use App\Models\Team;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -29,9 +28,7 @@ return new class extends Migration {
             $table->integer('sort')->nullable();
 
             $table->boolean('stakeless')->default(false);
-
-            $table->foreignIdFor(Group::class)->nullable()->constrained()->nullOnDelete();
-
+            
             $table->integer('elimination_round')->nullable();
             $table->integer('elimination_level')->nullable();
 
