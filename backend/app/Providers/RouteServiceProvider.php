@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Filament\Common\Responses\LoginResponse;
+use App\Filament\Common\Responses\LogoutResponse;
 use App\Filament\Common\Responses\RegistrationResponse;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse as LoginResponseContract;
+use Filament\Http\Responses\Auth\Contracts\LogoutResponse as LogoutResponseContract;
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse as RegistrationResponseContract;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -43,5 +45,6 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->app->bind(LoginResponseContract::class, LoginResponse::class);
         $this->app->bind(RegistrationResponseContract::class, RegistrationResponse::class);
+        $this->app->bind(LogoutResponseContract::class, LogoutResponse::class);
     }
 }
