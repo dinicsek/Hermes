@@ -164,6 +164,14 @@ class TeamResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('tournament_id')
+                    ->label('Verseny')
+                    ->relationship('tournament', 'name', modifyQueryUsing: fn($query) => $query->where('user_id', auth()->id()))
+                    ->preload()
+                    ->searchable()
+                    ->native(false),
+                Tables\Filters\TernaryFilter::make('is_approved')
+                    ->label('Jóváhagyva')
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->label('Kezelés')->icon('heroicon-m-wrench-screwdriver')->color('primary'),

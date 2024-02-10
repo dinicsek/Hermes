@@ -89,7 +89,14 @@ class GroupResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('tournament_id')
+                    ->label('Verseny')
+                    ->relationship('tournament', 'name', modifyQueryUsing: fn($query) => $query->where('user_id', auth()->id()))
+                    ->preload()
+                    ->searchable()
+                    ->native(false),
+                Tables\Filters\TernaryFilter::make('is_generated')
+                    ->label('Automatikusan generált')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

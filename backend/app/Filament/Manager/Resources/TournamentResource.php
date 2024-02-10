@@ -19,6 +19,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -173,7 +174,21 @@ class TournamentResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\QueryBuilder::make()
+                    ->constraints([
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('registration_starts_at')
+                            ->label('Regisztráció kezdete'),
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('registration_ends_at')
+                            ->label('Regisztráció vége'),
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('starts_at')
+                            ->label('Kezdés'),
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('ended_at')
+                            ->label('Lezárult'),
+                        Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('max_approved_teams')
+                            ->label('Jóváhagyott csapatok maximális száma'),
+                    ])
             ])
+            ->filtersFormWidth(MaxWidth::Large)
             ->actions([
                 Tables\Actions\ViewAction::make()->label('Kezelés')->icon('heroicon-m-wrench-screwdriver')->color('primary'),
             ])

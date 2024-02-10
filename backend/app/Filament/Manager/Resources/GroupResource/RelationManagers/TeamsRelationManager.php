@@ -105,7 +105,7 @@ class TeamsRelationManager extends RelationManager
                 }),
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect()
-                    ->recordSelectOptionsQuery(fn(Builder $query) => $query->where('tournament_id', $this->ownerRecord->tournament_id)->where('is_approved', true)->select('teams.id', 'teams.name', 'teams.tournament_id')),
+                    ->recordSelectOptionsQuery(fn(Builder $query) => $query->where('tournament_id', $this->ownerRecord->tournament_id)->select('teams.id', 'teams.name', 'teams.tournament_id')),
             ])
             ->actions([
                 Tables\Actions\DetachAction::make(),
