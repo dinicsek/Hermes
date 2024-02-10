@@ -173,6 +173,16 @@ class TeamResource extends Resource
                 Tables\Filters\TernaryFilter::make('is_approved')
                     ->label('Jóváhagyva')
             ])
+            ->groups([
+                Tables\Grouping\Group::make('tournament.name')
+                    ->label('Verseny')
+                    ->collapsible(),
+                Tables\Grouping\Group::make('is_approved')
+                    ->label('Jóváhagyva')
+                    ->getTitleFromRecordUsing(fn(Team $record) => $record->is_approved ? 'Jóváhagyva' : 'Nincs jóváhagyva')
+                    ->collapsible(),
+            ])
+            ->groupingSettingsInDropdownOnDesktop()
             ->actions([
                 Tables\Actions\ViewAction::make()->label('Kezelés')->icon('heroicon-m-wrench-screwdriver')->color('primary'),
             ])

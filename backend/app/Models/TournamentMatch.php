@@ -10,12 +10,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\EloquentSortable\SortableTrait;
 
 // This can't just be named Match because it's a reserved word in PHP
 class TournamentMatch extends Model
 {
-    use SoftDeletes, HasFactory, HasEventStatus;
+    use SoftDeletes, HasFactory, HasEventStatus, SortableTrait;
 
+    public $sortable = [
+        'order_column_name' => 'sort',
+        'sort_when_creating' => true,
+    ];
     protected $fillable = [
         'home_team_id',
         'away_team_id',
@@ -33,7 +38,6 @@ class TournamentMatch extends Model
         'elimination_level',
         'tournament_id',
     ];
-
     protected $with = [
         'tournament'
     ];
@@ -58,7 +62,7 @@ class TournamentMatch extends Model
     {
         return $this->belongsTo(Tournament::class);
     }
-    
+
     public function status(): Attribute
     {
         return Attribute::make(
