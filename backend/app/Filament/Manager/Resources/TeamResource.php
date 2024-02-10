@@ -76,7 +76,19 @@ class TeamResource extends Resource
                     ->label('Jóváhagyva')
                     ->helperText(fn(Get $get) => $get('approved_teams') === null || ($get('max_approved_teams') === null && $get('max_approved_teams') <= $get('approved_teams')) ? 'Jóváhagyás után a megadott e-mailekre ki lesz küldve az összekapcsolási kérelem.' : 'Ez a verseny már elérte a maximális jóváhagyott csapatszámot (' . $get('max_approved_teams') . ' csapat).')
                     ->default(true)
-                    ->disabled(fn(Get $get) => $get('max_teams') !== null && $get('max_approved_teams') <= $get('approved_teams')),
+                    ->afterStateHydrated(function (Set $set, Get $get, string $operation) {
+                        if ($operation !== 'edit')
+                            return;
+
+                        $tournament = Tournament::find($get('tournament_id'), ['id', 'min_team_size', 'max_team_size', 'max_approved_teams']);
+                        $approvedTeams = $tournament->teams()->whereIsApproved(true)->count();
+
+                        $set('min_members', $tournament->min_team_size); // Weird workaround, but it works
+                        $set('max_members', $tournament->max_team_size);
+                        $set('max_approved_teams', $tournament->max_approved_teams);
+                        $set('approved_teams', $approvedTeams);
+                    })
+                    ->disabled(fn(Get $get, string $operation, ?Team $record) => (($record !== null && $operation !== 'create') && $record->is_approved === false || $operation !== 'edit') && $get('max_approved_teams') !== null && $get('max_approved_teams') <= $get('approved_teams')),
                 \Filament\Forms\Components\Section::make('Csapattagok')
                     ->schema([
                         TagsInput::make('members')
@@ -177,7 +189,7 @@ class TeamResource extends Resource
                             ->label('Verseny'),
 
                         IconEntry::make('is_approved')
-                            ->label('Elfogadva')
+                            ->label('Jóváhagyva')
                             ->boolean(),
                     ])->columns()->grow(),
                     Section::make('Csapattagok')

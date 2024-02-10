@@ -2,6 +2,7 @@
 
 namespace App\Filament\Manager\Resources\GroupResource\RelationManagers;
 
+use App\Models\Team;
 use Closure;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TagsInput;
@@ -9,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -28,6 +30,7 @@ class TeamsRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         $approvedTeams = $this->ownerRecord->tournament->teams()->where('is_approved', true)->count();
+
         $minTeamSize = $this->ownerRecord->tournament->min_team_size;
         $maxTeamSize = $this->ownerRecord->tournament->max_team_size;
 
@@ -39,9 +42,16 @@ class TeamsRelationManager extends RelationManager
                     ->required(),
                 Toggle::make('is_approved')
                     ->label('Jóváhagyva')
-                    ->helperText(fn(Get $get) => ($this->ownerRecord->tournament->max_approved_teams === null || $this->ownerRecord->tournament->max_approved_teams <= $approvedTeams) ? 'Jóváhagyás után a megadott e-mailekre ki lesz küldve az összekapcsolási kérelem.' : 'Ez a verseny már elérte a maximális jóváhagyott csapatszámot (' . $this->ownerRecord->tournament->max_approved_teams . ' csapat).')
+                    ->helperText(fn(Get $get) => ($this->ownerRecord->tournament->max_approved_teams === null || $this->ownerRecord->tournament->max_approved_teams >= $approvedTeams) ? 'Jóváhagyás után a megadott e-mailekre ki lesz küldve az összekapcsolási kérelem.' : 'Ez a verseny már elérte a maximális jóváhagyott csapatszámot (' . $this->ownerRecord->tournament->max_approved_teams . ' csapat).')
                     ->default(true)
-                    ->disabled(fn(Get $get) => $this->ownerRecord->tournament->max_approved_teams !== null && $this->ownerRecord->tournament->max_approved_teams >= $approvedTeams),
+                    ->afterStateHydrated(function (string $operation, Set $set) use ($approvedTeams) {
+                        if ($operation === 'edit')
+                            return;
+
+                        if ($this->ownerRecord->tournament->max_approved_teams !== null && $this->ownerRecord->tournament->max_approved_teams <= $approvedTeams)
+                            $set('is_approved', false);
+                    })
+                    ->disabled(fn(Get $get, ?Team $record, string $operation) => (($record !== null && $operation !== 'create') && $record->is_approved === false || $operation !== 'edit') && $this->ownerRecord->tournament->max_approved_teams !== null && $this->ownerRecord->tournament->max_approved_teams <= $approvedTeams),
                 Section::make('Csapattagok')
                     ->schema([
                         TagsInput::make('members')
