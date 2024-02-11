@@ -4,7 +4,7 @@ namespace App\Filament\Manager\Resources\TeamResource\Pages;
 
 use App\Events\TeamApprovedEvent;
 use App\Filament\Manager\Resources\TeamResource;
-use Facades\App\Helpers\AppLinking\AppLinking;
+use App\Helpers\AppLinking\AppLinkingHelper;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
@@ -26,8 +26,8 @@ class EditTeam extends EditRecord
                 ->label('Jóváhagyási értesítések újraküldése')
                 ->color('gray')
                 ->disabled(!$this->record->is_approved)
-                ->action(function () {
-                    AppLinking::sendAppLinkingNotifications($this->record);
+                ->action(function (AppLinkingHelper $appLinkingHelper) {
+                    $appLinkingHelper->sendAppLinkingNotifications($this->record);
 
                     Notification::make()
                         ->success()

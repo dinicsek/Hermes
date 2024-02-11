@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Helpers\AppLinking\AppLinking;
+use App\Helpers\AppLinking\AppLinkingHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pulse\Facades\Pulse;
@@ -31,6 +31,6 @@ class AppServiceProvider extends ServiceProvider
 
         Model::shouldBeStrict();
 
-        $this->app->bind(AppLinking::class, fn() => new AppLinking());
+        $this->app->bind(AppLinkingHelper::class, fn() => new AppLinkingHelper());
     }
 }

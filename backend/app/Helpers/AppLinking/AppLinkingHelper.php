@@ -7,7 +7,7 @@ use App\Notifications\AppLinkingNotification;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Notification;
 
-class AppLinking
+class AppLinkingHelper
 {
     public function sendAppLinkingNotifications(Team $team): void
     {

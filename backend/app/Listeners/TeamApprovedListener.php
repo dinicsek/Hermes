@@ -3,16 +3,16 @@
 namespace App\Listeners;
 
 use App\Events\TeamApprovedEvent;
-use Facades\App\Helpers\AppLinking\AppLinking;
+use App\Helpers\AppLinking\AppLinkingHelper;
 
 class TeamApprovedListener
 {
-    public function __construct()
+    public function __construct(public AppLinkingHelper $appLinkingHelper)
     {
     }
 
     public function handle(TeamApprovedEvent $event): void
     {
-        AppLinking::sendAppLinkingNotifications($event->team); // Real time facade
+        $this->appLinkingHelper->sendAppLinkingNotifications($event->team); // Real time facade
     }
 }
