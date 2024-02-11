@@ -4,7 +4,10 @@ namespace App\Filament\Manager\Resources\TeamResource\Pages;
 
 use App\Events\TeamApprovedEvent;
 use App\Filament\Manager\Resources\TeamResource;
+use Facades\App\Helpers\AppLinking\AppLinking;
 use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 
 class EditTeam extends EditRecord
@@ -19,6 +22,18 @@ class EditTeam extends EditRecord
             Actions\DeleteAction::make(),
             Actions\ForceDeleteAction::make(),
             Actions\RestoreAction::make(),
+            Action::make('resend_app_linking_notifications')
+                ->label('Jóváhagyási értesítések újraküldése')
+                ->color('gray')
+                ->disabled(!$this->record->is_approved)
+                ->action(function () {
+                    AppLinking::sendAppLinkingNotifications($this->record);
+
+                    Notification::make()
+                        ->success()
+                        ->title('Sikeres újraküldés')
+                        ->send();
+                })
         ];
     }
 

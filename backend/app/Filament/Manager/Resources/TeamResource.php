@@ -74,7 +74,7 @@ class TeamResource extends Resource
                     }),
                 Toggle::make('is_approved')
                     ->label('Jóváhagyva')
-                    ->helperText(fn(Get $get) => $get('approved_teams') === null || ($get('max_approved_teams') === null && $get('max_approved_teams') <= $get('approved_teams')) ? 'Jóváhagyás után a megadott e-mailekre ki lesz küldve az összekapcsolási kérelem.' : 'Ez a verseny már elérte a maximális jóváhagyott csapatszámot (' . $get('max_approved_teams') . ' csapat).')
+                    ->helperText(fn(Get $get) => !($get('max_approved_teams') !== null && $get('max_approved_teams') <= $get('approved_teams')) ? 'Jóváhagyás után a megadott e-mailekre ki lesz küldve az összekapcsolási kérelem.' : 'Ez a verseny már elérte a maximális jóváhagyott csapatszámot (' . $get('max_approved_teams') . ' csapat).')
                     ->default(true)
                     ->afterStateHydrated(function (Set $set, Get $get, string $operation) {
                         if ($operation !== 'edit')
@@ -88,7 +88,7 @@ class TeamResource extends Resource
                         $set('max_approved_teams', $tournament->max_approved_teams);
                         $set('approved_teams', $approvedTeams);
                     })
-                    ->disabled(fn(Get $get, string $operation, ?Team $record) => (($record !== null && $operation !== 'create') && $record->is_approved === false || $operation !== 'edit') && $get('max_approved_teams') !== null && $get('max_approved_teams') <= $get('approved_teams')),
+                    ->disabled(fn(Get $get, string $operation, ?Team $record) => ((($record !== null && $operation !== 'create') && $record->is_approved === false) || $operation !== 'edit') && $get('max_approved_teams') !== null && $get('max_approved_teams') <= $get('approved_teams')),
                 \Filament\Forms\Components\Section::make('Csapattagok')
                     ->schema([
                         TagsInput::make('members')

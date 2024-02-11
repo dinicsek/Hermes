@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class TeamApprovedNotification extends Notification implements ShouldQueue
+class AppLinkingNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
