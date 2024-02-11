@@ -17,6 +17,7 @@ class Team extends Model
         'name',
         'members',
         'emails',
+        // push tokens purposefully not fillable
         'is_approved',
         'tournament_id',
     ];
@@ -24,6 +25,7 @@ class Team extends Model
     protected $casts = [
         'members' => 'array',
         'emails' => 'array',
+        'push_tokens' => 'array',
     ];
 
     protected $with = [

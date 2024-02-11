@@ -15,6 +15,7 @@ return new class extends Migration {
 
             $table->jsonb('members');
             $table->jsonb('emails');
+            $table->jsonb('push_tokens')->default('[]');
 
             $table->boolean('is_approved')->default(false);
 

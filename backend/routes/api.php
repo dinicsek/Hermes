@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LinkingController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TournamentController;
 use Illuminate\Support\Facades\Route;
@@ -18,3 +19,5 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('tournaments', TournamentController::class)->only(['show']);
 
 Route::apiResource('tournaments.teams', TeamController::class)->only(['store']);
+
+Route::post('link-app/{linkingToken}', LinkingController::class);
