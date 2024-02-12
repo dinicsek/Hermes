@@ -6,7 +6,13 @@ use App\Filament\Manager\Resources\TournamentMatchResource\Pages;
 use App\Filament\Manager\Resources\TournamentMatchResource\RelationManagers;
 use App\Models\Enums\TournamentMatchWinner;
 use App\Models\TournamentMatch;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
@@ -30,7 +36,77 @@ class TournamentMatchResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Select::make('tournament_id')
+                    ->label('Verseny')
+                    ->relationship('tournament', 'name', modifyQueryUsing: fn($query) => $query->where('user_id', auth()->id()))
+                    ->preload()
+                    ->searchable()
+                    ->native(false)
+                    ->selectablePlaceholder(false)
+                    ->required()
+                    ->live(),
+                TextInput::make('round')
+                    ->label('Forduló')
+                    ->numeric()
+                    ->default(1)
+                    ->minValue(1)
+                    ->required(),
+                Section::make('Csapatok')->schema([
+                    Select::make('home_team_id')
+                        ->label('Hazai csapat')
+                        ->relationship('homeTeam', 'name', modifyQueryUsing: fn($query, Get $get) => $query->where('tournament_id', $get('tournament_id')))
+                        ->required()
+                        ->preload()
+                        ->searchable()
+                        ->native(false)
+                        ->notIn(fn(Get $get) => [$get('away_team_id')])
+                        ->validationMessages([
+                            'not_in' => 'A hazai és a vendég csapat nem lehet ugyanaz.',
+                        ])
+                        ->selectablePlaceholder(false),
+                    TextInput::make('home_team_score')
+                        ->label('Hazai csapat pontszáma')
+                        ->helperText('Ha ez a meccs még nem kezdődött el, akkor hagyd üresen.')
+                        ->numeric()
+                        ->minValue(0),
+                    Select::make('away_team_id')
+                        ->label('Vendég csapat')
+                        ->relationship('awayTeam', 'name', modifyQueryUsing: fn($query, Get $get) => $query->where('tournament_id', $get('tournament_id')))
+                        ->required()
+                        ->preload()
+                        ->searchable()
+                        ->native(false)
+                        ->notIn(fn(Get $get) => [$get('home_team_id')])
+                        ->validationMessages([
+                            'not_in' => 'A hazai és a vendég csapat nem lehet ugyanaz!',
+                        ])
+                        ->selectablePlaceholder(false),
+                    TextInput::make('away_team_score')
+                        ->label('Vendég csapat pontszáma')
+                        ->helperText('Ha ez a meccs még nem kezdődött el, akkor hagyd üresen!')
+                        ->numeric()
+                        ->minValue(0),
+                    Select::make('winner')
+                        ->label('Győztes csapat')
+                        ->options(TournamentMatchWinner::class)
+                        ->native(false),
+                ])->columns()->visible(fn(Get $get) => $get('tournament_id') !== null),
+                Section::make('Adatok')->schema([
+                    Toggle::make('is_stakeless')
+                        ->label('Tét nélküli')
+                        ->inline(false),
+                    Toggle::make('is_final')
+                        ->label('Döntő')
+                        ->inline(false),
+                    DateTimePicker::make('started_at')
+                        ->label('Kezdés')
+                        ->before(fn(Get $get) => $get('ended_at') === null ? null : 'ended_at')
+                        ->native(false),
+                    DateTimePicker::make('ended_at')
+                        ->label('Befejezés')
+                        ->after(fn(Get $get) => $get('started_at') === null ? null : 'started_at')
+                        ->native(false),
+                ])->columns()->visible(fn(Get $get) => $get('tournament_id') !== null),
             ]);
     }
 
@@ -41,33 +117,27 @@ class TournamentMatchResource extends Resource
                 Tables\Columns\TextColumn::make('tournament.name')
                     ->label('Verseny')
                     ->badge()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('round')
-                    ->label('Forduló')
-                    ->sortable(),
+                    ->label('Forduló'),
                 Tables\Columns\TextColumn::make('homeTeam.name')
                     ->label('Hazai csapat')
                     ->color('info')
                     ->badge()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('home_team_score')
                     ->label('Hazai csapat pontszáma')
                     ->placeholder('Nincs megadva')
-                    ->weight(FontWeight::Bold)
-                    ->sortable(),
+                    ->weight(FontWeight::Bold),
                 Tables\Columns\TextColumn::make('awayTeam.name')
                     ->label('Vendég csapat')
                     ->color('danger')
                     ->badge()
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('away_team_score')
                     ->label('Vendég csapat pontszáma')
                     ->placeholder('Nincs megadva')
-                    ->weight(FontWeight::Bold)
-                    ->sortable(),
+                    ->weight(FontWeight::Bold),
                 Tables\Columns\TextColumn::make('winner')
                     ->label('Győztes csapat')
                     ->placeholder('Nincs megadva')
@@ -82,38 +152,32 @@ class TournamentMatchResource extends Resource
                         TournamentMatchWinner::HOME_TEAM => 'info',
                         default => null,
                     })
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_stakeless')
                     ->label('Tét nélküli')
                     ->boolean()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('started_at')
                     ->label('Kezdés')
                     ->dateTime()
                     ->searchable()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('ended_at')
                     ->label('Befejezés')
                     ->dateTime()
                     ->searchable()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Létrehozva')
                     ->dateTime()
                     ->since()
                     ->searchable()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Módosítva')
                     ->dateTime()
                     ->since()
                     ->searchable()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->label('Törölve')
@@ -121,7 +185,6 @@ class TournamentMatchResource extends Resource
                     ->dateTime()
                     ->since()
                     ->searchable()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -163,7 +226,7 @@ class TournamentMatchResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with(['homeTeam:id,name,tournament_id', 'awayTeam:id,name,tournament_id'])->orderBy('sort');
+        return parent::getEloquentQuery()->ordered()->with(['homeTeam:id,name,tournament_id', 'awayTeam:id,name,tournament_id']);
     }
 
     public static function getRecordSubNavigation(Page $page): array
