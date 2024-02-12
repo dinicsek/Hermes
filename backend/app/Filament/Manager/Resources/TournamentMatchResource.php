@@ -4,6 +4,7 @@ namespace App\Filament\Manager\Resources;
 
 use App\Filament\Manager\Resources\TournamentMatchResource\Pages;
 use App\Filament\Manager\Resources\TournamentMatchResource\RelationManagers;
+use App\Models\Enums\RoundMode;
 use App\Models\Enums\TournamentMatchWinner;
 use App\Models\TournamentMatch;
 use Filament\Forms\Components\DateTimePicker;
@@ -13,6 +14,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\Split;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
@@ -91,7 +97,7 @@ class TournamentMatchResource extends Resource
                         ->options(TournamentMatchWinner::class)
                         ->native(false),
                 ])->columns()->visible(fn(Get $get) => $get('tournament_id') !== null),
-                Section::make('Adatok')->schema([
+                Section::make('Beállítások és időpontok')->schema([
                     Toggle::make('is_stakeless')
                         ->label('Tét nélküli')
                         ->inline(false),
@@ -205,6 +211,91 @@ class TournamentMatchResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            Split::make([
+                Grid::make(1)->schema([
+                    \Filament\Infolists\Components\Section::make([
+                        TextEntry::make('tournament.name')
+                            ->label('Verseny')
+                            ->badge(),
+                        TextEntry::make('round')
+                            ->label('Forduló'),
+                        TextEntry::make('round_type')
+                            ->label('Forduló típusa')
+                            ->placeholder('Nincs beállítva')
+                            ->state(fn(TournamentMatch $record) => match (RoundMode::tryFrom(collect($record->tournament->round_settings)->filter(fn($roundSettings) => $roundSettings['round'] === $record->round)->first()['mode'] ?? null)) {
+                                RoundMode::ELIMINATION => 'Kieséses',
+                                RoundMode::GROUP => 'Csoportos',
+                                default => null,
+                            }),
+                    ])->columns()->grow(),
+                    \Filament\Infolists\Components\Section::make('Csapatok')->schema([
+                        TextEntry::make('homeTeam.name')
+                            ->label('Hazai csapat')
+                            ->color('info')
+                            ->badge(),
+                        TextEntry::make('home_team_score')
+                            ->label('Hazai csapat pontszáma')
+                            ->placeholder('Nincs megadva')
+                            ->weight(FontWeight::Bold),
+                        TextEntry::make('awayTeam.name')
+                            ->label('Vendég csapat')
+                            ->color('danger')
+                            ->badge(),
+                        TextEntry::make('away_team_score')
+                            ->label('Vendég csapat pontszáma')
+                            ->placeholder('Nincs megadva')
+                            ->weight(FontWeight::Bold),
+                        TextEntry::make('winner')
+                            ->label('Győztes csapat')
+                            ->placeholder('Nincs megadva')
+                            ->state(fn(TournamentMatch $record) => match ($record->winner) {
+                                TournamentMatchWinner::AWAY_TEAM => $record->awayTeam->name,
+                                TournamentMatchWinner::HOME_TEAM => $record->homeTeam->name,
+                                default => null,
+                            })
+                            ->badge()
+                            ->color(fn(TournamentMatch $record) => match ($record->winner) {
+                                TournamentMatchWinner::AWAY_TEAM => 'danger',
+                                TournamentMatchWinner::HOME_TEAM => 'info',
+                                default => null,
+                            }),
+                        TextEntry::make('score_difference')
+                            ->label('Pontkülönbség')
+                            ->placeholder('Nincs elég adat')
+                            ->state(fn(TournamentMatch $record) => $record->home_team_score !== null && $record->away_team_score !== null ? abs($record->home_team_score - $record->away_team_score) : null),
+                    ])->columns()->grow(),
+                    \Filament\Infolists\Components\Section::make('Beállítások és időpontok')->schema([
+                        IconEntry::make('is_stakeless')
+                            ->label('Tét nélküli')
+                            ->boolean(),
+                        IconEntry::make('is_final')
+                            ->label('Döntő')
+                            ->boolean(),
+                        TextEntry::make('started_at')
+                            ->label('Kezdés')
+                            ->placeholder('Nincs megadva')
+                            ->dateTime(),
+                        TextEntry::make('ended_at')
+                            ->label('Befejezés')
+                            ->placeholder('Nincs megadva')
+                            ->dateTime(),
+                    ])->columns()->grow(),
+                ])->grow(),
+                \Filament\Infolists\Components\Section::make([
+                    TextEntry::make('created_at')
+                        ->label('Létrehozva')
+                        ->dateTime(),
+                    TextEntry::make('updated_at')
+                        ->label('Módosítva')
+                        ->dateTime()
+                ])->grow(false),
+            ])
+        ])->columns(false);
     }
 
     public static function getRelations(): array
