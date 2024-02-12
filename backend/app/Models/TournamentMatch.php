@@ -21,6 +21,7 @@ class TournamentMatch extends Model
         'order_column_name' => 'sort',
         'sort_when_creating' => true,
     ];
+
     protected $fillable = [
         'home_team_id',
         'away_team_id',
@@ -32,7 +33,7 @@ class TournamentMatch extends Model
         'is_final',
         'winner',
         'sort',
-        'stakeless',
+        'is_stakeless',
         'group_id',
         'elimination_round',
         'elimination_level',

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Manager\Resources\TournamentResource\Pages;
+namespace App\Filament\Manager\Resources\TournamentMatchResource\Pages;
 
-use App\Filament\Manager\Resources\TournamentResource;
+use App\Filament\Manager\Resources\TournamentMatchResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewTournament extends ViewRecord
+class ViewTournamentMatch extends ViewRecord
 {
-    protected static string $resource = TournamentResource::class;
+    protected static string $resource = TournamentMatchResource::class;
 
     protected static ?string $navigationLabel = "Megtekintés";
 
@@ -17,6 +17,7 @@ class ViewTournament extends ViewRecord
         return [
             Actions\DeleteAction::make(),
             Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),];
+            Actions\RestoreAction::make(),
+        ];
     }
 }

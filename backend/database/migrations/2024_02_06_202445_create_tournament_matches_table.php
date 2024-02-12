@@ -27,8 +27,8 @@ return new class extends Migration {
 
             $table->integer('sort')->nullable();
 
-            $table->boolean('stakeless')->default(false);
-            
+            $table->boolean('is_stakeless')->default(false);
+
             $table->integer('elimination_round')->nullable();
             $table->integer('elimination_level')->nullable();
 
