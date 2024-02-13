@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Brickx\MaintenanceSwitch\MaintenanceSwitchPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -70,7 +71,8 @@ class AdminPanelProvider extends PanelProvider
                     ->variant(Variants::BEAM)
                     ->size(60)
                     ->square()
-                    ->colors(['F6EDDC', 'E3E5D7', 'BDD6D2', 'A5C8CA', '586875'])
+                    ->colors(['F6EDDC', 'E3E5D7', 'BDD6D2', 'A5C8CA', '586875']),
+                MaintenanceSwitchPlugin::make(),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->middleware([
