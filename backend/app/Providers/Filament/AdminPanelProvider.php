@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
 use Brickx\MaintenanceSwitch\MaintenanceSwitchPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -76,7 +77,8 @@ class AdminPanelProvider extends PanelProvider
                     ->square()
                     ->colors(['F6EDDC', 'E3E5D7', 'BDD6D2', 'A5C8CA', '586875']),
                 MaintenanceSwitchPlugin::make(),
-                FilamentSpatieLaravelBackupPlugin::make()
+                FilamentSpatieLaravelBackupPlugin::make(),
+                FilamentExceptionsPlugin::make()
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->middleware([

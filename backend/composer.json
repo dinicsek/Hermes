@@ -9,6 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "ext-zip": "*",
+        "bezhansalleh/filament-exceptions": "^2.1",
         "brickx/maintenance-switch": "^1.0",
         "dedoc/scramble": "^0.8.5",
         "doctrine/dbal": "^3.8",
@@ -26,8 +28,7 @@
         "parallax/filament-comments": "^1.0",
         "shuvroroy/filament-spatie-laravel-backup": "^2.1",
         "spatie/eloquent-sortable": "^4.1",
-        "spatie/laravel-data": "^3.11",
-        "ext-zip": "*"
+        "spatie/laravel-data": "^3.11"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
