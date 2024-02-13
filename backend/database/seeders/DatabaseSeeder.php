@@ -62,9 +62,7 @@ class DatabaseSeeder extends Seeder
 
             if ($seedWithTeams) {
                 $tournament->teams()->createMany(
-                    Team::factory(random_int(15, 50))->make(
-                        [$memberCount = random_int($tournament->min_team_size, $tournament->max_team_size),]
-                    )->toArray()
+                    Team::factory(random_int(15, 50))->properMemberNumber($tournament->min_team_size, $tournament->max_team_size)->make()->toArray()
                 );
 
                 if ($seedWithMatches) {
@@ -84,7 +82,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($startedTournament as $tournament) {
             $tournament->teams()->createMany(
-                Team::factory(random_int(25, 50))->make()->toArray()
+                Team::factory(random_int(25, 50))->properMemberNumber($tournament->min_team_size, $tournament->max_team_size)->make()->toArray()
             );
 
             if ($seedWithMatches) {
@@ -103,7 +101,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($endedTournament as $tournament) {
             $tournament->teams()->createMany(
-                Team::factory(random_int(25, 50))->make()->toArray()
+                Team::factory(random_int(25, 50))->properMemberNumber($tournament->min_team_size, $tournament->max_team_size)->make()->toArray()
             );
 
             if ($seedWithMatches) {
