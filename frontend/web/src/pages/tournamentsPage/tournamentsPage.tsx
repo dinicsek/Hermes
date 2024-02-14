@@ -49,7 +49,7 @@ const TournamentsPage = (): JSX.Element => {
     return (
         <Center flex={1}>
             <form onSubmit={submit}>
-                <Stack gap="sm" className={classes.card}>
+                <Stack gap="sm" className={classes.container}>
                     <Title ta="center">Verseny kereső</Title>
                     <Text ta="center" c="dimmed">
                         Szeretnél nyomon követni egy versenyt vagy esetleg regisztrálni egy versenyre?
