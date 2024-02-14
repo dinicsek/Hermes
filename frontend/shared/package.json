@@ -1,0 +1,21 @@
+{
+    "name": "shared",
+    "private": true,
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "generate-api-client": "orval"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "orval": "^6.24.0"
+    },
+    "dependencies": {
+        "@tanstack/react-query": "^5.20.5",
+        "axios": "^1.6.7"
+    }
+}

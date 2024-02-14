@@ -1,5 +1,4 @@
-name: Update OpenApi Schema
-run-name: ${{ github.actor }} is updating OpenApi Schema
+name: Update Shared Package
 
 on:
     push:
@@ -27,7 +26,7 @@ jobs:
                     - 5432:5432
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
@@ -53,3 +52,42 @@ jobs:
               with:
                   file_pattern: frontend/shared/schema/openapi.json
                   commit_message: Updated the API schema
+    update-shared-package:
+        needs: update-openapi-schema
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+            - name: Install pnpm
+              uses: pnpm/action-setup@v2
+              id: pnpm-install
+              with:
+                  version: latest
+                  run_install: false
+            - name: Get pnpm store directory
+              id: pnpm-cache
+              shell: bash
+              run: |
+                  echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+            - name: Setup pnpm cache
+              uses: actions/cache@v3
+              with:
+                  path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-store-
+            - name: Install Boardlight dependencies
+              working-directory: ./frontend/shared
+              run: pnpm install --no-frozen-lockfile
+            - name: Generate api client
+              working-directory: ./frontend/shared
+              run: pnpm generate-api-client
+            - name: Commit new schema
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  file_pattern: frontend/shared/generated/api/**
+                  commit_message: Updated the API client
