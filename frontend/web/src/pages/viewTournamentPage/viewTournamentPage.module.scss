@@ -1,0 +1,8 @@
+.countdownCard {
+    background-color: var(--mantine-color-gray-1);
+    border-radius: var(--mantine-radius-md);
+
+    @include dark {
+        background-color: var(--mantine-color-dark-8);
+    }
+}

@@ -1,4 +1,4 @@
-import { Box, Button, Card, Center, Stack, Text, TextInput, Title, rem } from "@mantine/core";
+import { Anchor, Box, Button, Card, Center, Stack, Text, TextInput, Title, rem } from "@mantine/core";
 import {
     IconAsterisk,
     IconAsteriskSimple,
@@ -6,12 +6,12 @@ import {
     IconPassword,
     IconSquareAsterisk,
 } from "@tabler/icons-react";
+import { Link, useNavigate } from "react-router-dom";
 
 import { AxiosError } from "axios";
 import classes from "./tournamentsPage.module.scss";
 import { tournamentsShow } from "shared";
 import { useForm } from "@mantine/form";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const TournamentsPage = (): JSX.Element => {
@@ -64,6 +64,9 @@ const TournamentsPage = (): JSX.Element => {
                     <Button type="submit" fullWidth loading={loading}>
                         Gyerünk!
                     </Button>
+                    <Anchor component={Link} to="/" ta="center">
+                        Vissza a kezdőlapra
+                    </Anchor>
                 </Stack>
             </form>
         </Center>
