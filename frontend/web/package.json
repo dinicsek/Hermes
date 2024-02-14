@@ -15,8 +15,10 @@
         "@mantine/hooks": "^7.5.1",
         "@mantine/modals": "^7.5.1",
         "@mantine/notifications": "^7.5.1",
+        "@tabler/icons-react": "^2.47.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-router-dom": "^6.22.0",
         "shared": "workspace:*"
     },
     "devDependencies": {
