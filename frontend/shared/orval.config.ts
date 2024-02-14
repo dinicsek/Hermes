@@ -2,8 +2,8 @@ export default {
     hermes: {
         output: {
             mode: "tags-split",
-            target: "./generated/api/features",
-            schemas: "./generated/api/models",
+            target: ".src/generated/api/features",
+            schemas: ".src/generated/api/models",
             client: "react-query",
         },
         input: {

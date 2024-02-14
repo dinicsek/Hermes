@@ -1,21 +1,27 @@
-import { AppShell, Burger, Text, rem } from "@mantine/core";
+import { AppShell, Button, Group, Text, rem } from "@mantine/core";
+import { Link, Outlet } from "react-router-dom";
 
-import { Outlet } from "react-router-dom";
-import classes from "./defaultLayout.module.scss";
-import { useDisclosure } from "@mantine/hooks";
+import { IconTrophy } from "@tabler/icons-react";
 
 const DefaultLayout = (): JSX.Element => {
-    const [opened, { toggle }] = useDisclosure();
-
     return (
-        <AppShell header={{ height: 60 }}>
+        <AppShell header={{ height: 60 }} padding={{ base: "md" }} withBorder={false}>
             <AppShell.Header display="flex">
-                <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-                <Text variant="gradient" size={rem(24)} fw={600} m="sm" className={classes.logo}>
-                    Hermes
-                </Text>
+                <Group align="center" justify="space-between" w="100%" px="md">
+                    <Text component={Link} to="/" variant="gradient" size={rem(24)} fw={600}>
+                        Hermes
+                    </Text>
+                    <Button
+                        component={Link}
+                        to="/tournaments"
+                        radius="xl"
+                        leftSection={<IconTrophy stroke={1.5} size={rem(20)} />}
+                    >
+                        Versenyek
+                    </Button>
+                </Group>
             </AppShell.Header>
-            <AppShell.Main>
+            <AppShell.Main display="flex" style={{ flexDirection: "column" }}>
                 <Outlet />
             </AppShell.Main>
         </AppShell>

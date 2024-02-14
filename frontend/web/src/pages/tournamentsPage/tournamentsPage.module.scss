@@ -1,0 +1,20 @@
+.card {
+    width: 25vw;
+
+    @include smaller-than($mantine-breakpoint-lg) {
+        width: 40vw;
+    }
+
+    @include smaller-than($mantine-breakpoint-md) {
+        width: 45vw;
+    }
+
+    @include smaller-than($mantine-breakpoint-sm) {
+        width: 65vw;
+    }
+
+    @include smaller-than($mantine-breakpoint-xs) {
+        width: 75vw;
+        border-radius: 0;
+    }
+}
