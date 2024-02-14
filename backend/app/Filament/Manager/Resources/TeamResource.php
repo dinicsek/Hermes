@@ -31,7 +31,7 @@ class TeamResource extends Resource
 {
     protected static ?string $model = Team::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'users';
 
     protected static ?string $modelLabel = 'Csapat';
     protected static ?string $pluralLabel = 'Csapatok';
