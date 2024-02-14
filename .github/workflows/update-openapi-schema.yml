@@ -33,12 +33,16 @@ jobs:
                   extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
                   coverage: none
             - name: Install Composer packages
+              working-directory: ./backend
               run: composer install -n --prefer-dist
             - name: Prepare Laravel Application
+              working-directory: ./backend
               run: |
                   cp .env.ci .env
                   php artisan key:generate
             - name: Run Database Migrations
+              working-directory: ./backend
               run: php artisan migrate --force
             - name: Generate OpenApi Schema
+              working-directory: ./backend
               run: php artisan openapi:generate
