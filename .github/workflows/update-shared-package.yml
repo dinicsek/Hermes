@@ -1,4 +1,4 @@
-name: Update Shared Package
+name: Update OpenAPI schema and shared package
 
 on:
     push:
@@ -80,14 +80,17 @@ jobs:
                   key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
                   restore-keys: |
                       ${{ runner.os }}-pnpm-store-
-            - name: Install Boardlight dependencies
+            - name: Install shared dependencies
               working-directory: ./frontend/shared
               run: pnpm install --no-frozen-lockfile
             - name: Generate api client
               working-directory: ./frontend/shared
               run: pnpm generate-api-client
+            - name: Update shared index
+              working-directory: ./frontend/shared
+              run: pnpm update-index
             - name: Commit new schema
               uses: stefanzweifel/git-auto-commit-action@v4
               with:
-                  file_pattern: frontend/shared/generated/api/**
+                  file_pattern: frontend/shared/**
                   commit_message: Updated the API client
