@@ -47,4 +47,4 @@ jobs:
               run: php artisan migrate --force
             - name: Generate OpenApi Schema
               working-directory: ./backend
-              run: php artisan openapi:generate
+              run: php artisan openapi:export --path="../frontend/shared/schema/openapi.json"
