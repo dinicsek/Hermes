@@ -88,7 +88,7 @@ jobs:
               run: pnpm generate-api-client
             - name: Update shared index
               working-directory: ./frontend/shared
-              run: pnpm update-index
+              run: pnpm generate-index
             - name: Commit new schema
               uses: stefanzweifel/git-auto-commit-action@v4
               with:
