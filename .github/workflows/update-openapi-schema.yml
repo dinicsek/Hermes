@@ -48,3 +48,8 @@ jobs:
             - name: Generate OpenApi Schema
               working-directory: ./backend
               run: php artisan openapi:export --path="../frontend/shared/schema/openapi.json"
+            - name: Commit new schema
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  file_pattern: frontend/shared/schema/openapi.json
+                  commit_message: Updated the API schema
