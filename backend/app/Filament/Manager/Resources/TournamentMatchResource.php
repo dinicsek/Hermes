@@ -60,7 +60,7 @@ class TournamentMatchResource extends Resource
                 Section::make('Csapatok')->schema([
                     Select::make('home_team_id')
                         ->label('Hazai csapat')
-                        ->relationship('homeTeam', 'name', modifyQueryUsing: fn($query, Get $get) => $query->where('tournament_id', $get('tournament_id')))
+                        ->relationship('homeTeam', 'name', modifyQueryUsing: fn($query, Get $get) => $query->where('tournament_id', $get('tournament_id'))->where("is_approved", true))
                         ->required()
                         ->preload()
                         ->searchable()
@@ -77,7 +77,7 @@ class TournamentMatchResource extends Resource
                         ->minValue(0),
                     Select::make('away_team_id')
                         ->label('Vendég csapat')
-                        ->relationship('awayTeam', 'name', modifyQueryUsing: fn($query, Get $get) => $query->where('tournament_id', $get('tournament_id')))
+                        ->relationship('awayTeam', 'name', modifyQueryUsing: fn($query, Get $get) => $query->where('tournament_id', $get('tournament_id'))->where("is_approved", true))
                         ->required()
                         ->preload()
                         ->searchable()
