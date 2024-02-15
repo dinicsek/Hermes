@@ -66,7 +66,7 @@ class DatabaseSeeder extends Seeder
                 );
 
                 if ($seedWithMatches) {
-                    $teamIds = $tournament->teams->pluck('id')->toArray();
+                    $teamIds = $tournament->teams->where("is_approved", true)->pluck('id')->toArray();
                     $matches = [];
                     for ($i = 0; $i < count($teamIds) - 1; $i++) {
                         for ($j = $i+1; $j < count($teamIds); $j++) {
@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
             );
 
             if ($seedWithMatches) {
-                $teamIds = $tournament->teams->pluck('id')->toArray();
+                $teamIds = $tournament->teams->where("is_approved", true)->pluck('id')->toArray();
                 $matches = [];
                 for ($i = 0; $i < count($teamIds) - 1; $i++) {
                     for ($j = $i+1; $j < count($teamIds); $j++) {
@@ -115,7 +115,7 @@ class DatabaseSeeder extends Seeder
             );
 
             if ($seedWithMatches) {
-                $teamIds = $tournament->teams->pluck('id')->toArray();
+                $teamIds = $tournament->teams->where("is_approved", true)->pluck('id')->toArray();
                 $matches = [];
                 for ($i = 0; $i < count($teamIds) - 1; $i++) {
                     for ($j = $i+1; $j < count($teamIds); $j++) {
