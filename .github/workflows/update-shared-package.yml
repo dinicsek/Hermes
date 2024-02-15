@@ -1,0 +1,96 @@
+name: Update OpenAPI schema and shared package
+
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
+jobs:
+    update-openapi-schema:
+        runs-on: ubuntu-latest
+        services:
+            postgres:
+                image: postgres
+                env:
+                    POSTGRES_DB: backend_ci
+                    POSTGRES_USER: ci
+                    POSTGRES_PASSWORD: password
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 5432:5432
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.3"
+                  extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+                  coverage: none
+            - name: Install Composer packages
+              working-directory: ./backend
+              run: composer install -n --prefer-dist
+            - name: Prepare Laravel Application
+              working-directory: ./backend
+              run: |
+                  cp .env.ci .env
+                  php artisan key:generate
+            - name: Run Database Migrations
+              working-directory: ./backend
+              run: php artisan migrate --force
+            - name: Generate OpenApi Schema
+              working-directory: ./backend
+              run: php artisan openapi:export --path="../frontend/shared/schema/openapi.json"
+            - name: Commit new schema
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  file_pattern: frontend/shared/schema/openapi.json
+                  commit_message: Updated the API schema
+    update-shared-package:
+        needs: update-openapi-schema
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+            - name: Install pnpm
+              uses: pnpm/action-setup@v2
+              id: pnpm-install
+              with:
+                  version: latest
+                  run_install: false
+            - name: Get pnpm store directory
+              id: pnpm-cache
+              shell: bash
+              run: |
+                  echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+            - name: Setup pnpm cache
+              uses: actions/cache@v3
+              with:
+                  path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-store-
+            - name: Install shared dependencies
+              working-directory: ./frontend/shared
+              run: pnpm install --no-frozen-lockfile
+            - name: Generate api client
+              working-directory: ./frontend/shared
+              run: pnpm generate-api-client
+            - name: Update shared index
+              working-directory: ./frontend/shared
+              run: pnpm generate-index
+            - name: Commit new schema
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  file_pattern: frontend/shared/**
+                  commit_message: Updated the API client

@@ -284,6 +284,10 @@ class TournamentMatchResource extends Resource
                             ->label('Befejezés')
                             ->placeholder('Nincs megadva')
                             ->dateTime(),
+                        TextEntry::make('match_length')
+                            ->label('Meccs hossza')
+                            ->placeholder('Nincs elég adat')
+                            ->state(fn(TournamentMatch $record) => $record->started_at !== null && $record->ended_at !== null ? $record->started_at->diff($record->ended_at)->format('%H:%I:%S') : null),
                     ])->columns()->grow(),
                 ])->grow(),
                 \Filament\Infolists\Components\Section::make([

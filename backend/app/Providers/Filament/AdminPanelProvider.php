@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use BezhanSalleh\FilamentExceptions\FilamentExceptionsPlugin;
+use Brickx\MaintenanceSwitch\MaintenanceSwitchPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -23,6 +25,7 @@ use Jeffgreco13\FilamentBreezy\BreezyCore;
 use LaraZeus\Boredom\BoringAvatarPlugin;
 use LaraZeus\Boredom\BoringAvatarsProvider;
 use LaraZeus\Boredom\Enums\Variants;
+use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -57,11 +60,13 @@ class AdminPanelProvider extends PanelProvider
                     ->group('Rendszer')
                     ->icon('heroicon-o-server')
                     ->badge('Külső')
+                    ->sort(10)
                     ->url(url(config('horizon.path')), shouldOpenInNewTab: true),
                 NavigationItem::make('Pulse Vezérlőpult')
                     ->group('Rendszer')
                     ->icon('heroicon-o-chart-bar-square')
                     ->badge('Külső')
+                    ->sort(20)
                     ->url(url(config('pulse.path')), shouldOpenInNewTab: true),
             ])
             ->plugins([
@@ -70,7 +75,10 @@ class AdminPanelProvider extends PanelProvider
                     ->variant(Variants::BEAM)
                     ->size(60)
                     ->square()
-                    ->colors(['F6EDDC', 'E3E5D7', 'BDD6D2', 'A5C8CA', '586875'])
+                    ->colors(['F6EDDC', 'E3E5D7', 'BDD6D2', 'A5C8CA', '586875']),
+                MaintenanceSwitchPlugin::make(),
+                FilamentSpatieLaravelBackupPlugin::make(),
+                FilamentExceptionsPlugin::make()
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->middleware([
