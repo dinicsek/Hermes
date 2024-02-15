@@ -1,5 +1,8 @@
 name: Application Stack Deploy
-on: 'workflow_dispatch'
+on:
+    workflow_dispatch:
+        branches:
+            - master
 jobs:
     deploy-backend:
         runs-on: ubuntu-latest
