@@ -66,10 +66,15 @@ class DatabaseSeeder extends Seeder
                 );
 
                 if ($seedWithMatches) {
+                    $teamIds = $tournament->teams->pluck('id')->toArray();
+                    $matches = [];
+                    for ($i = 0; $i < count($teamIds) - 1; $i++) {
+                        for ($j = $i+1; $j < count($teamIds); $j++) {
+                            array_push($matches, [$teamIds[$i], $teamIds[$j]]);
+                        }
+                    }
                     $tournament->matches()->createMany(
-                        collect($tournament->teams->pluck('id')->toArray())->crossJoin(
-                            $tournament->teams->pluck('id')->toArray()
-                        )->map(function ($teams) use ($tournament) {
+                        collect($matches)->map(function ($teams) use ($tournament) {
                             return TournamentMatch::factory()->make([
                                 'home_team_id' => $teams[0],
                                 'away_team_id' => $teams[1],
@@ -86,10 +91,15 @@ class DatabaseSeeder extends Seeder
             );
 
             if ($seedWithMatches) {
+                $teamIds = $tournament->teams->pluck('id')->toArray();
+                $matches = [];
+                for ($i = 0; $i < count($teamIds) - 1; $i++) {
+                    for ($j = $i+1; $j < count($teamIds); $j++) {
+                        array_push($matches, [$teamIds[$i], $teamIds[$j]]);
+                    }
+                }
                 $tournament->matches()->createMany(
-                    collect($tournament->teams->pluck('id')->toArray())->crossJoin(
-                        $tournament->teams->pluck('id')->toArray()
-                    )->map(function ($teams) use ($tournament) {
+                    collect($matches)->map(function ($teams) use ($tournament) {
                         return TournamentMatch::factory()->make([
                             'home_team_id' => $teams[0],
                             'away_team_id' => $teams[1],
@@ -105,10 +115,15 @@ class DatabaseSeeder extends Seeder
             );
 
             if ($seedWithMatches) {
+                $teamIds = $tournament->teams->pluck('id')->toArray();
+                $matches = [];
+                for ($i = 0; $i < count($teamIds) - 1; $i++) {
+                    for ($j = $i+1; $j < count($teamIds); $j++) {
+                        array_push($matches, [$teamIds[$i], $teamIds[$j]]);
+                    }
+                }
                 $tournament->matches()->createMany(
-                    collect($tournament->teams->pluck('id')->toArray())->crossJoin(
-                        $tournament->teams->pluck('id')->toArray()
-                    )->map(function ($teams) use ($tournament) {
+                    collect($matches)->map(function ($teams) use ($tournament) {
                         return TournamentMatch::factory()->make([
                             'home_team_id' => $teams[0],
                             'away_team_id' => $teams[1],
