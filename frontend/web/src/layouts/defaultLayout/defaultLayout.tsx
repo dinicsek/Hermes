@@ -15,7 +15,7 @@ const DefaultLayout = (): JSX.Element => {
                         component={Link}
                         to="/tournaments"
                         radius="xl"
-                        leftSection={<IconTrophy stroke={1.5} size={rem(20)} />}
+                        leftSection={<IconTrophy stroke={1.5} size={20} />}
                     >
                         Versenyek
                     </Button>

@@ -58,7 +58,7 @@ const TournamentsPage = (): JSX.Element => {
                         label="Verseny kódja"
                         required
                         variant="filled"
-                        leftSection={<IconAsterisk size={rem(18)} stroke={1.5} />}
+                        leftSection={<IconAsterisk size={18} stroke={1.5} />}
                         {...form.getInputProps("code")}
                     />
                     <Button type="submit" fullWidth loading={loading}>
