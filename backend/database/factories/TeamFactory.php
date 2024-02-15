@@ -35,4 +35,27 @@ class TeamFactory extends Factory
             'updated_at' => Carbon::now(),
         ];
     }
+
+    public function properMemberNumber(int $maxMembers, int $minMembers): self {
+        return $this->state(function (array $attributes) use ($maxMembers, $minMembers) {
+            $memberCount = rand($minMembers, $maxMembers); // Generate a random number between 1 and 5
+            $members = [];
+    
+            for ($i = 0; $i < $memberCount; $i++) {
+                $members[] = $this->faker->name;
+            }
+
+            $emails = [];
+            $emailCount = rand(1, count($members)); // Generate a random number between 1 and the number of members
+    
+            for ($i = 0; $i < $emailCount; $i++) {
+                $emails[] = $this->faker->unique()->safeEmail;
+            }
+    
+            return [
+                'members' => $members,
+                'emails' => $emails,
+            ];
+        });
+    }
 }

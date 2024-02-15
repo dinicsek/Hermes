@@ -1,4 +1,4 @@
-.card {
+.container {
     width: 25vw;
 
     @include smaller-than($mantine-breakpoint-lg) {
