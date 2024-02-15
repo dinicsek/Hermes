@@ -29,7 +29,9 @@ const ViewTournamentPage = (): JSX.Element => {
                             : "Ismeretlen hiba történt"}
                     </Title>
                     <Text ta="center" c="dimmed">
-                        A megadott verseny nem található. Ellenőrizd a kódot és próbáld újra!
+                        {tournament.error.response?.status === 404
+                            ? "A megadott verseny nem található. Ellenőrizd a kódot és próbáld újra!"
+                            : "Kérjük nézz vissza később, vagy vedd fel a kapcsolatot egy adminisztrátorral!"}
                     </Text>
                 </Stack>
             </Center>
