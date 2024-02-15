@@ -1,0 +1,8 @@
+version: '3.9'
+
+services:
+    postgres:
+        environment:
+            POSTGRES_USER: aurora
+            POSTGRES_PASSWORD: CHANGEME
+            POSTGRES_DB: aurora

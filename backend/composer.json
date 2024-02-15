@@ -28,13 +28,13 @@
         "parallax/filament-comments": "^1.0",
         "shuvroroy/filament-spatie-laravel-backup": "^2.1",
         "spatie/eloquent-sortable": "^4.1",
-        "spatie/laravel-data": "^3.11"
+        "spatie/laravel-data": "^3.11",
+        "minigyima/aurora": "dev-master"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
         "laravel-lang/common": "^6.1",
         "laravel/pint": "^1.0",
-        "laravel/sail": "^1.27",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "pestphp/pest": "^2.0",
@@ -45,7 +45,8 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Minigyima\\Aurora\\Storage\\": "storage/aurora"
         }
     },
     "autoload-dev": {
@@ -60,13 +61,32 @@
             "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan aurora:update"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "shell": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan aurora:shell"
+        ],
+        "start": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan config:clear",
+            "@php artisan aurora:start"
+        ],
+        "stop": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan aurora:stop"
+        ],
+        "build": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan config:clear",
+            "@php artisan aurora:build"
         ]
     },
     "extra": {
@@ -84,5 +104,11 @@
         }
     },
     "minimum-stability": "beta",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/Xeretis/aurora"
+        }
+    ]
 }
