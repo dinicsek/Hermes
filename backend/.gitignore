@@ -21,3 +21,8 @@ yarn-error.log
 docker-compose.override.yaml
 docker-compose.override.yml
 /storage/aurora
+/storage/clockwork/
+docker-compose.override.aurora.bak
+.env.aurora.bak
+docker-compose.override.aurora.bak
+.env.aurora.bak

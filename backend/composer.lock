@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52404dad473170164d6503d294b4405d",
+    "content-hash": "5520b7a6dffb9adf9b5c76a311b48f03",
     "packages": [
         {
             "name": "amphp/amp",
@@ -3478,74 +3478,6 @@
             "time": "2023-12-03T19:50:20+00:00"
         },
         {
-            "name": "itsgoingd/clockwork",
-            "version": "v5.1.12",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/itsgoingd/clockwork.git",
-                "reference": "c9dbdbb1f0efd19bb80f1080ef63f1b9b1bc3b1b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/c9dbdbb1f0efd19bb80f1080ef63f1b9b1bc3b1b",
-                "reference": "c9dbdbb1f0efd19bb80f1080ef63f1b9b1bc3b1b",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": ">=5.6"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Clockwork\\Support\\Laravel\\ClockworkServiceProvider"
-                    ],
-                    "aliases": {
-                        "Clockwork": "Clockwork\\Support\\Laravel\\Facade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Clockwork\\": "Clockwork/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "itsgoingd",
-                    "email": "itsgoingd@luzer.sk",
-                    "homepage": "https://twitter.com/itsgoingd"
-                }
-            ],
-            "description": "php dev tools in your browser",
-            "homepage": "https://underground.works/clockwork",
-            "keywords": [
-                "Devtools",
-                "debugging",
-                "laravel",
-                "logging",
-                "lumen",
-                "profiling",
-                "slim"
-            ],
-            "support": {
-                "issues": "https://github.com/itsgoingd/clockwork/issues",
-                "source": "https://github.com/itsgoingd/clockwork/tree/v5.1.12"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/itsgoingd",
-                    "type": "github"
-                }
-            ],
-            "time": "2022-12-13T00:04:12+00:00"
-        },
-        {
             "name": "jeffgreco13/filament-breezy",
             "version": "v2.2.9",
             "source": {
@@ -5418,8 +5350,8 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Xeretis/aurora",
-                "reference": "1406574a62111f5f018985dfab08b0dac264a187"
+                "url": "https://github.com/minigyima/aurora",
+                "reference": "0d9c01d317d2ef875aa6b974f77f8b234ae036e2"
             },
             "require": {
                 "ext-pcntl": "*",
@@ -5465,7 +5397,7 @@
                 }
             ],
             "description": "An application framework / starter kit for Laravel that simplifies API development",
-            "time": "2024-02-15T18:46:55+00:00"
+            "time": "2024-02-15T22:41:13+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -12103,16 +12035,16 @@
         },
         {
             "name": "laravel-lang/actions",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/actions.git",
-                "reference": "6231c309943a47f39911a135449511d017de29e3"
+                "reference": "3b71749230a5bcbb0b7d1466ec5c75c5af5f1ea1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/actions/zipball/6231c309943a47f39911a135449511d017de29e3",
-                "reference": "6231c309943a47f39911a135449511d017de29e3",
+                "url": "https://api.github.com/repos/Laravel-Lang/actions/zipball/3b71749230a5bcbb0b7d1466ec5c75c5af5f1ea1",
+                "reference": "3b71749230a5bcbb0b7d1466ec5c75c5af5f1ea1",
                 "shasum": ""
             },
             "require": {
@@ -12164,9 +12096,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Lang/actions/issues",
-                "source": "https://github.com/Laravel-Lang/actions/tree/1.5.0"
+                "source": "https://github.com/Laravel-Lang/actions/tree/1.5.1"
             },
-            "time": "2024-02-15T06:29:48+00:00"
+            "time": "2024-02-15T22:44:13+00:00"
         },
         {
             "name": "laravel-lang/attributes",
@@ -15257,5 +15189,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
