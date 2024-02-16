@@ -18,7 +18,7 @@ composer install
 echo "Composer dependencies installed."
 
 echo "Building production image..."
-composer build
+php artisan aurora:build
 php artisan aurora:build-production --yes --export --directory=../
 echo "Production build complete."
 
