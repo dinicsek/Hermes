@@ -18,6 +18,8 @@ mkdir -p /var/log/nginx
 chown -R aurora:aurora /var/log/nginx
 
 chown root:aurora /etc/nginx/nginx.conf
-chmod 640 /etc/nginx/nginx.conf
+chmod 777 /etc/nginx/nginx.conf
+
+certbot certonly --config /etc/letsencrypt/certbot.ini --nginx
 
 /usr/bin/supervisord -c /etc/supervisord.conf

@@ -39,9 +39,3 @@ container_name="hermes_container_$(date +"%Y-%m-%d_%H-%M-%S")"
 image_name=$(basename "$latest_tarball" .docker | cut -d ':' -f 1)
 docker run -d --name "$container_name" -p 80:80 -p 443:443 "$image_name"
 echo "Production container started."
-
-#Run certbot in the container
-
-echo "Running certbot in the container..."
-docker exec "$container_name" certbot certonly --config /etc/letsencrypt/certbot.ini --nginx
-echo "Certbot ran in the container."
