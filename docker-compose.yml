@@ -5,7 +5,7 @@ services:
         restart: unless-stopped
         networks:
             hermes:
-                ipv4_address: 172.128.0.1
+                ipv4_address: 172.128.1.1
         volumes:
             - '/opt/hermes/data/pg:/var/lib/postgresql/data'
 
@@ -17,11 +17,11 @@ services:
             - '81:81'
             - '443:443'
         volumes:
-            - ./data:/nginx-proxy-manager/data
-            - ./letsencrypt:/nginx-proxy-manager/data
+            - ./data:/data
+            - ./letsencrypt:/etc/letsencrypt
         networks:
             hermes:
-                ipv4_address: 172.128.0.2
+                ipv4_address: 172.128.1.2
 
 networks:
     hermes:
