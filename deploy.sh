@@ -37,7 +37,7 @@ echo "Production image tarball cleaned up."
 echo "Starting production container..."
 container_name="hermes_container_$(date +"%Y-%m-%d_%H-%M-%S")"
 image_name=$(basename "$latest_tarball" .docker | cut -d ':' -f 1)
-docker run -d --name "$container_name" "$image_name"
+docker run -d --name "$container_name" -p 80:80 -p 443:443 "$image_name"
 echo "Production container started."
 
 #Run certbot in the container
