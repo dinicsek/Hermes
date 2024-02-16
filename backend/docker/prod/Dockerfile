@@ -75,8 +75,6 @@ COPY storage/aurora/temp/assets/supervisord/* /etc/supervisor/conf.d/.
 COPY storage/aurora/temp/assets/crontabs /var/spool/cron/crontabs/
 COPY storage/aurora/temp/assets/entrypoint.sh /usr/local/bin/mercury_entrypoint.sh
 
-RUN certbot certonly --config /etc/letsencrypt/certbot.ini --nginx
-
 COPY storage/aurora/temp/source /srv/www/
 RUN rm -f Dockerfile Dockerfile.aurora.bak
 RUN chown -R aurora:aurora /srv/www
