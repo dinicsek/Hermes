@@ -10,6 +10,8 @@ echo "Building frontend..."
 pnpm build
 echo "Frontend built."
 
+cd ../../
+
 previous_container_id=$(docker ps -aqf "name=hermes_container")
 if [ ! -z "$previous_container_id" ]; then
   echo "Stopping previous container with ID: $previous_container_id"
