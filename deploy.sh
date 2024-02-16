@@ -12,6 +12,10 @@ fi
 
 cd ./backend/
 
+echo "Installing composer dependencies..."
+composer install
+echo "Composer dependencies installed."
+
 echo "Building production image..."
 php artisan aurora:build-production --yes --export --directory=../
 echo "Production build complete."
