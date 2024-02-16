@@ -43,5 +43,5 @@ echo "Production container started."
 #Run certbot in the container
 
 echo "Running certbot in the container..."
-docker exec -it "$container_name" certbot certonly --config /etc/letsencrypt/certbot.ini --nginx
+docker exec "$container_name" certbot certonly --config /etc/letsencrypt/certbot.ini --nginx
 echo "Certbot ran in the container."
