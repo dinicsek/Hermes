@@ -7,7 +7,7 @@ export default defineConfig({
     },
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/filament/admin/theme.css', '`resources/css/filament/manager/theme.css'],
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/filament/admin/theme.css', 'resources/css/filament/manager/theme.css'],
             refresh: [
                 ...refreshPaths,
                 'app/Livewire/**',

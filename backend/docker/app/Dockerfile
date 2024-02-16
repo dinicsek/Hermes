@@ -112,6 +112,5 @@ COPY artisan.sh /usr/sbin/artisan
 RUN chmod +x /usr/sbin/artisan
 RUN chmod 777 /mercury.sh /mercury_debug.sh /mercury_swoole.sh /mercury_kill.sh
 
-RUN pnpm build
 
 CMD ["bash", "/mercury.sh"]

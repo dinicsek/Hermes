@@ -89,4 +89,6 @@ EXPOSE 80
 EXPOSE 443
 STOPSIGNAL SIGINT
 
+RUN pnpm build
+
 CMD ["bash", "/usr/local/bin/mercury_entrypoint.sh"]
