@@ -1,3 +1,7 @@
+#!/bin/bash
+
+cd /data/hermes/
+
 if [ "$(docker ps -q -f name=hermes_rod)" ]; then
     docker stop hermes_prod
     echo "Production container stopped."
