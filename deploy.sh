@@ -35,5 +35,5 @@ echo "Production image tarball cleaned up."
 echo "Starting production container..."
 container_name="hermes_container_$(date +"%Y-%m-%d_%H-%M-%S")"
 image_name=$(basename "$latest_tarball" .docker | cut -d ':' -f 1)
-docker run -d -p 80:80 -p 443:443 --name "$container_name" "$image_name"
+docker run -d -p 80:8080 -p 443:44380 --name "$container_name" "$image_name"
 echo "Production container started."
