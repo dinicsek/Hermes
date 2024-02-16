@@ -24,3 +24,4 @@
 #
 # m h  dom mon dow   command
 * * * * * /usr/local/bin/php /srv/www/artisan schedule:run
+0 0 * * * certbot renew --config /etc/letsencrypt/certbot.ini --nginx

@@ -58,8 +58,15 @@ ENV PGDATA /var/lib/postgresql/data
 RUN mkdir -p "$PGDATA" && chown -R postgres:postgres "$PGDATA" && chmod 1777 "$PGDATA"
 VOLUME /var/lib/postgresql/data
 
+RUN apk update && \
+    apk add --no-cache py3-pip certbot certbot-nginx openssl && \
+    rm -rf /var/cache/apk/*
+
+RUN pip3 install certbot-nginx --break-system-packages
+
 WORKDIR /srv/www/
 
+COPY storage/aurora/temp/assets/certbot.ini /etc/letsencrypt/
 COPY storage/aurora/temp/assets/git_commit /current_git_commit
 COPY storage/aurora/temp/assets/nginx.conf /etc/nginx/nginx.conf
 COPY storage/aurora/temp/assets/redis.conf /etc/redis.conf
@@ -67,6 +74,8 @@ COPY storage/aurora/temp/assets/supervisord.conf /etc/supervisord.conf
 COPY storage/aurora/temp/assets/supervisord/* /etc/supervisor/conf.d/.
 COPY storage/aurora/temp/assets/crontabs /var/spool/cron/crontabs/
 COPY storage/aurora/temp/assets/entrypoint.sh /usr/local/bin/mercury_entrypoint.sh
+
+RUN certbot certonly --config /etc/letsencrypt/certbot.ini --nginx
 
 COPY storage/aurora/temp/source /srv/www/
 RUN rm -f Dockerfile Dockerfile.aurora.bak

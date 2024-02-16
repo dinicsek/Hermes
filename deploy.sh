@@ -1,16 +1,8 @@
 #!/bin/bash
 
+set -e
+
 cd /data/hermes/
-
-echo "Installing frontend dependencies..."
-cd ./frontend/web/
-pnpm install
-echo "Frontend dependencies installed."
-echo "Building frontend..."
-pnpm build
-echo "Frontend built."
-
-cd ../../
 
 previous_container_id=$(docker ps -aqf "name=hermes_container")
 if [ ! -z "$previous_container_id" ]; then

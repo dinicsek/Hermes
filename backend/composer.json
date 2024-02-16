@@ -28,7 +28,7 @@
         "shuvroroy/filament-spatie-laravel-backup": "^2.1",
         "spatie/eloquent-sortable": "^4.1",
         "spatie/laravel-data": "^3.11",
-        "minigyima/aurora": "dev-master#0d9c01d317d2ef875aa6b974f77f8b234ae036e2"
+        "minigyima/aurora": "dev-master"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
