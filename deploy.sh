@@ -2,6 +2,14 @@
 
 cd /data/hermes/
 
+echo "Installing frontend dependencies..."
+cd ./frontend/web/
+pnpm install
+echo "Frontend dependencies installed."
+echo "Building frontend..."
+pnpm build
+echo "Frontend built."
+
 previous_container_id=$(docker ps -aqf "name=hermes_container")
 if [ ! -z "$previous_container_id" ]; then
   echo "Stopping previous container with ID: $previous_container_id"
@@ -35,5 +43,5 @@ echo "Production image tarball cleaned up."
 echo "Starting production container..."
 container_name="hermes_container_$(date +"%Y-%m-%d_%H-%M-%S")"
 image_name=$(basename "$latest_tarball" .docker | cut -d ':' -f 1)
-docker run -d -p 80:8080 -p 443:44380 --name "$container_name" "$image_name"
+docker run -d  -p 80:8000 --network hermes_network --name "$container_name" "$image_name"
 echo "Production container started."
