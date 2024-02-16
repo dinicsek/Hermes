@@ -42,5 +42,5 @@ echo "Production container started."
 #echo "Production container started."
 
 echo "Deleteing old images..."
-docker image prune -a
+docker image prune -a -f
 echo "Old images deleted."

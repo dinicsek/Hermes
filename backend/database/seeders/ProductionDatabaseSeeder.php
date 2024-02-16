@@ -13,7 +13,7 @@ class ProductionDatabaseSeeder extends Seeder
         $admins = User::whereRole(UserRole::ADMIN)->first();
 
         if ($admins === null) {
-            User::factory()->create([
+            User::create([
                 'name' => 'Admin',
                 'role' => UserRole::ADMIN,
                 'email' => config('app.admin_email'),
