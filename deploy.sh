@@ -2,12 +2,11 @@
 
 cd /data/hermes/
 
-if [ "$(docker ps -q -f name=hermes_rod)" ]; then
-    docker stop hermes_prod
-    echo "Production container stopped."
-else
-    # If not running, do nothing
-    echo "Production container is not running."
+previous_container_id=$(docker ps -aqf "name=hermes_container")
+if [ ! -z "$previous_container_id" ]; then
+  echo "Stopping previous container with ID: $previous_container_id"
+  docker stop "$previous_container_id"
+  docker rm "$previous_container_id"
 fi
 
 cd ./backend/
@@ -17,18 +16,24 @@ composer install
 echo "Composer dependencies installed."
 
 echo "Building production image..."
+composer build
 php artisan aurora:build-production --yes --export --directory=../
 echo "Production build complete."
 
+DOCKER_TARBALL_DIR="/data/hermes"
+latest_tarball=$(ls -t "$DOCKER_TARBALL_DIR"/*.docker | head -n 1)
+
 echo "Loading production image..."
 cd ../
-docker load -i hermes_*.docker
+docker load -i "$latest_tarball"
 echo "Production image loaded."
 
 echo "Cleaning up production image tarball..."
-rm hermes_*.docker
+rm "$latest_tarball"
 echo "Production image tarball cleaned up."
 
 echo "Starting production container..."
-docker run -d -p 80:80 -p 443:443 hermes_prod
+container_name="hermes_container_$(date +"%Y-%m-%d_%H-%M-%S")"
+image_name=$(basename "$latest_tarball" .docker | cut -d ':' -f 1)
+docker run -d -p 80:80 -p 443:443 --name "$container_name" "$image_name"
 echo "Production container started."
