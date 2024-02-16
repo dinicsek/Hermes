@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5520b7a6dffb9adf9b5c76a311b48f03",
+    "content-hash": "d9f43b841b0f564f94df7a63a2878b1c",
     "packages": [
         {
             "name": "amphp/amp",
@@ -5351,7 +5351,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/minigyima/aurora",
-                "reference": "0d9c01d317d2ef875aa6b974f77f8b234ae036e2"
+                "reference": "fd31a925f3ea83a863a97ba57bf6e29edfe74764"
             },
             "require": {
                 "ext-pcntl": "*",
@@ -5397,7 +5397,7 @@
                 }
             ],
             "description": "An application framework / starter kit for Laravel that simplifies API development",
-            "time": "2024-02-15T22:41:13+00:00"
+            "time": "2024-02-15T23:04:16+00:00"
         },
         {
             "name": "monolog/monolog",
