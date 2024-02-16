@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Helpers\AppLinking\AppLinkingHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pulse\Facades\Pulse;
 use LaraZeus\Boredom\BoringAvatar;
@@ -32,5 +33,9 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         $this->app->bind(AppLinkingHelper::class, fn() => new AppLinkingHelper());
+
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
