@@ -7,6 +7,8 @@ use App\Models\Enums\UserRole;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
@@ -59,13 +61,23 @@ class User extends Authenticatable implements FilamentUser
         };
     }
 
-    public function tournaments()
+    public function tournaments(): HasMany
     {
         return $this->hasMany(Tournament::class);
     }
 
-    public function teams()
+    public function teams(): HasManyThrough
     {
         return $this->hasManyThrough(Team::class, Tournament::class);
+    }
+
+    public function canImpersonate(): bool
+    {
+        return $this->role === UserRole::ADMIN;
+    }
+
+    public function canBeImpersonated(): bool
+    {
+        return $this->role !== UserRole::ADMIN;
     }
 }
