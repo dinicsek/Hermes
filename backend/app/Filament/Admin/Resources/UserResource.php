@@ -63,9 +63,12 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('avatar_url')
+                Tables\Columns\ImageColumn::make('avatar_image')
                     ->state(null)
-                    ->defaultImageUrl(fn(User $record) => "https://source.boringavatars.com/beam/80/{$record->name}")
+                    ->defaultImageUrl(function (User $record) {
+                        $colors = implode(',', ['F6EDDC', 'E3E5D7', 'BDD6D2', 'A5C8CA', '586875']);
+                        return "https://source.boringavatars.com/beam/80/{$record->name}?colors={$colors}";
+                    })
                     ->label('Profilkép')
                     ->circular(),
                 Tables\Columns\TextColumn::make('name')
