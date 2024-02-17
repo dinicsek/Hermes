@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Data\TournamentData;
+use App\Models\Enums\EventStatus;
 use App\Models\Tournament;
 use Filament\Pages\SimplePage;
 
@@ -14,6 +15,10 @@ class UpcomingTournament extends SimplePage
 
     public function mount(Tournament $tournament): void
     {
+        if ($tournament->status === EventStatus::UPCOMING && $tournament->registration_starts_at->isPast() && $tournament->registration_ends_at->isFuture()) {
+            redirect()->route('register-for-tournament', $tournament);
+        }
+
         $this->tournamentData = TournamentData::from($tournament);
     }
 
