@@ -17,7 +17,6 @@ use Filament\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use LaraZeus\Boredom\BoringAvatar;
 
 class UserResource extends Resource
 {
@@ -65,7 +64,8 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('avatar_url')
-                    ->state(fn(User $record) => app()->make(BoringAvatar::class)->get(name: $record->name))
+                    ->state(null)
+                    ->defaultImageUrl(fn(User $record) => "https://source.boringavatars.com/beam/80/{$record->name}")
                     ->label('Profilkép')
                     ->circular(),
                 Tables\Columns\TextColumn::make('name')
