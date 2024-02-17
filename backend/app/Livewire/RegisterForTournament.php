@@ -41,7 +41,7 @@ class RegisterForTournament extends SimplePage implements HasForms
 
     public function mount(Tournament $tournament): void
     {
-        if ($tournament->status === EventStatus::UPCOMING) {
+        if ($tournament->status === EventStatus::UPCOMING && ($tournament->registration_starts_at->isFuture() || $tournament->registration_ends_at->isPast())) {
             redirect()->route('upcoming-tournament', $tournament);
         }
 
