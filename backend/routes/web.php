@@ -1,6 +1,9 @@
 <?php
 
-use App\Providers\RouteServiceProvider;
+use App\Livewire\Index;
+use App\Livewire\RegisterForTournament;
+use App\Livewire\Tournaments;
+use App\Livewire\UpcomingTournament;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect(RouteServiceProvider::HOME);
-});
+Route::get('/', Index::class);
+Route::get('/tournaments', Tournaments::class)->name('tournaments');
+
+Route::get('/tournaments/{tournament}/register', RegisterForTournament::class)->name('register-for-tournament');
+Route::get('/tournaments/{tournament}/upcoming', UpcomingTournament::class)->name('upcoming-tournament');

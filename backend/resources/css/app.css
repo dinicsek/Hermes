@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --sky-50: 240, 249, 255;
+        --sky-100: 224, 242, 254;
+        --sky-200: 186, 230, 253;
+        --sky-300: 125, 211, 252;
+        --sky-400: 56, 189, 248;
+        --sky-500: 14, 165, 233;
+        --sky-600: 2, 132, 199;
+        --sky-700: 3, 105, 161;
+        --sky-800: 7, 89, 133;
+        --sky-900: 12, 74, 110;
+        --sky-950: 8, 47, 73;
+
+        --primary-50: var(--sky-50);
+        --primary-100: var(--sky-100);
+        --primary-200: var(--sky-200);
+        --primary-300: var(--sky-300);
+        --primary-400: var(--sky-400);
+        --primary-500: var(--sky-500);
+        --primary-600: var(--sky-600);
+        --primary-700: var(--sky-700);
+        --primary-800: var(--sky-800);
+        --primary-900: var(--sky-900);
+        --primary-950: var(--sky-950);
+    }
+}

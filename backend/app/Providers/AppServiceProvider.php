@@ -3,6 +3,12 @@
 namespace App\Providers;
 
 use App\Helpers\AppLinking\AppLinkingHelper;
+use App\Livewire\RegisterForTournament;
+use App\Livewire\Tournaments;
+use App\Livewire\UpcomingTournament;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Filament render hooks
+        FilamentView::registerRenderHook(PanelsRenderHook::BODY_START, fn(): View => view('components.navigation', ['absolute' => true]), scopes: [Tournaments::class, RegisterForTournament::class, UpcomingTournament::class]);
     }
 
     /**
