@@ -16,6 +16,8 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use LaraZeus\Boredom\BoringAvatarPlugin;
+use LaraZeus\Boredom\Enums\Variants;
 
 class CommonPanelProvider extends PanelProvider
 {
@@ -31,7 +33,12 @@ class CommonPanelProvider extends PanelProvider
             ])
             ->discoverPages(in: app_path('Filament/Common/Pages'), for: 'App\\Filament\\Common\\Pages')
             ->plugins([
-                BreezyCore::make()->myProfile()->enableTwoFactorAuthentication()
+                BreezyCore::make()->myProfile()->enableTwoFactorAuthentication(),
+                BoringAvatarPlugin::make()
+                    ->variant(Variants::BEAM)
+                    ->size(60)
+                    ->square()
+                    ->colors(['F6EDDC', 'E3E5D7', 'BDD6D2', 'A5C8CA', '586875']),
             ])
             ->middleware([
                 EncryptCookies::class,
