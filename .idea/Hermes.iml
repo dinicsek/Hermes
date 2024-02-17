@@ -225,6 +225,8 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/storage/aurora" />
       <excludeFolder url="file://$MODULE_DIR$/backend/storage/clockwork" />
       <excludeFolder url="file://$MODULE_DIR$/backend/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/lab404/laravel-impersonate" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/stechstudio/filament-impersonate" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

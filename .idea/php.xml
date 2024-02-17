@@ -220,9 +220,16 @@
       <path value="$PROJECT_DIR$/backend/vendor/filament/filament" />
       <path value="$PROJECT_DIR$/backend/vendor/filament/tables" />
       <path value="$PROJECT_DIR$/backend/vendor/filament/notifications" />
+      <path value="$PROJECT_DIR$/backend/vendor/lab404/laravel-impersonate" />
+      <path value="$PROJECT_DIR$/backend/vendor/stechstudio/filament-impersonate" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/backend/phpunit.xml" custom_loader_path="$PROJECT_DIR$/backend/vendor/autoload.php" paratest_path="$PROJECT_DIR$/backend/vendor/bin/paratest_for_phpstorm" use_configuration_file="true" />
+    </phpunit_settings>
   </component>
 </project>
