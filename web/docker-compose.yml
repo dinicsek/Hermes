@@ -1,145 +1,154 @@
 version: '3.9'
 
 services:
-  mercury:
-    build: ./docker/app
-    hostname: mercury
-    image: mercury
-    networks:
-      aurora:
-        ipv4_address: 172.128.4.1
-    tty: true
-    expose:
-      - 9000
-    volumes:
-      - './:/srv/www/'
-      - bootstrap_cache:/srv/www/bootstrap/cache
-      - './storage/aurora/mercury/logs:/var/log'
-      - './storage/aurora/mercury/root:/root'
-    depends_on:
-      - router
+    mercury:
+        build: ./docker/app
+        hostname: mercury
+        image: mercury
+        networks:
+            aurora:
+                ipv4_address: 172.128.4.1
+        tty: true
+        expose:
+            - 9000
+        volumes:
+            - './:/srv/www/'
+            - bootstrap_cache:/srv/www/bootstrap/cache
+            - './storage/aurora/mercury/logs:/var/log'
+            - './storage/aurora/mercury/root:/root'
+        depends_on:
+            - router
 
-  queue:
-    build: ./docker/queue
-    hostname: mercury-horizon
-    networks:
-      aurora:
-        ipv4_address: 172.128.4.6
-    tty: true
-    volumes:
-      - './:/srv/www/'
-      - bootstrap_cache:/srv/www/bootstrap/cache
-      - './storage/aurora/mercury/logs:/var/log'
-      - './storage/aurora/mercury/root:/root'
-    profiles:
-      - queue
+    queue:
+        build: ./docker/queue
+        hostname: mercury-horizon
+        networks:
+            aurora:
+                ipv4_address: 172.128.4.6
+        tty: true
+        volumes:
+            - './:/srv/www/'
+            - bootstrap_cache:/srv/www/bootstrap/cache
+            - './storage/aurora/mercury/logs:/var/log'
+            - './storage/aurora/mercury/root:/root'
+        profiles:
+            - queue
 
-  cron:
-    build: ./docker/cron
-    hostname: mercury-cron
-    networks:
-      aurora:
-        ipv4_address: 172.128.4.7
-    tty: true
-    volumes:
-      - './:/srv/www/'
-      - bootstrap_cache:/srv/www/bootstrap/cache
-      - './storage/aurora/mercury/logs:/var/log'
-      - './storage/aurora/mercury/root:/root'
-    profiles:
-      - scheduler
+    cron:
+        build: ./docker/cron
+        hostname: mercury-cron
+        networks:
+            aurora:
+                ipv4_address: 172.128.4.7
+        tty: true
+        volumes:
+            - './:/srv/www/'
+            - bootstrap_cache:/srv/www/bootstrap/cache
+            - './storage/aurora/mercury/logs:/var/log'
+            - './storage/aurora/mercury/root:/root'
+        profiles:
+            - scheduler
 
-  redis:
-    image: redis:alpine
-    hostname: aurora-redis
-    networks:
-      aurora:
-        ipv4_address: 172.128.4.5
-    ports:
-      - 127.0.0.1:6379:6379
-    command: redis-server /redis/redis.conf
-    environment:
-      - REDIS_REPLICATION_MODE=master
-    volumes:
-      - './storage/aurora/mercury/logs:/var/log'
-      - './storage/aurora/mercury/root:/root'
-      - './storage/aurora/mercury/cache/data:/data'
-      - ./docker/cache:/redis
-    profiles:
-      - redis
+    redis:
+        image: redis:alpine
+        hostname: aurora-redis
+        networks:
+            aurora:
+                ipv4_address: 172.128.4.5
+        ports:
+            - 127.0.0.1:6379:6379
+        command: redis-server /redis/redis.conf
+        environment:
+            - REDIS_REPLICATION_MODE=master
+        volumes:
+            - './storage/aurora/mercury/logs:/var/log'
+            - './storage/aurora/mercury/root:/root'
+            - './storage/aurora/mercury/cache/data:/data'
+            - ./docker/cache:/redis
+        profiles:
+            - redis
 
-  nginx:
-    image: nginx:alpine
-    hostname: aurora-nginx
-    networks:
-      aurora:
-        ipv4_address: 172.128.4.2
-    volumes:
-      - './:/srv/www/'
-      - './storage/aurora/mercury/logs:/var/log'
-      - './storage/aurora/mercury/root:/root'
-      - ./docker/web/:/etc/nginx/conf.d/
-    ports:
-      - 80:80
-      - 443:443
-    depends_on:
-      - mercury
+    nginx:
+        image: nginx:alpine
+        hostname: aurora-nginx
+        networks:
+            aurora:
+                ipv4_address: 172.128.4.2
+        volumes:
+            - './:/srv/www/'
+            - './storage/aurora/mercury/logs:/var/log'
+            - './storage/aurora/mercury/root:/root'
+            - ./docker/web/:/etc/nginx/conf.d/
+        ports:
+            - 80:80
+            - 443:443
+        depends_on:
+            - mercury
 
-  router:
-    image: qoomon/docker-host
-    hostname: aurora-router
-    cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
-    restart: on-failure
-    environment:
-      - PORTS=9000
-    networks:
-      aurora:
-        ipv4_address: 172.128.4.4
+    router:
+        image: qoomon/docker-host
+        hostname: aurora-router
+        cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
+        restart: on-failure
+        environment:
+            - PORTS=9000
+        networks:
+            aurora:
+                ipv4_address: 172.128.4.4
 
-  soketi:
-    image: quay.io/soketi/soketi:1.0-16-alpine
-    hostname: aurora-soketi
-    restart: on-failure
-    volumes:
-      - './storage/aurora/mercury/logs:/var/log'
-      - './storage/aurora/mercury/root:/root'
-      - './storage/aurora/soketi:/soketi'
-    networks:
-      aurora:
-        ipv4_address: 172.128.4.8
-    command:
-      - exit 1
-    profiles:
-      - sockets
-    entrypoint: [ "sh", "-c", "touch /soketi/config.json && node /app/bin/server.js start --config /soketi/config.json" ]
+    soketi:
+        image: quay.io/soketi/soketi:1.0-16-alpine
+        hostname: aurora-soketi
+        restart: on-failure
+        volumes:
+            - './storage/aurora/mercury/logs:/var/log'
+            - './storage/aurora/mercury/root:/root'
+            - './storage/aurora/soketi:/soketi'
+        networks:
+            aurora:
+                ipv4_address: 172.128.4.8
+        command:
+            - exit 1
+        profiles:
+            - sockets
+        entrypoint: [ "sh", "-c", "touch /soketi/config.json && node /app/bin/server.js start --config /soketi/config.json" ]
 
-  postgres:
-    image: postgres:16-alpine
-    restart: on-failure
-    hostname: aurora-postgres
-    ports:
-      - 127.0.0.1:5433:5432
-    networks:
-      aurora:
-        ipv4_address: 172.128.4.3
-    volumes:
-      - './storage/aurora/mercury/database:/var/lib/postgresql/data'
-      - './storage/aurora/mercury/root:/root'
-      - './storage/aurora/mercury/logs:/var/log'
-    environment:
-      POSTGRES_USER: CHANGEME
-      POSTGRES_PASSWORD: CHANGEME
-      POSTGRES_DB: aurora
-    profiles:
-      - database
+    postgres:
+        image: postgres:16-alpine
+        restart: on-failure
+        hostname: aurora-postgres
+        ports:
+            - 127.0.0.1:5433:5432
+        networks:
+            aurora:
+                ipv4_address: 172.128.4.3
+        volumes:
+            - './storage/aurora/mercury/database:/var/lib/postgresql/data'
+            - './storage/aurora/mercury/root:/root'
+            - './storage/aurora/mercury/logs:/var/log'
+        environment:
+            POSTGRES_USER: CHANGEME
+            POSTGRES_PASSWORD: CHANGEME
+            POSTGRES_DB: aurora
+        profiles:
+            - database
+
+    mailpit:
+        image: 'axllent/mailpit:latest'
+        ports:
+            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+        networks:
+            aurora:
+                ipv4_address: 172.128.4.9
 
 networks:
-  aurora:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.128.0.0/16
+    aurora:
+        driver: bridge
+        ipam:
+            config:
+                -   subnet: 172.128.0.0/16
 
 volumes:
-  bootstrap_cache:
-    driver: local
+    bootstrap_cache:
+        driver: local
