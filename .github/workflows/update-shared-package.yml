@@ -46,7 +46,7 @@ jobs:
               run: php artisan migrate --force
             - name: Generate OpenApi Schema
               working-directory: ./backend
-              run: php artisan openapi:export --path="../frontend/shared/schema/openapi.json"
+              run: php artisan openapi:export --path="../mobile/schema/openapi.json"
             - name: Commit new schema
               uses: stefanzweifel/git-auto-commit-action@v4
               with:
@@ -81,14 +81,11 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-store-
             - name: Install shared dependencies
-              working-directory: ./frontend/shared
+              working-directory: ./mobile/
               run: pnpm install --no-frozen-lockfile
             - name: Generate api client
-              working-directory: ./frontend/shared
+              working-directory: ./mobile/
               run: pnpm generate-api-client
-            - name: Update shared index
-              working-directory: ./frontend/shared
-              run: pnpm generate-index
             - name: Commit new schema
               uses: stefanzweifel/git-auto-commit-action@v4
               with:

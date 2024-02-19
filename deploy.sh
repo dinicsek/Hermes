@@ -6,7 +6,7 @@ cd /data/hermes/
 
 docker compose down
 
-cd ./backend/
+cd ./web/
 
 echo "Installing composer dependencies..."
 composer install
