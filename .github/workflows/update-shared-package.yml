@@ -34,23 +34,23 @@ jobs:
                   extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
                   coverage: none
             - name: Install Composer packages
-              working-directory: ./backend
+              working-directory: ./web
               run: composer install -n --prefer-dist
             - name: Prepare Laravel Application
-              working-directory: ./backend
+              working-directory: ./web
               run: |
                   cp .env.ci .env
                   php artisan key:generate
             - name: Run Database Migrations
-              working-directory: ./backend
+              working-directory: ./web
               run: php artisan migrate --force
             - name: Generate OpenApi Schema
-              working-directory: ./backend
+              working-directory: ./web
               run: php artisan openapi:export --path="../mobile/schema/openapi.json"
             - name: Commit new schema
               uses: stefanzweifel/git-auto-commit-action@v4
               with:
-                  file_pattern: frontend/shared/schema/openapi.json
+                  file_pattern: mobile/schema/openapi.json
                   commit_message: Updated the API schema
     update-shared-package:
         needs: update-openapi-schema
