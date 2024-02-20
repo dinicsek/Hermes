@@ -4,6 +4,7 @@ namespace App\Filament\Manager\Resources;
 
 use App\Filament\Manager\Resources\TournamentMatchResource\Pages;
 use App\Filament\Manager\Resources\TournamentMatchResource\RelationManagers;
+use App\Filament\Manager\Resources\TournamentMatchResource\Widgets\ManageTournamentMatch;
 use App\Models\Enums\RoundMode;
 use App\Models\Enums\TournamentMatchWinner;
 use App\Models\TournamentMatch;
@@ -300,6 +301,13 @@ class TournamentMatchResource extends Resource
                 ])->grow(false),
             ])
         ])->columns(false);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            ManageTournamentMatch::class
+        ];
     }
 
     public static function getRelations(): array

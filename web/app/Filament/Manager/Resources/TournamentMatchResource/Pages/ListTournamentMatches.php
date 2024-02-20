@@ -16,4 +16,11 @@ class ListTournamentMatches extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            TournamentMatchResource\Widgets\ManageTournamentMatch::class
+        ];
+    }
 }
