@@ -1,9 +1,10 @@
 <?php
 
-use App\Livewire\Index;
-use App\Livewire\RegisterForTournament;
-use App\Livewire\Tournaments;
-use App\Livewire\UpcomingTournament;
+use App\Livewire\IndexPage;
+use App\Livewire\MobileAppDownloadPage;
+use App\Livewire\RegisterForTournamentPage;
+use App\Livewire\TournamentsPage;
+use App\Livewire\UpcomingTournamentPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', Index::class);
-Route::get('/tournaments', Tournaments::class)->name('tournaments');
+Route::get('/', IndexPage::class);
+Route::get('/tournaments', TournamentsPage::class)->name('tournaments');
 
-Route::get('/tournaments/{tournament}/register', RegisterForTournament::class)->name('register-for-tournament');
-Route::get('/tournaments/{tournament}/upcoming', UpcomingTournament::class)->name('upcoming-tournament');
+Route::get('/tournaments/{tournament}/register', RegisterForTournamentPage::class)->name('register-for-tournament');
+Route::get('/tournaments/{tournament}/upcoming', UpcomingTournamentPage::class)->name('upcoming-tournament');
+
+Route::get('/mobile-app-download', MobileAppDownloadPage::class)->name('mobile-app-download');
