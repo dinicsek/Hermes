@@ -53,6 +53,7 @@ class ManageTournamentMatch extends Widget
     {
         if ($property === "tournament_id") {
             $this->fetchCurrentMatch();
+            $this->dispatch('match-changed');
         }
     }
 }

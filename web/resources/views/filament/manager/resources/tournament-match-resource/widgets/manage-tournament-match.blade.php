@@ -20,20 +20,60 @@
             </div>
         </x-slot>
         @if ($currentTournamentData !== null)
-            <div class="flex gap-2 justify-center">
+            <div class="flex gap-2 justify-center" x-data="
+                {
+                    elapsedTime: 0,
+                    intervalId: null,
+                    calculateElapsedTime: function() {
+
+                        if ($wire.currentTournamentData.started_at === null && $wire.currentTournamentData.ended_at === null) {
+                            this.elapsedTime = 0; // If either start or end is not set, elapsed time is 0
+                        } else if ($wire.currentTournamentData.started_at !== null && ($wire.currentTournamentData.ended_at === null || new Date() < new Date($wire.currentTournamentData.ended_at))) {
+                            const startedAtDate = new Date($wire.currentTournamentData.started_at);
+                            this.elapsedTime = Math.floor((new Date() - startedAtDate) / 1000); // Calculate elapsed time in seconds
+                        } else {
+                            const startedAtDate = new Date($wire.currentTournamentData.started_at);
+                            const endedAtDate = new Date($wire.currentTournamentData.ended_at);
+                            this.elapsedTime = Math.floor((endedAtDate - startedAtDate) / 1000); // Calculate elapsed time in seconds
+                        }
+                    },
+                    updateElapsedTime: function() {
+                        if ($wire.currentTournamentData.started_at !== null && ($wire.currentTournamentData.ended_at === null || new Date() < new Date($wire.currentTournamentData.ended_at) )) {
+                            const startedAtDate = new Date($wire.currentTournamentData.started_at);
+                            this.intervalId = setInterval(() => {
+                                const now = new Date();
+                                this.elapsedTime = Math.floor((now - startedAtDate) / 1000); // Calculate elapsed time in seconds
+                            }, 1000);
+                        }
+                    }
+                }
+            " x-init="
+                (() => {
+                    calculateElapsedTime();
+                    updateElapsedTime();
+
+                    $wire.on('match-changed', () => {
+                        clearInterval(intervalId); // Clear existing interval
+                        calculateElapsedTime();
+                        updateElapsedTime();
+                    });
+                })()
+            ">
                 <p class="font-medium text-xl">
-                    {{ $currentTournamentData->round }}. forduló <span x-cloak x-show="elapsedSeconds !== 0"> - <span
-                            x-text="elapsedSeconds"></span></span>
-                <p>
-                    @if($currentTournamentData->is_stakeless)
-                        <x-filament::badge color="success">
-                            Tét nélküli
-                        </x-filament::badge>
-                    @endif
-                    @if($currentTournamentData->is_final)
-                        <x-filament::badge color="danger">
-                            Döntő
-                        </x-filament::badge>
+                    {{ $currentTournamentData->round }}. forduló <span x-cloak x-show="elapsedTime !== 0"> - <span
+                            x-text="Math.floor(elapsedTime / 3600)"></span>:<span
+                            x-text="Math.floor((elapsedTime % 3600) / 60)"></span>:<span
+                            x-text="elapsedTime % 60"></span></span>
+                </p>
+                @if($currentTournamentData->is_stakeless)
+                    <x-filament::badge color="success">
+                        Tét nélküli
+                    </x-filament::badge>
+                @endif
+                @if($currentTournamentData->is_final)
+                    <x-filament::badge color="danger">
+                        Döntő
+                    </x-filament::badge>
                 @endif
             </div>
             <div class="mb-6 flex justify-center gap-4">
