@@ -46,8 +46,11 @@
                 <li class="mb-4">
                     <div>
                         <p class="font-bold mb-4">APK fájl letöltése</p>
-                        <p>Először is töltds le a telepítő fájlt (amely úgy is gondolhatsz, mint egy exe fájlra windows
-                            rendszeren) a fentebbi gombara kattintva.</p>
+                        <p>Először is töltds le a telepítő fájlt (amelyre úgy is gondolhatsz, mint egy exe fájlra
+                            windows
+                            rendszeren) a fentebbi gombara kattintva. Ha Firefox böngészőt használsz, akkor egy ismert
+                            hiba, hogy .zip kiterjesztéssel tölti le az alkalmazást. Ebben az esetben csak nevezd át az
+                            alkalmazás telepítő fájlját .apk kiterjesztésűre.</p>
                     </div>
                 </li>
                 <li class="mb-4">

@@ -1,4 +1,4 @@
-rootProject.name = 'hermes'
+rootProject.name = 'Hermes'
 
 dependencyResolutionManagement {
   versionCatalogs {

@@ -18,7 +18,7 @@
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#ffffff"
+                "backgroundColor": "#0284c7"
             },
             "package": "me.xeretis.hermes",
             "googleServicesFile": "./google-services.json"
