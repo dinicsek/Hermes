@@ -16,6 +16,6 @@ class MobileAppDownloadPage extends Component
 
     public function downloadApp()
     {
-        return Storage::disk('public')->download('hermes.apk');
+        return Storage::disk('public')->download('hermes.apk', 'hermes.apk');
     }
 }
