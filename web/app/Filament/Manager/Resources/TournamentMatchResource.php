@@ -299,7 +299,7 @@ class TournamentMatchResource extends Resource
                         ->label('Módosítva')
                         ->dateTime()
                 ])->grow(false),
-            ])
+            ])->from('md')
         ])->columns(false);
     }
 

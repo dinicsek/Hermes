@@ -209,6 +209,9 @@ class TeamResource extends Resource
                         IconEntry::make('is_approved')
                             ->label('Jóváhagyva')
                             ->boolean(),
+                        TextEntry::make('linked_count')
+                            ->label('Csatolt eszközök száma')
+                            ->state(fn(Team $record) => count($record->push_tokens))
                     ])->columns()->grow(),
                     Section::make('Csapattagok')
                         ->schema([
@@ -227,7 +230,7 @@ class TeamResource extends Resource
                         ->label('Módosítva')
                         ->dateTime()
                 ])->grow(false),
-            ])
+            ])->from('md')
         ])->columns(false);
     }
 

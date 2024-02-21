@@ -102,7 +102,7 @@
                 </div>
             </div>
         @else
-            <p>Nem található meccs!</p>
+            <p>Úgy néz ki még nincsenek meccsek a választott versenyben!</p>
         @endif
     </x-filament::section>
 </x-filament-widgets::widget>
