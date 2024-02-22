@@ -38,7 +38,11 @@
                 az alkalmazás még nem érhető el a
                 te operációs rendszeredre!</p>
             <div class="flex justify-center">
-                <x-filament::button color="gray" wire:click="downloadApp">Letöltés Android rendszerre
+                <x-filament::button color="gray"
+                                    href="/files/hermes.apk"
+                                    tag="a">
+                    Letöltés
+                    Android rendszerre
                 </x-filament::button>
             </div>
             <h2 class="text-center text-2xl font-medium">Telepítési útmutató</h2>
