@@ -152,8 +152,10 @@
                 <x-filament::button :disabled="$currentTournamentData->started_at !== null" color="success"
                                     wire:click="startMatch">Indítás
                 </x-filament::button>
-                <x-filament::button :disabled="$currentTournamentData->started_at === null" color="danger"
-                                    wire:click="endMatch">Lezárás
+                <x-filament::button
+                    :disabled="$currentTournamentData->started_at === null || $currentTournamentData->ended_at !== null"
+                    color="danger"
+                    wire:click="endMatch">Lezárás
                 </x-filament::button>
                 <x-filament::button
                     :disabled="$currentTournamentData->ended_at === null && $nextTournamentData !== null" color="gray"
