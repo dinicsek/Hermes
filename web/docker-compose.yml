@@ -104,6 +104,8 @@ services:
             - './storage/aurora/mercury/logs:/var/log'
             - './storage/aurora/mercury/root:/root'
             - './storage/aurora/soketi:/soketi'
+        ports:
+            - 6001:6001
         networks:
             aurora:
                 ipv4_address: 172.128.4.8

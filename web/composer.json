@@ -26,6 +26,7 @@
         "livewire/livewire": "^3.4",
         "minigyima/aurora": "dev-master",
         "parallax/filament-comments": "^1.0",
+        "pusher/pusher-php-server": "^7.2",
         "shuvroroy/filament-spatie-laravel-backup": "^2.1",
         "spatie/eloquent-sortable": "^4.1",
         "spatie/laravel-data": "^3.11",

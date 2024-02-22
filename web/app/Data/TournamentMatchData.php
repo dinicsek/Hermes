@@ -12,6 +12,7 @@ class TournamentMatchData extends Data implements Wireable
     use WireableData;
 
     public function __construct(
+        public int                    $id,
         public string                 $home_team_name,
         public string                 $away_team_name,
         public int                    $home_team_id,
@@ -25,6 +26,7 @@ class TournamentMatchData extends Data implements Wireable
         public bool                   $is_stakeless,
         public int                    $tournament_id,
         public string                 $tournament_name,
+        public string                 $tournament_code,
         public bool                   $is_final,
         public ?TournamentMatchWinner $winner,
     )
