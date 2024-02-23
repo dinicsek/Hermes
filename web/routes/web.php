@@ -3,6 +3,7 @@
 use App\Livewire\IndexPage;
 use App\Livewire\MobileAppDownloadPage;
 use App\Livewire\RegisterForTournamentPage;
+use App\Livewire\ScoreboardPage;
 use App\Livewire\TournamentsPage;
 use App\Livewire\UpcomingTournamentPage;
 use Illuminate\Support\Facades\Route;
@@ -23,5 +24,6 @@ Route::get('/tournaments', TournamentsPage::class)->name('tournaments');
 
 Route::get('/tournaments/{tournament}/register', RegisterForTournamentPage::class)->name('register-for-tournament');
 Route::get('/tournaments/{tournament}/upcoming', UpcomingTournamentPage::class)->name('upcoming-tournament');
+Route::get('/tournaments/{tournament}/scoreboard', ScoreboardPage::class)->name('scoreboard');
 
 Route::get('/mobile-app-download', MobileAppDownloadPage::class)->name('mobile-app-download');
