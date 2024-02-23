@@ -48,10 +48,18 @@
                 })()
             ">
             <p class="font-medium">
-                {{ $currentTournamentMatchData->round }}. forduló <span x-cloak x-show="elapsedTime !== 0"> - <span
-                        x-text="Math.floor(elapsedTime / 3600).toString().padStart(2, '0')"></span>:<span
-                        x-text="Math.floor((elapsedTime % 3600) / 60).toString().padStart(2, '0')"></span>:<span
-                        x-text="(elapsedTime % 60).toString().padStart(2, '0')"></span></span>
+                {{ $currentTournamentMatchData->round }}. forduló {{ $currentTournamentMatchData->round }}. forduló
+                <span x-cloak x-show="elapsedTime !== 0">
+                        <span x-show="elapsedTime >= 0">
+                            -
+                            <span x-text="Math.floor(elapsedTime / 3600).toString().padStart(2, '0')"></span>:<span
+                                x-text="Math.floor((elapsedTime % 3600) / 60).toString().padStart(2, '0')"></span>:<span
+                                x-text="(elapsedTime % 60).toString().padStart(2, '0')"></span>
+                        </span>
+                        <span x-show="elapsedTime < 0">
+                            - Negatív idő
+                        </span>
+                    </span>
                 @if($currentTournamentMatchData->is_stakeless)
                     <span>
                     - Tét nélküli

@@ -44,8 +44,8 @@ class TournamentMatch extends Model
     ];
 
     protected $casts = [
-        'started_at' => 'datetime',
-        'ended_at' => 'datetime',
+        'started_at' => 'datetime:Y-m-d\TH:i:sP',
+        'ended_at' => 'datetime:Y-m-d\TH:i:sP',
         'winner' => TournamentMatchWinner::class,
     ];
 

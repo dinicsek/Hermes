@@ -68,11 +68,17 @@
                 })()
             ">
                 <p class="font-medium text-xl">
-                    {{ $currentTournamentMatchData->round }}. forduló <span x-cloak x-show="elapsedTime !== 0"> - <span
-                            x-text="Math.floor(elapsedTime / 3600).toString().padStart(2, '0')"></span>:<span
-                            x-text="Math.floor((elapsedTime % 3600) / 60).toString().padStart(2, '0')"></span>:<span
-                            x-text="(elapsedTime % 60).toString().padStart(2, '0')"></span></span>
-
+                    {{ $currentTournamentMatchData->round }}. forduló <span x-cloak x-show="elapsedTime !== 0">
+                        <span x-show="elapsedTime >= 0">
+                            -
+                            <span x-text="Math.floor(elapsedTime / 3600).toString().padStart(2, '0')"></span>:<span
+                                x-text="Math.floor((elapsedTime % 3600) / 60).toString().padStart(2, '0')"></span>:<span
+                                x-text="(elapsedTime % 60).toString().padStart(2, '0')"></span>
+                        </span>
+                        <span x-show="elapsedTime < 0">
+                            - Negatív idő
+                        </span>
+                    </span>
                 </p>
                 @if($currentTournamentMatchData->is_stakeless)
                     <x-filament::badge color="success">
@@ -87,9 +93,9 @@
             </div>
             <div class="mb-6 flex justify-center gap-4">
                 <p class="text-center text-sm text-gray-400 dark:text-gray-500">Meccs
-                    kezdete: {{ $currentTournamentMatchData->started_at !== null ? Carbon::parse($currentTournamentMatchData->started_at)->format('H:i:s') : '-' }}</p>
+                    kezdete: {{ $currentTournamentMatchData->started_at !== null ? $currentTournamentMatchData->started_at->format('H:i:s') : '-' }}</p>
                 <p class="text-center text-sm text-gray-400 dark:text-gray-500">Meccs
-                    vége: {{ $currentTournamentMatchData->ended_at !== null ? Carbon::parse($currentTournamentMatchData->ended_at)->format('H:i:s') : '-' }}</p>
+                    vége: {{ $currentTournamentMatchData->ended_at !== null ? $currentTournamentMatchData->ended_at->format('H:i:s') : '-' }}</p>
             </div>
             <div class="grid grid-cols-2 gap-6">
                 <div>
@@ -105,16 +111,16 @@
                             class="font-bold">{{ $currentTournamentMatchData->home_team_score }}</span></p>
                     <div class="w-full flex gap-4 mt-4">
                         <x-filament::button class="flex-1" color="info"
-                                            :disabled="$currentTournamentMatchData->started_at === null"
+                                            :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->started_at > now()"
                                             wire:click="incrementHomeTeamScore">+
                         </x-filament::button>
                         <x-filament::button class="flex-1" color="info"
-                                            :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->home_team_score <= 0"
+                                            :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->home_team_score <= 0 || $currentTournamentMatchData->started_at > now()"
                                             wire:click="decrementHomeTeamScore">
                             -
                         </x-filament::button>
                         <x-filament::button class="flex-1" color="danger"
-                                            :disabled="$currentTournamentMatchData->started_at === null"
+                                            :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->started_at > now()"
                                             wire:click="resetHomeTeamScore">
                             Visszaállítás
                         </x-filament::button>
@@ -133,16 +139,16 @@
                             class="font-bold">{{ $currentTournamentMatchData->away_team_score }}</span></p>
                     <div class="w-full flex gap-4 mt-4">
                         <x-filament::button class="flex-1" color="info"
-                                            :disabled="$currentTournamentMatchData->started_at === null"
+                                            :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->started_at > now()"
                                             wire:click="incrementAwayTeamScore">+
                         </x-filament::button>
                         <x-filament::button class="flex-1" color="info"
-                                            :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->away_team_score <= 0"
+                                            :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->away_team_score <= 0 || $currentTournamentMatchData->started_at > now()"
                                             wire:click="decrementAwayTeamScore">
                             -
                         </x-filament::button>
                         <x-filament::button class="flex-1" color="danger"
-                                            :disabled="$currentTournamentMatchData->started_at === null"
+                                            :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->started_at > now()"
                                             wire:click="resetAwayTeamScore">
                             Visszaállítás
                         </x-filament::button>
@@ -154,7 +160,7 @@
                                     wire:click="startMatch">Indítás
                 </x-filament::button>
                 <x-filament::button
-                    :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->ended_at !== null"
+                    :disabled="$currentTournamentMatchData->started_at === null || $currentTournamentMatchData->ended_at !== null || $currentTournamentMatchData->started_at > now()"
                     color="danger"
                     wire:click="endMatch">Lezárás
                 </x-filament::button>

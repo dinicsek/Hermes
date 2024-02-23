@@ -23,6 +23,7 @@ use Filament\Infolists\Infolist;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -202,7 +203,36 @@ class TournamentMatchResource extends Resource
                     ->preload()
                     ->searchable()
                     ->native(false),
+                Tables\Filters\TernaryFilter::make('upcoming_or_ongoing')
+                    ->label('Jövőbeli/Jelenlegi')
+                    ->queries(
+                        true: fn(Builder $query) => $query->whereEndedAt(null)->whereNotNull(['home_team_id', 'away_team_id']),
+                        false: fn(Builder $query) => $query->whereNotNull('ended_at'),
+                        blank: fn(Builder $query) => $query,
+                    ),
+                Tables\Filters\QueryBuilder::make()
+                    ->constraints([
+                        Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('round')
+                            ->label('Forduló'),
+                        Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('home_team_score')
+                            ->label('Hazai csapat pontszáma'),
+                        Tables\Filters\QueryBuilder\Constraints\NumberConstraint::make('away_team_score')
+                            ->label('Vendég csapat pontszáma'),
+                        Tables\Filters\QueryBuilder\Constraints\SelectConstraint::make('winner')
+                            ->label('Győztes csapat')
+                            ->options(TournamentMatchWinner::class),
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('started_at')
+                            ->label('Kezdés'),
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('ended_at')
+                            ->label('Befejezés'),
+                        Tables\Filters\QueryBuilder\Constraints\BooleanConstraint::make('is_stakeless')
+                            ->label('Tét nélküli'),
+                        Tables\Filters\QueryBuilder\Constraints\BooleanConstraint::make('is_final')
+                            ->label('Döntő'),
+
+                    ])
             ])
+            ->filtersFormWidth(MaxWidth::Large)
             ->reorderable('sort')
             ->paginatedWhileReordering()
             ->actions([

@@ -21,11 +21,6 @@ class ManageTournamentMatch extends Widget
 
     protected int|string|array $columnSpan = 'full';
 
-    public function stuff($event)
-    {
-        ddd($event);
-    }
-
     public function mount()
     {
         $this->fetchCurrentMatch();

@@ -3,9 +3,14 @@
 namespace App\Data;
 
 use App\Models\Enums\TournamentMatchWinner;
+use DateTime;
 use Livewire\Wireable;
+use Spatie\LaravelData\Attributes\WithCast;
+use Spatie\LaravelData\Attributes\WithTransformer;
+use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Concerns\WireableData;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Transformers\DateTimeInterfaceTransformer;
 
 class TournamentMatchData extends Data implements Wireable
 {
@@ -19,8 +24,12 @@ class TournamentMatchData extends Data implements Wireable
         public int                    $away_team_id,
         public ?int                   $home_team_score,
         public ?int                   $away_team_score,
-        public ?string                $started_at,
-        public ?string                $ended_at,
+        #[WithCast(DateTimeInterfaceCast::class)]
+        #[WithTransformer(DateTimeInterfaceTransformer::class)]
+        public ?DateTime              $started_at,
+        #[WithCast(DateTimeInterfaceCast::class)]
+        #[WithTransformer(DateTimeInterfaceTransformer::class)]
+        public ?DateTime              $ended_at,
         public int                    $round,
         public ?int                   $sort,
         public bool                   $is_stakeless,
