@@ -31,6 +31,7 @@ class ManageTournamentMatch extends Widget
         $this->fetchCurrentMatch();
         if ($this->currentTournamentMatchData !== null && $this->currentTournamentMatchData->started_at !== null && $this->currentTournamentMatchData->ended_at === null) {
             Cache::set('tournament.' . $this->currentTournamentMatchData->tournament_code . '.current-match', $this->currentTournamentMatchData->toArray());
+            CurrentMatchUpdatedEvent::broadcast($this->currentTournamentMatchData);
         }
     }
 
