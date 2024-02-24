@@ -5,6 +5,7 @@ namespace App\Filament\Manager\Resources;
 use App\Filament\Manager\Resources\TeamResource\Pages;
 use App\Filament\Manager\Resources\TeamResource\RelationManagers;
 use App\Filament\Manager\Resources\TeamResource\RelationManagers\MatchesRelationManager;
+use App\Models\Enums\TournamentMatchWinner;
 use App\Models\Team;
 use App\Models\Tournament;
 use Closure;
@@ -23,6 +24,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Pages\Page;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -222,6 +224,75 @@ class TeamResource extends Resource
                                 ->label('E-mail címek')
                                 ->placeholder("Nincsenek e-mail címek megadva"),
                         ])->grow(),
+                    Section::make('Statisztikák')
+                        ->schema([
+                            TextEntry::make('matches_count')
+                                ->label('Meccsek száma')
+                                ->badge()
+                                ->state(fn(Team $record) => $record->matches()->count()),
+                            TextEntry::make('home_matches_count')
+                                ->label('Hazai meccsek száma')
+                                ->badge()
+                                ->color('info')
+                                ->state(fn(Team $record) => $record->homeMatches()->count()),
+                            TextEntry::make('away_matches_count')
+                                ->label('Vendég meccsek száma')
+                                ->badge()
+                                ->color('danger')
+                                ->state(fn(Team $record) => $record->awayMatches()->count()),
+                            TextEntry::make('wins_count')
+                                ->label('Győzelmek száma')
+                                ->badge()
+                                ->color('success')
+                                ->state(function (Team $record) {
+                                    $homeWins = $record->homeMatches()->where('winner', TournamentMatchWinner::HOME_TEAM)->count();
+                                    $awayWins = $record->awayMatches()->where('winner', TournamentMatchWinner::AWAY_TEAM)->count();
+
+                                    return $homeWins + $awayWins;
+                                }),
+                            TextEntry::make('total_score')
+                                ->label('Összes szerzett pont')
+                                ->weight(FontWeight::Bold)
+                                ->state(function (Team $record) {
+                                    $homeScore = $record->homeMatches()->sum('home_team_score');
+                                    $awayScore = $record->awayMatches()->sum('away_team_score');
+
+                                    return $homeScore + $awayScore;
+                                }),
+                            TextEntry::make('total_conceded')
+                                ->label('Összes ellenük szerzett pont')
+                                ->weight(FontWeight::Bold)
+                                ->state(function (Team $record) {
+                                    $homeConceded = $record->homeMatches()->sum('away_team_score');
+                                    $awayConceded = $record->awayMatches()->sum('home_team_score');
+
+                                    return $homeConceded + $awayConceded;
+                                }),
+                            TextEntry::make('average_score')
+                                ->label('Átlagosan szerzett pont')
+                                ->weight(FontWeight::Bold)
+                                ->state(function (Team $record) {
+                                    $homeScore = $record->homeMatches()->sum('home_team_score');
+                                    $awayScore = $record->awayMatches()->sum('away_team_score');
+
+                                    $score = $homeScore + $awayScore;
+
+                                    return $score / ($record->homeMatches()->whereNotNull('home_team_score')->count() + $record->awayMatches()->whereNotNull('away_team_score')->count());
+                                })
+                                ->numeric(2),
+                            TextEntry::make('average_conceded')
+                                ->label('Átlagosan ellenük szerzett pont')
+                                ->weight(FontWeight::Bold)
+                                ->state(function (Team $record) {
+                                    $homeConceded = $record->homeMatches()->sum('away_team_score');
+                                    $awayConceded = $record->awayMatches()->sum('home_team_score');
+
+                                    $conceded = $homeConceded + $awayConceded;
+
+                                    return $conceded / ($record->homeMatches()->whereNotNull('away_team_score')->count() + $record->awayMatches()->whereNotNull('home_team_score')->count());
+                                })
+                                ->numeric(2),
+                        ])->columns()->grow(),
                 ])->grow(),
                 Section::make([
                     TextEntry::make('created_at')
