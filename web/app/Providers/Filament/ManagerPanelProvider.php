@@ -58,6 +58,7 @@ class ManagerPanelProvider extends PanelProvider
                 NavigationGroup::make('Általános'),
             ])
             ->sidebarCollapsibleOnDesktop()
+            ->databaseNotifications()
             ->viteTheme('resources/css/filament/manager/theme.css')
             ->middleware([
                 EncryptCookies::class,

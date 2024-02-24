@@ -46,7 +46,7 @@ class ListTournamentMatches extends ListRecords
                 ->action(function (array $data) {
                     $tournament = Tournament::find($data['tournament_id']);
                     $excludedTeamIds = $data['exclude_team_ids'] ?? [];
-                    GenerateInitialTournamentMatchesJob::dispatch($tournament, $excludedTeamIds);
+                    GenerateInitialTournamentMatchesJob::dispatch($tournament, $excludedTeamIds, auth()->user());
                 }),
             Actions\CreateAction::make(),
         ];
