@@ -116,15 +116,15 @@ class InitialTournamentMatchGenerator
 
     private function generateEliminationMatches(Collection $teams, Tournament $tournament)
     {
-        $teamIds = $teams->pluck('id')->toArray();
+        $teamIds = $teams->pluck('id')->shuffle()->toArray();
 
-        $teamIds = collect($teamIds)->shuffle()->chunk(2);
-
-        foreach ($teamIds as $teamId) {
+        Log::debug('Elimination teams: ', $teamIds);
+        
+        for ($i = 0; $i < count($teamIds); $i += 2) {
             $match = TournamentMatch::create([
-                'home_team_id' => $teamId[0],
-                'away_team_id' => $teamId[1] ?? null,
-                'round' => isset($teamId[1]) ? 1 : 2,
+                'home_team_id' => $teamIds[$i],
+                'away_team_id' => $teamIds[$i + 1] ?? null,
+                'round' => isset($teamIds[$i + 1]) ? 1 : 2,
                 'tournament_id' => $tournament->id,
                 'elimination_round' => 1,
                 'elimination_level' => 1,
