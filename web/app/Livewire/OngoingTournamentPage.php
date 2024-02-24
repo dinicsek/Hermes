@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Data\TournamentData;
+use App\Data\TournamentMatchData;
 use App\Models\Enums\EventStatus;
+use App\Models\Team;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -14,9 +16,11 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\HtmlString;
 use Livewire\Component;
 
@@ -26,6 +30,8 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
     use InteractsWithForms;
 
     public int $tournamentId;
+    public string $tournamentCode;
+    public ?TournamentMatchData $currentTournamentMatchData = null;
     public TournamentData $tournamentData;
 
     public function mount(Tournament $tournament): void
@@ -38,6 +44,13 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
 
         $this->tournamentId = $tournament->id;
         $this->tournamentData = TournamentData::from($tournament);
+
+        $this->tournamentCode = $tournament->code;
+        $currentMatchArray = Cache::get('tournament.' . $tournament->code . '.current-match');
+
+        if ($currentMatchArray !== null) {
+            $this->currentTournamentMatchData = TournamentMatchData::from($currentMatchArray);
+        }
     }
 
     public function table(Table $table): Table
@@ -48,7 +61,7 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
                 Stack::make([
                     TextColumn::make('round')
                         ->weight(FontWeight::Bold)
-                        ->formatStateUsing(fn(string $state) => $state . '. forduló'),
+                        ->formatStateUsing(fn(string $state, TournamentMatch $record) => $state . '. forduló' . ($record->is_final ? ' - Tét nélküli' : '') . ($record->is_final ? ' - Döntő' : '')),
                     TextColumn::make('home_team')
                         ->state(function (TournamentMatch $record) {
                             return new HtmlString($record->homeTeam->name . ($record->home_team_score !== null ? ' - <strong>' . $record->home_team_score . '</strong>' : ''));
@@ -62,6 +75,7 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
                         ->badge()
                         ->color('danger'),
                     TextColumn::make('time')
+                        ->label('Kezdés - Befejezés')
                         ->state(function (TournamentMatch $record) {
                             if ($record->started_at === null)
                                 return new HtmlString('<span class="text-gray-500 dark:text-gray-400">Még nem kezdődött el</span>');
@@ -75,12 +89,26 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
             ])
             ->filters([
                 TernaryFilter::make('upcoming_or_ongoing')
-                    ->label('Jövőbeli/Jelenlegi')
+                    ->label('Jövőbeli')
                     ->queries(
-                        true: fn(Builder $query) => $query->whereEndedAt(null),
+                        true: fn(Builder $query) => $query->whereEndedAt(null)->whereStartedAt(null),
                         false: fn(Builder $query) => $query->whereNotNull('ended_at'),
                         blank: fn(Builder $query) => $query,
                     ),
+                SelectFilter::make('teams')
+                    ->label('Csapatok')
+                    ->options(Team::where('tournament_id', $this->tournamentId)->pluck('name', 'id')->toArray())
+                    ->multiple()
+                    ->query(function (Builder $query, array $data) {
+                        if (empty($data['values']))
+                            return $query;
+
+                        return $query->whereHas('homeTeam', function ($query) use ($data) {
+                            $query->whereIn('id', $data['values']);
+                        })->orWhereHas('awayTeam', function ($query) use ($data) {
+                            $query->whereIn('id', $data['values']);
+                        });
+                    })
             ], layout: FiltersLayout::Modal)
             ->modifyQueryUsing(function ($query) {
                 return $query->ordered()->whereNotNull(['home_team_id', 'away_team_id'])->with(['homeTeam', 'awayTeam']);
@@ -90,5 +118,11 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
     public function render()
     {
         return view('livewire.ongoing-tournament-page');
+    }
+
+    public function updateCurrentTournamentMatchData($data)
+    {
+        $this->currentTournamentMatchData = TournamentMatchData::from($data);
+        $this->dispatch('match-changed');
     }
 }
