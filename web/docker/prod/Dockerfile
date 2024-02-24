@@ -87,6 +87,7 @@ VOLUME /srv/www/bootstrap/cache
 
 EXPOSE 80
 EXPOSE 443
+EXPOSE 6001
 STOPSIGNAL SIGINT
 
 RUN pnpm build

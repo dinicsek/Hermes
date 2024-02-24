@@ -277,7 +277,12 @@ class TeamResource extends Resource
 
                                     $score = $homeScore + $awayScore;
 
-                                    return $score / ($record->homeMatches()->whereNotNull('home_team_score')->count() + $record->awayMatches()->whereNotNull('away_team_score')->count());
+                                    $matchCount = $record->homeMatches()->whereNotNull('home_team_score')->count() + $record->awayMatches()->whereNotNull('away_team_score')->count();
+
+                                    if ($matchCount === 0)
+                                        return 0;
+
+                                    return $score / $matchCount;
                                 })
                                 ->numeric(2),
                             TextEntry::make('average_conceded')
@@ -289,7 +294,12 @@ class TeamResource extends Resource
 
                                     $conceded = $homeConceded + $awayConceded;
 
-                                    return $conceded / ($record->homeMatches()->whereNotNull('away_team_score')->count() + $record->awayMatches()->whereNotNull('home_team_score')->count());
+                                    $matchCount = $record->homeMatches()->whereNotNull('away_team_score')->count() + $record->awayMatches()->whereNotNull('home_team_score')->count();
+
+                                    if ($matchCount === 0)
+                                        return 0;
+
+                                    return $conceded / $matchCount;
                                 })
                                 ->numeric(2),
                         ])->columns()->grow(),
