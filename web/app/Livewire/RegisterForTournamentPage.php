@@ -43,6 +43,8 @@ class RegisterForTournamentPage extends SimplePage implements HasForms
     {
         if ($tournament->status === EventStatus::UPCOMING && ($tournament->registration_starts_at->isFuture() || $tournament->registration_ends_at->isPast())) {
             redirect()->route('upcoming-tournament', $tournament);
+        } elseif ($tournament->status === EventStatus::ONGOING) {
+            redirect()->route('ongoing-tournament', $tournament);
         }
 
         $this->tournamentId = $tournament->id;

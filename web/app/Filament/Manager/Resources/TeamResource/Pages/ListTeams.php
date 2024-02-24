@@ -17,6 +17,7 @@ class ListTeams extends ListRecords
         return [
             ExportAction::make('export')
                 ->label('Exportálás')
+                ->tooltip('Elérhető formátumok: CSV, XLSX. Az exportálás figyelembe veszi a jelenlegi szűrőket.')
                 ->exporter(TeamExporter::class),
             Actions\CreateAction::make(),
         ];

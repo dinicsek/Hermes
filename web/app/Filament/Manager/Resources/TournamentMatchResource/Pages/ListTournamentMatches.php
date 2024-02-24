@@ -9,6 +9,7 @@ use App\Models\Tournament;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Livewire\Attributes\On;
 
@@ -46,6 +47,7 @@ class ListTournamentMatches extends ListRecords
                 ->action(function (array $data) {
                     $tournament = Tournament::find($data['tournament_id']);
                     $excludedTeamIds = $data['exclude_team_ids'] ?? [];
+                    Notification::make('started_generating_initial_matches')->title('A meccsek generálása elkezdődött a háttérben!')->success()->send();
                     GenerateInitialTournamentMatchesJob::dispatch($tournament, $excludedTeamIds, auth()->user());
                 }),
             Actions\CreateAction::make(),

@@ -17,6 +17,8 @@ class UpcomingTournamentPage extends SimplePage
     {
         if ($tournament->status === EventStatus::UPCOMING && $tournament->registration_starts_at->isPast() && $tournament->registration_ends_at->isFuture()) {
             redirect()->route('register-for-tournament', $tournament);
+        } elseif ($tournament->status === EventStatus::ONGOING) {
+            redirect()->route('ongoing-tournament', $tournament);
         }
 
         $this->tournamentData = TournamentData::from($tournament);

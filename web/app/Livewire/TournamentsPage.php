@@ -63,6 +63,8 @@ class TournamentsPage extends SimplePage implements HasForms
             return redirect()->route('register-for-tournament', $tournament);
         } elseif ($tournament->status === EventStatus::UPCOMING) {
             return redirect()->route('upcoming-tournament', $tournament);
+        } elseif ($tournament->status === EventStatus::ONGOING) {
+            return redirect()->route('ongoing-tournament', $tournament);
         }
 
         return redirect('/');
