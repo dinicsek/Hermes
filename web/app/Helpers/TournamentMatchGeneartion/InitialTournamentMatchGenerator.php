@@ -20,6 +20,8 @@ class InitialTournamentMatchGenerator
         $roundSettings = collect($tournament->round_settings)->firstWhere('round', '=', 1);
         if (RoundConfiguration::from($roundSettings)->mode === RoundMode::GROUP) {
             $this->generateGroupMatches($teams, RoundConfiguration::from($roundSettings), $tournament);
+        } else if (RoundConfiguration::from($roundSettings)->mode === RoundMode::ELIMINATION) {
+            $this->generateEliminationMatches($teams, $tournament);
         }
     }
 
@@ -96,7 +98,7 @@ class InitialTournamentMatchGenerator
         $newGroups = collect([]);
         for ($i = 0; $i < $count; $i++) {
             $newGroups->push(Group::create([
-                'name' => 'Csoport ' . ($i + 1),
+                'name' => 'Csoport 1/' . ($i + 1),
                 'tournament_id' => $tournamentId,
                 'round' => 1,
                 'is_generated' => true,
@@ -104,5 +106,24 @@ class InitialTournamentMatchGenerator
             Log::debug('Created group: ' . $newGroups->last()->id . ' ' . $newGroups->last()->name);
         }
         return $newGroups;
+    }
+
+    private function generateEliminationMatches(Collection $teams, Tournament $tournament)
+    {
+        $teamIds = $teams->pluck('id')->toArray();
+
+        $teamIds = collect($teamIds)->shuffle()->chunk(2);
+
+        foreach ($teamIds as $teamId) {
+            $match = TournamentMatch::create([
+                'home_team_id' => $teamId[0],
+                'away_team_id' => $teamId[1] ?? null,
+                'round' => isset($teamId[1]) ? 1 : 2,
+                'tournament_id' => $tournament->id,
+                'elimination_round' => 1,
+                'elimination_level' => 1,
+            ]);
+            Log::debug('Created elimination match: ' . $match->id . ' ' . $match->home_team_id . ' - ' . $match->away_team_id);
+        }
     }
 }
