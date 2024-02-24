@@ -48,7 +48,7 @@
                 })()
             ">
             <p class="font-medium">
-                {{ $currentTournamentMatchData->round }}. forduló {{ $currentTournamentMatchData->round }}. forduló
+                {{ $currentTournamentMatchData->round }}. forduló
                 <span x-cloak x-show="elapsedTime !== 0">
                         <span x-show="elapsedTime >= 0">
                             -

@@ -9,14 +9,20 @@
                         <x-filament::badge>{{ $currentTournamentMatchData->tournament_name }}</x-filament::badge>
                     @endif
                 </div>
-                <x-filament::input.wrapper>
-                    <x-filament::input.select wire:model.live="tournament_id">
-                        <option value="0">-</option>
-                        @foreach($this->selectableTournaments as $tournament)
-                            <option value="{{ $tournament['id'] }}">{{ $tournament['name'] }}</option>
-                        @endforeach
-                    </x-filament::input.select>
-                </x-filament::input.wrapper>
+                <div class="flex gap-4 items-center">
+                    <x-filament::link
+                        href="{{ route('scoreboard', ['tournament' => $currentTournamentMatchData->tournament_code]) }}"
+                        color="primary">Eredményjelző tábla
+                    </x-filament::link>
+                    <x-filament::input.wrapper>
+                        <x-filament::input.select wire:model.live="tournament_id">
+                            <option value="0">-</option>
+                            @foreach($this->selectableTournaments as $tournament)
+                                <option value="{{ $tournament['id'] }}">{{ $tournament['name'] }}</option>
+                            @endforeach
+                        </x-filament::input.select>
+                    </x-filament::input.wrapper>
+                </div>
             </div>
         </x-slot>
         @if ($currentTournamentMatchData !== null)

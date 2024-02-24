@@ -68,6 +68,7 @@ class AdminPanelProvider extends PanelProvider
                     ->sort(20)
                     ->url(url(config('pulse.path')), shouldOpenInNewTab: true),
             ])
+            ->sidebarCollapsibleOnDesktop()
             ->plugins([
                 BreezyCore::make()->myProfile()->enableTwoFactorAuthentication(),
                 BoringAvatarPlugin::make()

@@ -4,6 +4,7 @@ namespace App\Filament\Manager\Resources;
 
 use App\Filament\Manager\Resources\TeamResource\Pages;
 use App\Filament\Manager\Resources\TeamResource\RelationManagers;
+use App\Filament\Manager\Resources\TeamResource\RelationManagers\MatchesRelationManager;
 use App\Models\Team;
 use App\Models\Tournament;
 use Closure;
@@ -237,7 +238,8 @@ class TeamResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\GroupsRelationManager::make()
+            RelationManagers\GroupsRelationManager::make(),
+            MatchesRelationManager::make(),
         ];
     }
 
