@@ -42,7 +42,8 @@ class InitialTournamentMatchGenerator
             return $team->groups;
         });
 
-        $currentGroupCount = $currentGroups->unique('id')->count();
+        $currentGroups = $currentGroups->unique('id');
+        $currentGroupCount = $currentGroups->count();
 
         if ($currentGroupCount < $groupCount) {
             $newGroups = $this->createGroups($groupCount - $currentGroupCount, $tournament->id);
@@ -71,6 +72,8 @@ class InitialTournamentMatchGenerator
             Log::debug('Ordered groups: ', $currentGroups->toArray());
         });
 
+        Log::debug('Current groups: ', $currentGroups->toArray());
+
         $currentGroups->each(function ($group) use ($tournament) {
             $teamIds = $group->teams->pluck('id')->toArray();
 
@@ -78,7 +81,7 @@ class InitialTournamentMatchGenerator
 
             for ($i = 0; $i < count($teamIds) - 1; $i++) {
                 for ($j = $i + 1; $j < count($teamIds); $j++) {
-                    array_push($matches, [$teamIds[$i], $teamIds[$j]]);
+                    $matches[] = [$teamIds[$i], $teamIds[$j]];
                 }
             }
 
@@ -90,6 +93,9 @@ class InitialTournamentMatchGenerator
                     'tournament_id' => $tournament->id,
                 ]);
             });
+
+            Log::debug('Created matches for group: ' . $group->id . ' ' . $group->name);
+            Log::debug('Matches: ' . count($matches));
         });
     }
 
