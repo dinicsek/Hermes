@@ -12,7 +12,7 @@
                 <div class="flex gap-4 items-center">
                     <x-filament::link
                         href="{{ route('scoreboard', ['tournament' => $currentTournamentMatchData->tournament_code]) }}"
-                        color="primary">Eredményjelző tábla
+                        target="_blank">Eredményjelző tábla
                     </x-filament::link>
                     <x-filament::input.wrapper>
                         <x-filament::input.select wire:model.live="tournament_id">

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Manager\Resources\GroupResource\RelationManagers;
 
+use App\Models\Enums\TournamentMatchWinner;
 use App\Models\Team;
 use Closure;
 use Filament\Forms\Components\Section;
@@ -12,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -84,6 +86,7 @@ class TeamsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $round = $this->ownerRecord->round;
         return $table
             ->recordTitleAttribute('name')
             ->columns([
@@ -93,6 +96,27 @@ class TeamsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('members')
                     ->label('Csapattagok')
                     ->words(5)
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('win_count')
+                    ->label('Győzelmek')
+                    ->state(function (Team $record) use ($round) {
+                        $homeWins = $record->homeMatches->where('round', $round)->where('winner', TournamentMatchWinner::HOME_TEAM)->count();
+                        $awayWins = $record->awayMatches->where('round', $round)->where('winner', TournamentMatchWinner::AWAY_TEAM)->count();
+
+                        return $homeWins + $awayWins;
+                    })
+                    ->badge()
+                    ->color('success')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('total_score')
+                    ->label('Szerzett pontok')
+                    ->state(function (Team $record) use ($round) {
+                        $homeScores = $record->homeMatches->where('round', $round)->sum('home_team_score');
+                        $awayScores = $record->awayMatches->where('round', $round)->sum('away_team_score');
+
+                        return $homeScores + $awayScores;
+                    })
+                    ->weight(FontWeight::Bold)
                     ->sortable(),
             ])
             ->filters([
@@ -117,7 +141,10 @@ class TeamsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\DetachBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query->with('awayMatches', 'homeMatches');
+            });
     }
 
     #[On('refresh_teams')]
