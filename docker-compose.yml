@@ -6,8 +6,6 @@ services:
         networks:
             hermes:
                 ipv4_address: 172.128.1.1
-        ports:
-          - "6001:6001"
         volumes:
             - "/opt/hermes/data/pg:/var/lib/postgresql/data"
             - "/opt/hermes/data/storage/app:/srv/www/storage/app"
