@@ -47,7 +47,7 @@ class ListTournamentMatches extends ListRecords
                 ->action(function (array $data) {
                     $tournament = Tournament::find($data['tournament_id']);
                     $excludedTeamIds = $data['exclude_team_ids'] ?? [];
-                    Notification::make('started_generating_initial_matches')->title('A meccsek generálása elkezdődött a háttérben!')->success()->send();
+                    Notification::make()->title('A meccsek generálása elkezdődött a háttérben!')->success()->send();
                     GenerateInitialTournamentMatchesJob::dispatch($tournament, $excludedTeamIds, auth()->user());
                 }),
             Actions\CreateAction::make(),

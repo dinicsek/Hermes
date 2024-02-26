@@ -28,7 +28,7 @@ class GenerateInitialTournamentMatchesJob implements ShouldQueue
     {
         $generator = new InitialTournamentMatchGenerator();
         $generator->generate($this->tournament, $this->excludedTeamIds);
-        Notification::make('initial_tournament_match_generation_finished')
+        Notification::make()
             ->title('A meccsek generálása befejeződött')
             ->success()
             ->body('A generálás befejeződött, frissítsd a meccsek oldalt, hogy lásd az új meccseket!')

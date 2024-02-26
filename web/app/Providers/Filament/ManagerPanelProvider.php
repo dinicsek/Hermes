@@ -44,7 +44,6 @@ class ManagerPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Manager/Widgets'), for: 'App\\Filament\\Manager\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->plugins([
                 BreezyCore::make()->myProfile()->enableTwoFactorAuthentication(),
