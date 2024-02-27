@@ -20,8 +20,8 @@ class ViewTeam extends ViewRecord
     {
         return [
             Actions\Action::make('send_notification')->label('Értesítés küldése')->color('gray')->icon('heroicon-o-paper-airplane')->form([
-                TextInput::make('title')->label('Cím')->required(),
-                TextInput::make('body')->label('Tartalom')->required(),
+                TextInput::make('title')->label('Az értesítés címe')->required(),
+                TextInput::make('body')->label('Az értesítés tartalma')->required(),
             ])->action(function (ViewTeam $livewire, array $data) {
                 $tokens = $livewire->getRecord()->push_tokens;
 
@@ -37,6 +37,11 @@ class ViewTeam extends ViewRecord
                     'body' => $data['body'],
                 ])->withAndroidConfig(AndroidConfig::fromArray([
                     'priority' => 'high',
+                    'notification' => [
+                        'color' => '#3b82f6',
+                        'sound' => 'default',
+                        'vibrate_timings' => ['0.5s', '1s', '0.5s', '1s', '0.5s'],
+                    ],
                 ]));
 
                 $messaging->sendMulticast($message, $tokens);
