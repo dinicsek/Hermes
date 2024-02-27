@@ -49,6 +49,8 @@ class ViewTeam extends ViewRecord
                 ])->withAndroidConfig($androidConfig);
 
                 $messaging->sendMulticast($message, $tokens);
+
+                Notification::make()->title('Értesítés sikeresen kiküldve.')->success()->send();
             }),
             Actions\DeleteAction::make(),
         ];

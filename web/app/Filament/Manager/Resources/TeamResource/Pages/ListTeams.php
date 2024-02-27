@@ -32,7 +32,7 @@ class ListTeams extends ListRecords
                 ColorPicker::make('color')->label('Értesítés színe')->default('#3b82f6'),
             ])->modalSubmitAction(fn(Actions\StaticAction $action) => $action->label('Kiküldés'))->action(function (array $data) {
                 $tokens = Team::where('tournament_id', $data['tournament_id'])->pluck('push_tokens')->flatten()->toArray();
-                
+
                 if ($tokens === []) {
                     Notification::make()->title('Nem lett kiküldve értesítés, mivel nincsenek összekapcsolt eszközök.')->danger()->send();
                     return;
@@ -54,6 +54,8 @@ class ListTeams extends ListRecords
                 ])->withAndroidConfig($androidConfig);
 
                 $messaging->sendMulticast($message, $tokens);
+
+                Notification::make()->title('Értesítés sikeresen kiküldve.')->success()->send();
             }),
             ExportAction::make('export')
                 ->label('Exportálás')

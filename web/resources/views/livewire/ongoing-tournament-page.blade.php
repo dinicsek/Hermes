@@ -6,8 +6,8 @@
         <h1 class="text-3xl mt-2">{{ $tournamentData->name }}</h1>
         <p class="text-gray-500 dark:text-gray-400 text-sm mt-2 mb-5">{{ $tournamentData->description }}</p>
         @if($currentTournamentMatchData === null)
-            <div class="flex justify-center items-center h-full">
-                <h1 class="text-4xl text-danger-600 dark:text-danger-400 text-center">Úgy néz ki, hogy nincs folyamatban
+            <div class="flex justify-center items-center mb-4">
+                <h1 class="text-xl text-danger-600 dark:text-danger-400 text-center">Úgy néz ki, hogy nincs folyamatban
                     levő meccs.</h1>
             </div>
         @else
@@ -18,7 +18,6 @@
                     elapsedTime: 0,
                     intervalId: null,
                     calculateElapsedTime: function() {
-
                         if ($wire.currentTournamentMatchData.started_at === null && $wire.currentTournamentMatchData.ended_at === null) {
                             this.elapsedTime = 0; // If either start or end is not set, elapsed time is 0
                         } else if ($wire.currentTournamentMatchData.started_at !== null && ($wire.currentTournamentMatchData.ended_at === null || new Date() < new Date($wire.currentTournamentMatchData.ended_at))) {

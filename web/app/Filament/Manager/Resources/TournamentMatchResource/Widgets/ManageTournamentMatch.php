@@ -4,6 +4,7 @@ namespace App\Filament\Manager\Resources\TournamentMatchResource\Widgets;
 
 use App\Data\TournamentMatchData;
 use App\Events\CurrentMatchUpdatedEvent;
+use App\Jobs\SendUpcomingMatchNotificationJob;
 use App\Models\Enums\TournamentMatchWinner;
 use App\Models\Tournament;
 use App\Models\TournamentMatch;
@@ -87,7 +88,7 @@ class ManageTournamentMatch extends Widget
     public function startMatch(): void
     {
         $this->updateCurrentMatch(['started_at' => now()]);
-        Cache::set('tournament.' . $this->currentTournamentMatchData->tournament_code . '.current-match', $this->currentTournamentMatchData->toArray());
+        SendUpcomingMatchNotificationJob::dispatch($this->currentTournamentMatchData);
     }
 
     protected function updateCurrentMatch($data): void
@@ -100,6 +101,7 @@ class ManageTournamentMatch extends Widget
         $this->dispatch('match-changed');
         CurrentMatchUpdatedEvent::broadcast($this->currentTournamentMatchData);
 
+        Cache::set('tournament.' . $this->currentTournamentMatchData->tournament_code . '.current-match', $this->currentTournamentMatchData->toArray());
         TournamentMatch::where('id', $this->currentTournamentMatchData->id)->update(array_merge(['home_team_score' => $this->currentTournamentMatchData->home_team_score, 'away_team_score' => $this->currentTournamentMatchData->away_team_score], $data));
     }
 
