@@ -29,4 +29,4 @@ Route::get('/tournaments/{tournament}/scoreboard', ScoreboardPage::class)->name(
 Route::get('/tournaments/{tournament}/ongoing', OngoingTournamentPage::class)->name('ongoing-tournament');
 
 Route::get('/mobile-app-download', MobileAppDownloadPage::class)->name('mobile-app-download');
-Route::get('/app-linking/{token}', fn(string $token) => redirect('hermes://app-linking/' . $token));
+Route::get('/app-linking/{token}', fn(string $token) => redirect('hermes://app-linking/' . $token))->name('app-linking');
