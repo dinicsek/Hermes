@@ -33,11 +33,10 @@ if (import.meta.env.VITE_PUSHER_PORT) {
     window.Echo = new Echo(echoConfig);
 } else {
     let pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
-        wsHost: window.host,
-        httpHost: window.host,
-        wsPort: null,
+        wsHost: import.meta.env.VITE_PUSHER_HOST,
+        httpHost: import.meta.env.VITE_PUSHER_HOST,
+        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
         httpPath: '/realtime',
-        wssPort: null,
         wsPath: '/realtime',
     })
 
@@ -46,5 +45,3 @@ if (import.meta.env.VITE_PUSHER_PORT) {
         client: pusher,
     });
 }
-
-window.Echo = new Echo(echoConfig);
