@@ -4,7 +4,7 @@ set -e
 
 cd /data/hermes/
 
-docker compose -f docker-compose.yml -f ../docker-network/docker-compose.yml down
+docker compose down
 
 cd ./web/
 
@@ -33,7 +33,7 @@ image_name=$(basename "$latest_tarball" .docker | cut -d ':' -f 1)
 sed -i "s/REPLACE_IMAGE_NAME_HERE/$image_name/g" docker-compose.yml
 
 echo "Starting production container..."
-docker compose -f docker-compose.yml -f ../docker-network/docker-compose.yml up -d
+docker compose up -d
 echo "Production container started."
 
 #echo "Starting production container..."
