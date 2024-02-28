@@ -4,7 +4,7 @@ set -e
 
 cd /data/hermes/
 
-docker compose down
+docker compose -f docker-compose.yml -f ../docker-network/docker-compose.yml down
 
 cd ./web/
 
