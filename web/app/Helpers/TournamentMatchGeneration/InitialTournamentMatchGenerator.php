@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers\TournamentMatchGeneartion;
+namespace App\Helpers\TournamentMatchGeneration;
 
 use App\Models\Data\RoundConfiguration;
 use App\Models\Enums\RoundMode;
@@ -119,7 +119,7 @@ class InitialTournamentMatchGenerator
         $teamIds = $teams->pluck('id')->shuffle()->toArray();
 
         Log::debug('Elimination teams: ', $teamIds);
-        
+
         for ($i = 0; $i < count($teamIds); $i += 2) {
             $match = TournamentMatch::create([
                 'home_team_id' => $teamIds[$i],

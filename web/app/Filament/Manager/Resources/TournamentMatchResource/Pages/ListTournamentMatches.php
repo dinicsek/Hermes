@@ -3,7 +3,7 @@
 namespace App\Filament\Manager\Resources\TournamentMatchResource\Pages;
 
 use App\Filament\Manager\Resources\TournamentMatchResource;
-use App\Helpers\TournamentMatchGeneartion\Jobs\GenerateInitialTournamentMatchesJob;
+use App\Helpers\TournamentMatchGeneration\Jobs\GenerateInitialTournamentMatchesJob;
 use App\Models\Team;
 use App\Models\Tournament;
 use Filament\Actions;

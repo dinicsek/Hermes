@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Helpers\TournamentMatchGeneartion\Jobs;
+namespace App\Helpers\TournamentMatchGeneration\Jobs;
 
-use App\Helpers\TournamentMatchGeneartion\InitialTournamentMatchGenerator;
+use App\Helpers\TournamentMatchGeneration\InitialTournamentMatchGenerator;
 use App\Models\Tournament;
 use App\Models\User;
 use Filament\Notifications\Notification;
