@@ -1,6 +1,6 @@
 @php use App\Models\Enums\EventStatus; @endphp
 @php use App\Models\Enums\TournamentMatchWinner;use Illuminate\Support\Carbon; @endphp
-<div>
+<div wire:poll.3s="refreshCurrentTournamentMatchData">
     <x-navigation/>
     <div class="px-4 pb-4">
         <h1 class="text-3xl mt-2">{{ $tournamentData->name }}</h1>
