@@ -131,7 +131,14 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
 
     public function refreshCurrentTournamentMatchData()
     {
-        $this->currentTournamentMatchData = TournamentMatchData::from(Cache::get('tournament.' . $this->tournamentCode . '.current-match'));
+        $cachedData = Cache::get('tournament.' . $this->tournamentCode . '.current-match');
+
+        if ($cachedData === null) {
+            $this->currentTournamentMatchData = null;
+            return;
+        }
+
+        $this->currentTournamentMatchData = TournamentMatchData::from($cachedData);
     }
 
     public function setActiveTab(string $tab)
