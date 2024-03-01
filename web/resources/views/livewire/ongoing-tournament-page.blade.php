@@ -95,7 +95,21 @@
                 </div>
             </x-filament::section>
         @endif
-        {{ $this->table }}
+        <div class="flex w-full justify-center mb-4">
+            <x-filament::tabs>
+                <x-filament::tabs.item :active="$activeTab === 'matches'" wire:click="setActiveTab('matches')">
+                    Meccsek
+                </x-filament::tabs.item>
+                <x-filament::tabs.item :active="$activeTab === 'teams'" wire:click="setActiveTab('teams')">
+                    Csapatok
+                </x-filament::tabs.item>
+            </x-filament::tabs>
+        </div>
+        @if ($activeTab === 'matches')
+            {{ $this->table }}
+        @else
+            <livewire:ongoing-teams-table :tournament-id="$tournamentId"/>
+        @endif
     </div>
 </div>
 

@@ -22,6 +22,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\HtmlString;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class OngoingTournamentPage extends Component implements HasForms, HasTable
@@ -29,6 +30,8 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
     use InteractsWithTable;
     use InteractsWithForms;
 
+    #[Url]
+    public string $activeTab = 'matches';
     public int $tournamentId;
     public string $tournamentCode;
     public ?TournamentMatchData $currentTournamentMatchData = null;
@@ -124,5 +127,10 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
     {
         $this->currentTournamentMatchData = TournamentMatchData::from($data);
         $this->dispatch('match-changed');
+    }
+
+    public function setActiveTab(string $tab)
+    {
+        $this->activeTab = $tab;
     }
 }
