@@ -10,10 +10,12 @@
                     @endif
                 </div>
                 <div class="flex gap-4 items-center">
-                    <x-filament::link
-                        href="{{ route('scoreboard', ['tournament' => $currentTournamentMatchData->tournament_code]) }}"
-                        target="_blank">Eredményjelző tábla
-                    </x-filament::link>
+                    @if($currentTournamentMatchData !== null)
+                        <x-filament::link
+                            href="{{ route('scoreboard', ['tournament' => $currentTournamentMatchData->tournament_code]) }}"
+                            target="_blank">Eredményjelző tábla
+                        </x-filament::link>
+                    @endif
                     <x-filament::input.wrapper>
                         <x-filament::input.select wire:model.live="tournament_id">
                             <option value="0">-</option>
