@@ -37,8 +37,8 @@ class OngoingTeamsTable extends Component implements HasForms, HasTable
 
                             $totalWins = $homeWins + $awayWins;
 
-                            $homeLosses = $record->homeMatches->where('winner', '!=', TournamentMatchWinner::HOME_TEAM)->count();
-                            $awayLosses = $record->awayMatches->where('winner', '!=', TournamentMatchWinner::AWAY_TEAM)->count();
+                            $homeLosses = $record->homeMatches->where('winner', '!=', TournamentMatchWinner::HOME_TEAM)->whereNotNull('winner')->count();
+                            $awayLosses = $record->awayMatches->where('winner', '!=', TournamentMatchWinner::AWAY_TEAM)->whereNotNull('winner')->count();
 
                             $totalLosses = $homeLosses + $awayLosses;
 
