@@ -46,6 +46,7 @@ class ScoreboardPage extends Component
 
         if ($cachedData === null) {
             $this->currentTournamentMatchData = null;
+            $this->dispatch('match-changed');
             return;
         }
 
