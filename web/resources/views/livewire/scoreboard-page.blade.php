@@ -1,5 +1,5 @@
 @php use App\Models\Enums\TournamentMatchWinner;use Illuminate\Support\Carbon; @endphp
-<div class="h-screen flex flex-col p-4" wire:poll.3s="refreshCurrentTournamentMatchData">
+<div class="h-screen flex flex-col p-4">
     @if($currentTournamentMatchData === null)
         <div class="flex justify-center items-center h-full">
             <h1 class="text-4xl text-danger-600 dark:text-danger-400 text-center">Úgy néz ki, hogy nincs folyamatban
