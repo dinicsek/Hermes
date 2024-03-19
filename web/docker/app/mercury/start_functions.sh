@@ -40,6 +40,19 @@ boot() {
     fi
 }
 
+boot_horizon() {
+    log_info "Staring Horizon..."
+    log_trace "Checking if this is the first start of Mercury..."
+    while [ ! -f "/root/mercury-app-$app_name.lock" ]; do
+        log_warning "Horizon is not ready yet, waiting for 10 seconds..."
+        sleep 10
+    done
+
+    log_info "Horizon is ready, starting..."
+
+    $PHP_PATH artisan mercury:boot-horizon
+}
+
 firstboot_project() {
    log_trace "Checking if this is the first start of Mercury..."
    if [ ! -f "/root/mercury-app-$app_name.lock" ]; then

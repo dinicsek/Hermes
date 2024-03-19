@@ -33,3 +33,5 @@ docker-compose.override.aurora.bak
 docker-compose.override.aurora.bak
 .env.aurora.bak
 firebase_credentials.json
+docker-compose.override.aurora.bak
+.env.aurora.bak

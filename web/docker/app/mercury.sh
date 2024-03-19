@@ -7,7 +7,9 @@ echo ""
 log_info "Mercury - Docker Runtime for Aurora (version $MERCURY_VERSION)"
 log_trace "Booting your application..."
 
+touch /var/log/xdebug.log
+chmod 777 /var/log/xdebug.log
+
 firstboot
 
 boot
-root
