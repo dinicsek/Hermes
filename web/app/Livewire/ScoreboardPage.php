@@ -42,13 +42,6 @@ class ScoreboardPage extends Component
 
     public function refreshCurrentTournamentMatchData()
     {
-        $cachedData = Cache::get('tournament.' . $this->tournamentCode . '.current-match');
-
-        if ($cachedData === null) {
-            $this->currentTournamentMatchData = null;
-            return;
-        }
-
-        $this->currentTournamentMatchData = TournamentMatchData::from($cachedData);
+        $this->currentTournamentMatchData = TournamentMatchData::from(Cache::get('tournament.' . $this->tournamentCode . '.current-match'));
     }
 }
