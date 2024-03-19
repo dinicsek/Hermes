@@ -45,11 +45,9 @@ class ScoreboardPage extends Component
         $cachedData = Cache::get('tournament.' . $this->tournamentCode . '.current-match');
 
         if ($cachedData === null) {
-            return;
-        }
-
-        if ($this->currentTournamentMatchData !== null && TournamentMatchData::from($cachedData)->id !== $this->currentTournamentMatchData->id) {
+            $this->currentTournamentMatchData = null;
             $this->dispatch('match-changed');
+            return;
         }
 
         $this->currentTournamentMatchData = TournamentMatchData::from($cachedData);
