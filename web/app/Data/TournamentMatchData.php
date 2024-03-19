@@ -38,6 +38,8 @@ class TournamentMatchData extends Data implements Wireable
         public string                 $tournament_code,
         public bool                   $is_final,
         public ?TournamentMatchWinner $winner,
+        public int                    $elimination_round,
+        public int                    $elimination_level,
     )
     {
     }

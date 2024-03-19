@@ -4,6 +4,7 @@ namespace App\Filament\Manager\Resources\TournamentMatchResource\Widgets;
 
 use App\Data\TournamentMatchData;
 use App\Events\CurrentMatchUpdatedEvent;
+use App\Helpers\TournamentMatchGeneration\Jobs\GenerateUpcomingTournamentMatchesJob;
 use App\Jobs\SendUpcomingMatchNotificationJob;
 use App\Models\Enums\TournamentMatchWinner;
 use App\Models\Tournament;
@@ -113,6 +114,7 @@ class ManageTournamentMatch extends Widget
                 null : ($this->currentTournamentMatchData->home_team_score > $this->currentTournamentMatchData->away_team_score ? TournamentMatchWinner::HOME_TEAM : TournamentMatchWinner::AWAY_TEAM)
         ]);
         Cache::forget('tournament.' . $this->currentTournamentMatchData->tournament_code . '.current-match');
+        GenerateUpcomingTournamentMatchesJob::dispatch($this->currentTournamentMatchData);
     }
 
     public function incrementHomeTeamScore(): void
