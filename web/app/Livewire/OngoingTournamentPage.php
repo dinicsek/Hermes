@@ -135,7 +135,6 @@ class OngoingTournamentPage extends Component implements HasForms, HasTable
 
         if ($cachedData === null) {
             $this->currentTournamentMatchData = null;
-            $this->dispatch('match-changed');
             return;
         }
 
