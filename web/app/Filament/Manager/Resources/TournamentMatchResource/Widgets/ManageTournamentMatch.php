@@ -34,12 +34,16 @@ class ManageTournamentMatch extends Widget
 
     protected function fetchCurrentMatch()
     {
-        $matches = TournamentMatch::ordered()->when(fn() => $this->tournament_id !== null && $this->tournament_id !== 0, fn(Builder $query) => $query->whereTournamentId($this->tournament_id))->whereEndedAt(null)->whereNotNull(['home_team_id', 'away_team_id'])->with('awayTeam', 'homeTeam')->take(2)->get();
+        $matches = TournamentMatch::ordered()->whereHas('tournament', function (Builder $query) {
+            $query->where('user_id', auth()->id());
+        })->when(fn() => $this->tournament_id !== null && $this->tournament_id !== 0, fn(Builder $query) => $query->whereTournamentId($this->tournament_id))->whereEndedAt(null)->whereNotNull(['home_team_id', 'away_team_id'])->with('awayTeam', 'homeTeam')->take(2)->get();
 
         $match = $matches->first();
 
         if ($match == null)
-            $match = TournamentMatch::ordered()->when(fn() => $this->tournament_id !== null && $this->tournament_id !== 0, fn(Builder $query) => $query->whereTournamentId($this->tournament_id))->whereNotNull(['home_team_id', 'away_team_id'])->latest('sort')->with('awayTeam', 'homeTeam')->first();
+            $match = TournamentMatch::ordered()->whereHas('tournament', function (Builder $query) {
+                $query->where('user_id', auth()->id());
+            })->when(fn() => $this->tournament_id !== null && $this->tournament_id !== 0, fn(Builder $query) => $query->whereTournamentId($this->tournament_id))->whereNotNull(['home_team_id', 'away_team_id'])->latest('sort')->with('awayTeam', 'homeTeam')->first();
 
         if ($match == null) {
             $this->currentTournamentMatchData = null;

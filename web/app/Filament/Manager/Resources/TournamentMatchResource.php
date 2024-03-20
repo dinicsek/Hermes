@@ -360,7 +360,9 @@ class TournamentMatchResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->ordered()->with(['homeTeam:id,name,tournament_id', 'awayTeam:id,name,tournament_id']);
+        return parent::getEloquentQuery()->ordered()->with(['homeTeam:id,name,tournament_id', 'awayTeam:id,name,tournament_id'])->whereHas('tournament', function (Builder $query) {
+            $query->where('user_id', auth()->id());
+        });
     }
 
     public static function getRecordSubNavigation(Page $page): array

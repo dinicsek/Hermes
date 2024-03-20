@@ -1,3 +1,5 @@
+@php use Filament\Resources\RelationManagers\RelationGroup; @endphp
+@php use Filament\Resources\RelationManagers\RelationManagerConfiguration; @endphp
 @props([
     'activeLocale' => null,
     'activeManager',
@@ -12,7 +14,7 @@
     @php
         $activeManager = strval($activeManager);
         $normalizeRelationManagerClass = function (string | Filament\Resources\RelationManagers\RelationManagerConfiguration $manager): string {
-            if ($manager instanceof \Filament\Resources\RelationManagers\RelationManagerConfiguration) {
+            if ($manager instanceof RelationManagerConfiguration) {
                 return $manager->relationManager;
             }
 
@@ -33,7 +35,7 @@
             @foreach ($tabs as $tabKey => $manager)
                 @php
                     $tabKey = strval($tabKey);
-                    $isGroup = $manager instanceof \Filament\Resources\RelationManagers\RelationGroup;
+                    $isGroup = $manager instanceof RelationGroup;
 
                     if ($isGroup) {
                         $manager->ownerRecord($ownerRecord);
@@ -66,8 +68,8 @@
         <div
             @if (count($managers) > 1)
                 id="relationManager{{ ucfirst($activeManager) }}"
-                role="tabpanel"
-                tabindex="0"
+            role="tabpanel"
+            tabindex="0"
             @endif
             wire:key="{{ $this->getId() }}.relation-managers.active"
             class="flex flex-col gap-y-4"
@@ -80,7 +82,7 @@
                 }
             @endphp
 
-            @if ($managers[$activeManager] instanceof \Filament\Resources\RelationManagers\RelationGroup)
+            @if ($managers[$activeManager] instanceof RelationGroup)
                 @foreach ($managers[$activeManager]->ownerRecord($ownerRecord)->pageClass($pageClass)->getManagers() as $groupedManagerKey => $groupedManager)
                     @php
                         $normalizedGroupedManagerClass = $normalizeRelationManagerClass($groupedManager);
@@ -88,7 +90,7 @@
 
                     @livewire(
                         $normalizedGroupedManagerClass,
-                        [...$managerLivewireProperties, ...(($groupedManager instanceof \Filament\Resources\RelationManagers\RelationManagerConfiguration) ? [...$groupedManager->relationManager::getDefaultProperties(), ...$groupedManager->properties] : $groupedManager::getDefaultProperties())],
+                        [...$managerLivewireProperties, ...(($groupedManager instanceof RelationManagerConfiguration) ? [...$groupedManager->relationManager::getDefaultProperties(), ...$groupedManager->getProperties()] : $groupedManager::getDefaultProperties())],
                         key("{$normalizedGroupedManagerClass}-{$groupedManagerKey}"),
                     )
                 @endforeach
@@ -100,7 +102,7 @@
 
                 @livewire(
                     $normalizedManagerClass,
-                    [...$managerLivewireProperties, ...(($manager instanceof \Filament\Resources\RelationManagers\RelationManagerConfiguration) ? [...$manager->relationManager::getDefaultProperties(), ...$manager->properties] : $manager::getDefaultProperties())],
+                    [...$managerLivewireProperties, ...(($manager instanceof RelationManagerConfiguration) ? [...$manager->relationManager::getDefaultProperties(), ...$manager->getProperties()] : $manager::getDefaultProperties())],
                     key($normalizedManagerClass),
                 )
             @endif
