@@ -5,7 +5,6 @@ namespace App\Filament\Manager\Resources\GroupResource\Pages;
 use App\Filament\Manager\Resources\GroupResource;
 use App\Models\TournamentMatch;
 use Filament\Actions\Action;
-use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Log;
@@ -25,9 +24,7 @@ class EditGroup extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('generate_group_matches')->label('Meccsek generálása')->color('gray')->form([
-                TextInput::make('round')->label('Kör')->numeric()->minValue(1)->default(1)->required(),
-            ])->action(function (EditGroup $livewire, array $data) {
+            Action::make('generate_group_matches')->label('Meccsek generálása')->color('gray')->requiresConfirmation()->action(function (EditGroup $livewire) {
                 $group = $livewire->getRecord();
                 $tournament = $group->tournament;
 
@@ -41,11 +38,11 @@ class EditGroup extends EditRecord
                     }
                 }
 
-                collect($matches)->each(function ($teams) use ($tournament, $data) {
+                collect($matches)->each(function ($teams) use ($group, $tournament) {
                     TournamentMatch::create([
                         'home_team_id' => $teams[0],
                         'away_team_id' => $teams[1],
-                        'round' => $data['round'],
+                        'round' => $group->round,
                         'tournament_id' => $tournament->id,
                     ]);
                 });

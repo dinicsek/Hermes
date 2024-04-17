@@ -30,8 +30,8 @@ class ListTournamentMatches extends ListRecords
                 ->color('gray')
                 ->form([
                     Select::make('tournament_id')
-                        ->label('Tournament')
-                        ->options(fn() => Tournament::query()->pluck('name', 'id'))
+                        ->label('Verseny')
+                        ->options(fn() => Tournament::query()->where('user_id', auth()->id())->pluck('name', 'id'))
                         ->native(false)
                         ->selectablePlaceholder(false)
                         ->live()
