@@ -2,6 +2,8 @@
 
 source /mercury/index.sh
 
+git config --global --add safe.directory /srv/www
+
 export POSTGRES_USER=$database_user
 export POSTGRES_PASSWORD=$database_password
 export POSTGRES_DB=$database_name
