@@ -1,17 +1,17 @@
-FROM redis:alpine as redis
+FROM redis:7-alpine as redis
 
 RUN apk add --no-cache rsync && \
     rsync -avz /usr/local/bin/redis* /redis && \
     apk del --no-network rsync
 
-FROM postgres:alpine as postgres
+FROM postgres:17-alpine as postgres
 
 FROM mercury
 WORKDIR /srv/www/
 
 RUN apk del .mercury-build-deps
 
-RUN apk add --no-cache rsync tzdata postgresql16 su-exec gosu
+RUN apk add --no-cache rsync tzdata postgresql16 su-exec
 
 COPY --from=redis /redis /redis
 COPY --from=redis /usr/local/bin/docker-entrypoint.sh /usr/local/bin/docker-entrypoint_redis.sh
