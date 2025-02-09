@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git config --global --add safe.directory /data/hermes/
+
 set -e
 
 cd /data/hermes/
