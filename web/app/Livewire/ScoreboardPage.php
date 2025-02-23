@@ -39,4 +39,19 @@ class ScoreboardPage extends Component
         $this->currentTournamentMatchData = TournamentMatchData::from($data);
         $this->dispatch('match-changed');
     }
+
+    public function refreshCurrentTournamentMatchData()
+    {
+        $cachedData = Cache::get('tournament.' . $this->tournamentCode . '.current-match');
+
+        if ($cachedData === null) {
+            return;
+        }
+
+        if ($this->currentTournamentMatchData !== null && TournamentMatchData::from($cachedData)->id !== $this->currentTournamentMatchData->id) {
+            $this->dispatch('match-changed');
+        }
+
+        $this->currentTournamentMatchData = TournamentMatchData::from($cachedData);
+    }
 }
